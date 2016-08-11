@@ -82,11 +82,24 @@ public class UsersController {
 	    }
 	   @RequestMapping(value = "/approve", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
 	    @ApiOperation(value = "Approve user", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse approve(@RequestBody RestRequestObject<Users> req, HttpServletRequest request, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listUsers");
+	    public RestResponse approve(@RequestBody RestRequestObject<Users[]> req, HttpServletRequest request, HttpServletResponse response) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveUsers");
 	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(userService.approve(req.getObject()), HttpStatus.OK);
+	            resp = new RestResponse(userService.approve(req), HttpStatus.OK);
+	        }else{
+	            resp = ErrorUtl.getFailedMsg();
+	        }
+	        return resp;
+	    }
+	   
+	   @RequestMapping(value = "/reject", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+	    @ApiOperation(value = "Reject user", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	    public RestResponse reject(@RequestBody RestRequestObject<Users[]> req, HttpServletRequest request, HttpServletResponse response) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "RejectUsers");
+	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+	        if(authorizeStatus.isRequestStatus()){
+	            resp = new RestResponse(userService.reject(req), HttpStatus.OK);
 	        }else{
 	            resp = ErrorUtl.getFailedMsg();
 	        }
@@ -96,10 +109,23 @@ public class UsersController {
 	   @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
 	    @ApiOperation(value = "Edit user", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
 	    public RestResponse edit(@RequestBody RestRequestObject<Users> req, HttpServletRequest request, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "editUsers");
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "EditUsers");
 	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 	        if(authorizeStatus.isRequestStatus()){
 	            resp = new RestResponse(userService.edit(req.getObject()), HttpStatus.OK);
+	        }else{
+	            resp = ErrorUtl.getFailedMsg();
+	        }
+	        return resp;
+	    }
+	   
+	   @RequestMapping(value = "/search", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+	    @ApiOperation(value = "Search users", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	    public RestResponse search(@RequestBody RestRequestObject<Users> req, HttpServletRequest request, HttpServletResponse response) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "SearchUsers");
+	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+	        if(authorizeStatus.isRequestStatus()){
+	            resp = new RestResponse(userService.search(req.getObject()), HttpStatus.OK);
 	        }else{
 	            resp = ErrorUtl.getFailedMsg();
 	        }

@@ -307,44 +307,83 @@ public class UsersService {
 	        return resp;
 	}
 	
-	public RestResponseObject approve(Users req) {
+	public RestResponseObject approve(RestRequestObject<Users[]> req) {
 	
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Users usr = usersRepository.findByusrCode(req.getUsrCode());
-		if(usr==null)
-		{
-			resp.setMessage("User not found");
-		}
-		else
-		{
-			if(usr.getUsrStatus()==BigInteger.valueOf(2))
-			{
-			try {
-			usr.setUsrStatus(BigInteger.valueOf(4));
-			usr.setUsrInputter(req.getUsrAuthoriser());
-			usr.setUsrMdate(Calendar.getInstance().getTime());
-			userEmail = usr.getUsrEmail();
-			password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
-			usr.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8"));
-			resp.setMessage("User Approval Successfull");
-			usersRepository.save(usr);
-			sendMail();
-			
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} // Default
-			}else
-			{
-				resp.setMessage("User has not been marked for approval");
+		
+		for (Users r : req.getObject()) {
+
+			Users usr = usersRepository.findByusrCode(r.getUsrCode());
+			if (usr == null) {
+				resp.setMessage("User not found");
+				resp.setRequestStatus(true);
+			} else {
+				if (usr.getUsrStatus() == BigInteger.valueOf(2)) {
+					try {
+						usr.setUsrStatus(BigInteger.valueOf(4));
+						usr.setUsrAuthoriser(r.getUsrAuthoriser());
+						usr.setUsrMdate(Calendar.getInstance().getTime());
+						userEmail = usr.getUsrEmail();
+						password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
+						usr.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8"));
+						resp.setMessage("User Approval Successfull");
+						resp.setRequestStatus(true);
+						usersRepository.save(usr);
+						sendMail();
+
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} // Default
+				} else {
+					resp.setMessage("User has not been marked for approval");
+				}
 			}
 		}
-	       
-	        return resp;
+		return resp;
+
 	}
+	
+	public RestResponseObject reject(RestRequestObject<Users[]> req) {
+		
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		
+		for (Users r : req.getObject()) {
+
+			Users usr = usersRepository.findByusrCode(r.getUsrCode());
+			if (usr == null) {
+				resp.setMessage("User not found");
+				resp.setRequestStatus(true);
+			} else {
+				if (usr.getUsrStatus() == BigInteger.valueOf(2)) {
+					try {
+						usr.setUsrStatus(BigInteger.valueOf(3));
+						usr.setUsrInputter(r.getUsrAuthoriser());
+						usr.setUsrMdate(Calendar.getInstance().getTime());
+						resp.setMessage("User Rejection Successfull");
+						resp.setRequestStatus(true);
+						usersRepository.save(usr);
+						
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} // Default
+				} else {
+					resp.setMessage("Cannot reject");
+				}
+			}
+		}
+		return resp;
+
+	}
+
 	public RestResponseObject edit(Users req) {
 		
 		RestResponseObject resp = new RestResponseObject();
@@ -356,10 +395,11 @@ public class UsersService {
 		if(usr==null)
 		{
 			resp.setMessage("User not found");
+			resp.setRequestStatus(true);
 		}
 		else
 		{
-			if(usr.getUsrStatus()==BigInteger.valueOf(1))
+			if(usr.getUsrStatus()==BigInteger.valueOf(1)|usr.getUsrStatus()==BigInteger.valueOf(0))
 			{
 			try {
 			
@@ -368,8 +408,10 @@ public class UsersService {
 			usr.setUsrMdate(Calendar.getInstance().getTime());
 			usr.setUsrName(req.getUsrName().trim());
 			usr.setUsrStatus(req.getUsrStatus());
-			resp.setMessage("User Edit Successfull");
 			usersRepository.save(usr);
+			resp.setMessage("User Edit Successfull");
+			resp.setPayload(usr);
+			resp.setRequestStatus(true);
 			
 			
 			} catch (Exception e) {
@@ -383,5 +425,26 @@ public class UsersService {
 		}
 	       
 	        return resp;
+	}
+	
+	public RestResponseObject search(Users req) {
+
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Users usr = usersRepository.findByusrEmailIgnoreCase(req.getUsrEmail());
+		
+		if (usr == null) {
+			resp.setMessage("User not found");
+			resp.setRequestStatus(true);
+		} else {
+
+			resp.setMessage("User found");
+			resp.setPayload(usr);
+			resp.setRequestStatus(true);
+		}
+
+		return resp;
 	}
 }
