@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 
 import java.util.Calendar;
-import java.util.List;
+
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,7 +19,8 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -64,14 +65,16 @@ public class UsersService {
 			resp.setSessID("");
 			resp.setNames("");
 		} else {
+			
 			if (usr.getSessionExpiry() == null) {
-				
 				// String password;
 				try {
 					password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
 
 					String pswd = request.getPassword();
-
+					
+					if(usr.getUsrStatus()==BigInteger.valueOf(4)|usr.getUsrStatus()==BigInteger.valueOf(1))
+					{
 					if (password.equalsIgnoreCase(pswd)) {
 
 						resp.setLoginMessage("Successful login credentials");
@@ -96,6 +99,10 @@ public class UsersService {
 					} else {
 						resp.setLoginMessage("Invalid login credentials");
 					}
+				}else
+				{
+					resp.setLoginMessage("User has not been authorized");
+				}
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -155,6 +162,7 @@ public class UsersService {
 			if (Calendar.getInstance().after(user.getSessionExpiry())) {
 				obj.setMessage("Your session timed out");
 				Lg.storeLog("Session timed out for:" + username);
+				
 			} else {
 				Calendar expTime = Calendar.getInstance();
 				expTime.add(Calendar.MINUTE, 30);
@@ -198,10 +206,8 @@ public class UsersService {
 		try {
 			user.setUsrName(req.getUsrName().trim());
 			user.setUsrEmail(req.getUsrEmail().trim());
-			userEmail = req.getUsrEmail().trim();
 			password = RandomStringUtils.randomAlphanumeric(8);
-			userName = req.getUsrName().trim();
-			user.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8")); // Default																	// Pass
+			user.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8"));																	// Pass
 			user.setUsrBrkCode(req.getUsrBrkCode());
 			user.setUsrStatus(BigInteger.valueOf(2)); // First Time created
 			user.setUsrCdate(Calendar.getInstance().getTime());
@@ -211,8 +217,7 @@ public class UsersService {
 			resp.setMessage("Success");
 			resp.setPayload(createdUser);
 			resp.setRequestStatus(true);
-			sendMail();
-		} catch (Exception er) {
+			} catch (Exception er) {
 			er.printStackTrace();
 		}
 		return resp;
@@ -286,23 +291,97 @@ public class UsersService {
 		return resp;
 	}
 	
-	public RestResponseObject listUsers(Users req) {
+	public RestResponseObject listUsers(Users req,Pageable pageable) {
 		
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-	     HttpStatus status = HttpStatus.NOT_FOUND;
-	        try {
-	            List<Users> bizNos = (List<Users>) usersRepository.findAll();
-	            if (bizNos.size() > 0) {
-	                resp.setMessage("Users Found");
-	                resp.setPayload(bizNos);
-	                status = HttpStatus.OK;
-	            }
+	          try {
+	           resp.setPayload(usersRepository.findAll(pageable));
+	           resp.setRequestStatus(true);
+	           resp.setMessage("Success");
 	        } catch (Exception e) {
 	          
 	        }
+	        return resp;
+	}
+	
+	public RestResponseObject approve(Users req) {
+	
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Users usr = usersRepository.findByusrCode(req.getUsrCode());
+		if(usr==null)
+		{
+			resp.setMessage("User not found");
+		}
+		else
+		{
+			if(usr.getUsrStatus()==BigInteger.valueOf(2))
+			{
+			try {
+			usr.setUsrStatus(BigInteger.valueOf(4));
+			usr.setUsrInputter(req.getUsrAuthoriser());
+			usr.setUsrMdate(Calendar.getInstance().getTime());
+			userEmail = usr.getUsrEmail();
+			password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
+			usr.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8"));
+			resp.setMessage("User Approval Successfull");
+			usersRepository.save(usr);
+			sendMail();
+			
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} // Default
+			}else
+			{
+				resp.setMessage("User has not been marked for approval");
+			}
+		}
+	       
+	        return resp;
+	}
+	public RestResponseObject edit(Users req) {
+		
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Users usr = usersRepository.findByusrCode(req.getUsrCode());
+		System.out.println("User code entring============="+req.getUsrCode());
+		if(usr==null)
+		{
+			resp.setMessage("User not found");
+		}
+		else
+		{
+			if(usr.getUsrStatus()==BigInteger.valueOf(1))
+			{
+			try {
+			
+			usr.setUsrAuthoriser(req.getUsrAuthoriser());
+			usr.setUsrEmail(req.getUsrEmail());
+			usr.setUsrMdate(Calendar.getInstance().getTime());
+			usr.setUsrName(req.getUsrName().trim());
+			usr.setUsrStatus(req.getUsrStatus());
+			resp.setMessage("User Edit Successfull");
+			usersRepository.save(usr);
+			
+			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} // Default
+			}else
+			{
+				resp.setMessage("User is Inactive");
+			}
+		}
+	       
 	        return resp;
 	}
 }

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,11 +70,36 @@ public class UsersController {
 	
 	   @RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
 	    @ApiOperation(value = "Listing all users", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse list(@RequestBody RestRequestObject<Users> req, HttpServletRequest request, HttpServletResponse response) {
+	    public RestResponse list(@RequestBody RestRequestObject<Users> req, HttpServletRequest request,Pageable pageable, HttpServletResponse response) {
 	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listUsers");
 	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(userService.listUsers(req.getObject()), HttpStatus.OK);
+	            resp = new RestResponse(userService.listUsers(req.getObject(),pageable), HttpStatus.OK);
+	        }else{
+	            resp = ErrorUtl.getFailedMsg();
+	        }
+	        return resp;
+	    }
+	   @RequestMapping(value = "/approve", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+	    @ApiOperation(value = "Approve user", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	    public RestResponse approve(@RequestBody RestRequestObject<Users> req, HttpServletRequest request, HttpServletResponse response) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listUsers");
+	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+	        if(authorizeStatus.isRequestStatus()){
+	            resp = new RestResponse(userService.approve(req.getObject()), HttpStatus.OK);
+	        }else{
+	            resp = ErrorUtl.getFailedMsg();
+	        }
+	        return resp;
+	    }
+	   
+	   @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+	    @ApiOperation(value = "Edit user", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	    public RestResponse edit(@RequestBody RestRequestObject<Users> req, HttpServletRequest request, HttpServletResponse response) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "editUsers");
+	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+	        if(authorizeStatus.isRequestStatus()){
+	            resp = new RestResponse(userService.edit(req.getObject()), HttpStatus.OK);
 	        }else{
 	            resp = ErrorUtl.getFailedMsg();
 	        }
