@@ -9,6 +9,7 @@ import com.ipo.entities.Users;
 
 
 public interface UsersRepository extends PagingAndSortingRepository<Users, Long> {
+	
 	Page<Users> findAll();
 	Users findByusrNameIgnoreCase(String username);
 	Users findByusrEmailIgnoreCase(String useremail);

@@ -126,7 +126,7 @@ public class UsersService {
 			String username = this.decodeAndParse(tks[1]).get("username").asText();
 			// Map<String, Object> decodedPayload = new
 			// JWTVerifier(user.getSalt()).verify(req.getToken());
-			Users usr = usersRepository.findByusrNameIgnoreCase(username);
+			Users usr = usersRepository.findByusrEmailIgnoreCase(username.trim());
 			System.out.println(usr.toString());
 			usr.setUsrAuthSalt(null);
 			usr.setSessionExpiry(null);
@@ -155,8 +155,8 @@ public class UsersService {
 		obj.setRequestStatus(false);
 		try {
 			String[] tks = StringUtils.split(token, ".");
-			String username = this.decodeAndParse(tks[1]).get("username").asText();
-			Users user = usersRepository.findByusrNameIgnoreCase(username);
+			String username = this.decodeAndParse(tks[1]).get("username").asText().trim();
+			Users user = usersRepository.findByusrEmailIgnoreCase(username.trim());
 			Map<String, Object> decodedPayload = new JWTVerifier(user.getUsrAuthSalt()).verify(token);
 			// check session expiry time
 			if (Calendar.getInstance().after(user.getSessionExpiry())) {
@@ -268,8 +268,9 @@ public class UsersService {
 			usr.setUsrLastPassChange(Calendar.getInstance().getTime());
 			usr.setUsrStatus(BigInteger.valueOf(1));
 			usr.setUsrAuthSalt(null);
-			password = req.getUsr_password();
-			userEmail =req.getUsrEmail();
+			usr.setSessionExpiry(null);
+			password = req.getUsr_password().trim();
+			userEmail =req.getUsrEmail().trim();
 			sendMail();
 			usersRepository.save(usr);
 			resp.setMessage("Password Reset Successful");
@@ -326,7 +327,7 @@ public class UsersService {
 						usr.setUsrStatus(BigInteger.valueOf(4));
 						usr.setUsrAuthoriser(r.getUsrAuthoriser());
 						usr.setUsrMdate(Calendar.getInstance().getTime());
-						userEmail = usr.getUsrEmail();
+						userEmail = usr.getUsrEmail().trim();
 						password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
 						usr.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8"));
 						resp.setMessage("User Approval Successfull");
@@ -404,7 +405,7 @@ public class UsersService {
 			try {
 			
 			usr.setUsrAuthoriser(req.getUsrAuthoriser());
-			usr.setUsrEmail(req.getUsrEmail());
+			usr.setUsrEmail(req.getUsrEmail().trim());
 			usr.setUsrMdate(Calendar.getInstance().getTime());
 			usr.setUsrName(req.getUsrName().trim());
 			usr.setUsrStatus(req.getUsrStatus());
@@ -415,9 +416,9 @@ public class UsersService {
 			
 			
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
-			} // Default
+			} 
 			}else
 			{
 				resp.setMessage("User is Inactive");
@@ -433,7 +434,7 @@ public class UsersService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Users usr = usersRepository.findByusrEmailIgnoreCase(req.getUsrEmail());
+		Users usr = usersRepository.findByusrEmailIgnoreCase(req.getUsrEmail().trim());
 		
 		if (usr == null) {
 			resp.setMessage("User not found");

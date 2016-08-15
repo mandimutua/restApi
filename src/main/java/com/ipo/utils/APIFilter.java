@@ -22,6 +22,10 @@ public class APIFilter implements Filter {
 		response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Max-Age", "3600");
 		response.setHeader("Access-Control-Allow-Headers", "X-Requested-With,Authorization, Content-Type, Accept");
+		response.setHeader("Cache-Control", "private,no-store,no-cache,must-revalidate");
+		response.setHeader("If-Modified-Since", "0");
+		response.setHeader("Expires", "-1");
+		response.setHeader("Pragma", "no-cache");
 		chain.doFilter(req, res);
 	}
 

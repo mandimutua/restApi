@@ -4,6 +4,7 @@ com\ipo\entities\Payments.class
 com\ipo\entities\Brokers.class
 com\ipo\elements\ResetPasswordObject.class
 com\ipo\utils\LoginResponse.class
+com\ipo\services\BrokersService.class
 com\ipo\entities\Users.class
 com\ipo\entities\Roles.class
 com\ipo\entities\Customers.class
@@ -17,9 +18,11 @@ com\ipo\entities\MessageTemplates.class
 com\ipo\utils\Lg.class
 com\ipo\repositories\UsersRepository.class
 com\ipo\utils\LoginLdapUtl.class
+com\ipo\api\BrokersController.class
 com\ipo\api\UsersController.class
 com\ipo\entities\Permissions.class
 com\ipo\utils\TokenClass.class
+com\ipo\repositories\BrokersRepository.class
 com\ipo\elements\RestResponse.class
 com\ipo\utils\Mailer.class
 com\ipo\services\UsersService.class

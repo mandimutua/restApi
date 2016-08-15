@@ -59,7 +59,7 @@ public class LoginLdapUtl {
 			// Initialize
 			JWTSigner jwtSigner = new JWTSigner(tk.getAuthSalt());
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("username", user.getUsrName());
+			map.put("username", user.getUsrEmail().trim());
 
 			// set options
 			JWTSigner.Options options = new JWTSigner.Options();

@@ -3,6 +3,7 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\LoginLdapUtl
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Users.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\UserLogin.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\Mailer.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\BrokersService.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Permissions.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\TokenClass.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\MessageTemplates.java
@@ -18,6 +19,7 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Roles.jav
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\UsersService.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\ResetPasswordObject.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\RestResponse.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\BrokersRepository.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Batch.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Customers.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\RestRequestObject.java
@@ -25,5 +27,6 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\RestRespo
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Application.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\ErrorUtl.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\IpoAdminApplication.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\api\BrokersController.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\UsersRepository.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Payments.java
