@@ -27,25 +27,25 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @Api(value = "Broker management", description = "Broker management API")
 public class BrokersController {
 
-	@Autowired BrokersService brokerService;
-	@Autowired UsersService userService;
-	
+	@Autowired
+	BrokersService brokerService;
+	@Autowired
+	UsersService userService;
 
-
-	
-	  @RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Broker list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse list(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,Pageable pageable, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listbrokers");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.listall(req.getObject(),pageable), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
+	@RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Broker list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse list(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request, Pageable pageable,
+			HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listbrokers");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.listall(req.getObject(), pageable), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
 	  
 	  @RequestMapping(value = "/listbrokers", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
 	    @ApiOperation(value = "Broker list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")

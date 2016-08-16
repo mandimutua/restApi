@@ -80,6 +80,7 @@ public class UsersService {
 						resp.setLoginMessage("Successful login credentials");
 						resp.setLoginStatus(true);
 						resp.setUserID(usr.getUsrCode());
+						
 						resp.setUsr_status(usr.getUsrStatus());
 
 						LoginLdapUtl utl = new LoginLdapUtl();
@@ -88,6 +89,8 @@ public class UsersService {
 							resp.setSessID(tokenObj.getToken());
 							usr.setUsrAuthSalt(tokenObj.getAuthSalt());
 							resp.setUsr_email(request.getUsrEmail().trim());
+							resp.setBatCode(usr.getUsrBrkCode());
+							
 							Calendar now = Calendar.getInstance();
 							now.add(Calendar.MINUTE, 30);
 							usr.setSessionExpiry(now);

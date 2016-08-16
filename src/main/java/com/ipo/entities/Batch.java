@@ -18,13 +18,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
+
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -33,9 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "BATCH")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Batch.findAll", query = "SELECT b FROM Batch b")})
+
+
 public class Batch implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -56,7 +54,7 @@ public class Batch implements Serializable {
     @Column(name = "BAT_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batCdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "BAT_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batMdate;
@@ -70,7 +68,7 @@ public class Batch implements Serializable {
     @ManyToOne(optional = false)
     private Users batInputter;
     @JoinColumn(name = "BAT_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Users batAuthoriser;
     @JoinColumn(name = "BAT_BRK_CODE", referencedColumnName = "BRK_CODE")
     @ManyToOne(optional = false)

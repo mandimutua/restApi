@@ -79,7 +79,7 @@ public class Brokers implements Serializable {
     @Column(name = "BRK_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date brkMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     
     @Column(name = "BRK_DATE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -97,7 +97,7 @@ public class Brokers implements Serializable {
     
    @JsonIgnore
    @JoinColumn(name = "BRK_AUTHORISER", referencedColumnName = "USR_CODE")
-   @ManyToOne(optional = false)
+   @ManyToOne(optional = true)
   // @JsonBackReference
     private Users brkAuthoriser;
     

@@ -16,8 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,8 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "APPLICATION")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Application.findAll", query = "SELECT a FROM Application a")})
+
 public class Application implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

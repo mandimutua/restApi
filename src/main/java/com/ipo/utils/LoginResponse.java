@@ -3,11 +3,16 @@ package com.ipo.utils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.ipo.entities.Brokers;
+
 
 public class LoginResponse {
 	private boolean loginStatus;
 	private String sessID, LoginMessage, names;
 	private BigDecimal userID;
+	Brokers batCode;
+	
+
 	private BigInteger usr_status;
 	private String usr_email;
 
@@ -65,5 +70,13 @@ public class LoginResponse {
 
 	public void setNames(String names) {
 		this.names = names;
+	}
+	
+	public Brokers getBatCode() {
+		return batCode;
+	}
+
+	public void setBatCode(Brokers brokers) {
+		this.batCode = brokers;
 	}
 }

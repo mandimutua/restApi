@@ -65,10 +65,17 @@ public class BrokersService {
 			resp.setMessage("Broker not found");
 			resp.setRequestStatus(true);
 		} else {
-
+			if(!brk.hasContent())
+			{
+				resp.setPayload(brk);
+				resp.setRequestStatus(true);
+				resp.setMessage("Broker not found");
+			}
+			else{
 			resp.setPayload(brk);
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
+			}
 
 		}
 
