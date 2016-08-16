@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,44 @@ public class BrokersService {
 	        } catch (Exception e) {
 	          
 	        }
+		 return resp;
+	}
+	
+	
+	public RestResponseObject list(Brokers broker) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		
+		try {
+	           resp.setPayload(brokersRepository.findAll());
+	           resp.setRequestStatus(true);
+	           resp.setMessage("Success");
+	        } catch (Exception e) {
+	          
+	        }
+		 return resp;
+	}
+	
+	public RestResponseObject search(Brokers broker, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Page<Brokers> brk = brokersRepository.findByBrkName(broker.getBrkName(),(pageable));
+
+		if (brk == null) {
+			resp.setMessage("Broker not found");
+			resp.setRequestStatus(true);
+		} else {
+
+			resp.setPayload(brk);
+			resp.setRequestStatus(true);
+			resp.setMessage("Success");
+
+		}
+
 		 return resp;
 	}
 	
@@ -92,7 +131,9 @@ public class BrokersService {
 			brk.setBrkPhone(req.getBrkPhone());
 			brk.setBrkEmail(req.getBrkEmail());
 			brk.setBrkStatus(req.getBrkStatus());
-			//brk.setBrkAuthoriser(req.getBrkAuthoriser());
+			brk.setBrkMdate(Calendar.getInstance().getTime());
+			brk.setBrkDate(Calendar.getInstance().getTime());
+			brk.setBrkAuthoriser(req.getBrkInputter());
 			resp.setMessage("Broker Edit Successfull");
 			Brokers createdbroker = brokersRepository.save(brk);
 			resp.setPayload(createdbroker);
@@ -164,7 +205,7 @@ public class BrokersService {
 				if (brk.getBrkStatus() == BigInteger.valueOf(2)) {
 					try {
 						brk.setBrkStatus((BigInteger.valueOf(3)));
-						//brk.setBrkAuthoriser((r.getBrkAuthoriser()));
+						brk.setBrkAuthoriser((r.getBrkInputter()));
 						brk.setBrkMdate(Calendar.getInstance().getTime());
 						resp.setMessage("Broker Rejection Successfull");
 						resp.setRequestStatus(true);

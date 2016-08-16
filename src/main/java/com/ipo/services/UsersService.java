@@ -409,6 +409,7 @@ public class UsersService {
 			usr.setUsrMdate(Calendar.getInstance().getTime());
 			usr.setUsrName(req.getUsrName().trim());
 			usr.setUsrStatus(req.getUsrStatus());
+			usr.setUsrBrkCode(req.getUsrBrkCode());
 			usersRepository.save(usr);
 			resp.setMessage("User Edit Successfull");
 			resp.setPayload(usr);
