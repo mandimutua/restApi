@@ -15,16 +15,21 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import javax.xml.bind.annotation.XmlTransient;
+
+
 
 /**
  *
@@ -38,40 +43,44 @@ public class Batch implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @Basic(optional = false)
+    @SequenceGenerator(name = "BATCH_CODE_SEQUENCE", sequenceName = "BATCH_CODE_SEQUENCE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BATCH_CODE_SEQUENCE")
     @Column(name = "BAT_CODE")
     private BigDecimal batCode;
     @Basic(optional = false)
+    
     @Column(name = "BAT_CREATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batCreateDate;
-    @Basic(optional = false)
+    
     @Column(name = "BAT_TOTAL_SHARES")
     private BigInteger batTotalShares;
     @Column(name = "BAT_STATUS")
     private BigInteger batStatus;
-    @Basic(optional = false)
+   
     @Column(name = "BAT_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batCdate;
-    @Basic(optional = true)
+   
     @Column(name = "BAT_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batMdate;
-    @Basic(optional = false)
+   
     @Column(name = "BAT_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "appBatCode")
     private Collection<Application> applicationCollection;
     @JoinColumn(name = "BAT_INPUTTER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Users batInputter;
     @JoinColumn(name = "BAT_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = true)
     private Users batAuthoriser;
+    
     @JoinColumn(name = "BAT_BRK_CODE", referencedColumnName = "BRK_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
+   
     private Brokers batBrkCode;
 
     public Batch() {
@@ -82,7 +91,7 @@ public class Batch implements Serializable {
     }
 
     public Batch(BigDecimal batCode, Date batCreateDate, BigInteger batTotalShares, Date batCdate, Date batMdate, Date batDate) {
-        this.batCode = batCode;
+        //this.batCode = batCode;
         this.batCreateDate = batCreateDate;
         this.batTotalShares = batTotalShares;
         this.batCdate = batCdate;

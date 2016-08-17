@@ -13,11 +13,14 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,17 +38,21 @@ public class Application implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "APPLICATION_CODE_SEQ", sequenceName = "APPLICATION_CODE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "APPLICATION_CODE_SEQ")
     @Basic(optional = false)
     @Column(name = "APP_CODE")
     private BigDecimal appCode;
+    
     @Column(name = "APP_CUST_MOBILE_NO")
     private String appCustMobileNo;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "APP_SHARES_APPLIED")
     private BigInteger appSharesApplied;
     @Basic(optional = false)
     @Column(name = "APP_PAYMENT_MODE")
     private String appPaymentMode;
+    @Basic(optional = false)
     @Column(name = "APP_STATUS")
     private BigInteger appStatus;
     @Basic(optional = false)
@@ -61,7 +68,7 @@ public class Application implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date appDate;
     @JoinColumn(name = "USR_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Users usrAuthoriser;
     @JoinColumn(name = "APP_INPUTTER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)

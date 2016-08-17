@@ -8,6 +8,7 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Permissio
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\TokenClass.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\MessageTemplates.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Dividends.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\CustomerService.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\api\UsersController.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\api\BatchContoller.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Messages.java
@@ -23,7 +24,9 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\ResetPass
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\RestResponse.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\BrokersRepository.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Batch.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\api\CustomerController.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Customers.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\CustomerRepository.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\RestRequestObject.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\BatchService.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\elements\RestResponseObject.java

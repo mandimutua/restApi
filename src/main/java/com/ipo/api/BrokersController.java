@@ -46,86 +46,95 @@ public class BrokersController {
 		}
 		return resp;
 	}
-	  
-	  @RequestMapping(value = "/listbrokers", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Broker list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse listBrokers(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,Pageable pageable, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listbrokers");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.list(req.getObject()), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
-	  @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Creates a broker if doesnt exists", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse create(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "createbroker");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.create(req.getObject()), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
-	  @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Edit  Broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse edit(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "editbroker");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.edit(req.getObject()), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
-	  
-	  @RequestMapping(value = "/search", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Search  Broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse search(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,Pageable pageable, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_broker");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.search(req.getObject(),pageable), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
-	  
-	  @RequestMapping(value = "/approve", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Approve broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse approve(@RequestBody RestRequestObject<Brokers[]> req, HttpServletRequest request, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveUsers");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.approve(req), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
-	  @RequestMapping(value = "/reject", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-	    @ApiOperation(value = "Reject broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse reject(@RequestBody RestRequestObject<Brokers[]> req, HttpServletRequest request, HttpServletResponse response) {
-	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveUsers");
-	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
-	        if(authorizeStatus.isRequestStatus()){
-	            resp = new RestResponse(brokerService.reject(req), HttpStatus.OK);
-	        }else{
-	            resp = ErrorUtl.getFailedMsg();
-	        }
-	        return resp;
-	    }
-	  
-	  
+
+	@RequestMapping(value = "/listbrokers", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Broker list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse listBrokers(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,
+			Pageable pageable, HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listbrokers");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.list(req.getObject()), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Creates a broker if doesnt exists", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse create(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,
+			HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "createbroker");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.create(req.getObject()), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Edit  Broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse edit(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,
+			HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "editbroker");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.edit(req.getObject()), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Search  Broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse search(@RequestBody RestRequestObject<Brokers> req, HttpServletRequest request,
+			Pageable pageable, HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_broker");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.search(req.getObject(), pageable), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Approve broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse approve(@RequestBody RestRequestObject<Brokers[]> req, HttpServletRequest request,
+			HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveUsers");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.approve(req), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+
+	@RequestMapping(value = "/reject", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Reject broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse reject(@RequestBody RestRequestObject<Brokers[]> req, HttpServletRequest request,
+			HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveUsers");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(brokerService.reject(req), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+
 }
