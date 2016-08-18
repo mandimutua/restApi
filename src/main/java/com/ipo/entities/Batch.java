@@ -29,6 +29,9 @@ import javax.persistence.TemporalType;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 /**
@@ -69,17 +72,25 @@ public class Batch implements Serializable {
     @Column(name = "BAT_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date batDate;
+    
+    
+    
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "appBatCode")
+    @JsonIgnore
+    // @JsonManagedReference(value="batch")
     private Collection<Application> applicationCollection;
+    
     @JoinColumn(name = "BAT_INPUTTER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     private Users batInputter;
+    
     @JoinColumn(name = "BAT_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = true)
     private Users batAuthoriser;
     
     @JoinColumn(name = "BAT_BRK_CODE", referencedColumnName = "BRK_CODE")
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
    
     private Brokers batBrkCode;
 
@@ -91,7 +102,7 @@ public class Batch implements Serializable {
     }
 
     public Batch(BigDecimal batCode, Date batCreateDate, BigInteger batTotalShares, Date batCdate, Date batMdate, Date batDate) {
-        //this.batCode = batCode;
+        this.batCode = batCode;
         this.batCreateDate = batCreateDate;
         this.batTotalShares = batTotalShares;
         this.batCdate = batCdate;

@@ -1,10 +1,13 @@
 package com.ipo.services;
 
+
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -175,5 +178,51 @@ public class BatchService {
 
 		return resp;
 	}
+	
+	public RestResponseObject searchbatch(Batch batch) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		//resp.setPayload(null);
+		resp.setRequestStatus(false);
+		List<Batch> bat = (List<Batch>) batchRepository.findAllByOrderByBatCodeDesc();
+		
+		if(bat==null)
+		{
+			resp.setRequestStatus(true);
+			resp.setPayload(bat);
+			resp.setMessage("Batch not found");
+		}
+		else
+		{
+//			if (batch.getBatStatus()==BigInteger.valueOf(1))
+//			{
+			resp.setRequestStatus(true);
+			resp.setPayload(bat);
+			resp.setMessage("Success");
+			//}
+		}	
+			
+		
+		return resp;
+	}
 
+	public RestResponseObject search(Batch batch, Pageable pagable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+	Page <Batch> brk = batchRepository.findByBatCode(batch.getBatCode(),pagable);
+
+		if (brk == null) {
+			resp.setMessage("Batch not found");
+			resp.setRequestStatus(true);
+		} else {
+			
+				resp.setPayload(brk);
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+		
+		return resp;
+	}
 }

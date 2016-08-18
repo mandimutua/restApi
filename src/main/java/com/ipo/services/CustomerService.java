@@ -2,15 +2,16 @@ package com.ipo.services;
 
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
-
 import com.ipo.entities.Customers;
 
 import com.ipo.repositories.CustomerRepository;
@@ -30,10 +31,10 @@ public class CustomerService {
 
 		try {
 			cus.setCusSharesAcNo(req.getCusSharesAcNo());
-			cus.setCusName(req.getCusName());
-			cus.setCusAddress(req.getCusAddress());
-			cus.setCusTown(req.getCusTown());
-			cus.setCusCountry(req.getCusCountry());
+			cus.setCusName(req.getCusName().toUpperCase());
+			cus.setCusAddress(req.getCusAddress().toUpperCase());
+			cus.setCusTown(req.getCusTown().toUpperCase());
+			cus.setCusCountry(req.getCusCountry().toUpperCase());
 			cus.setCusShareholding(req.getCusShareholding());
 			cus.setCusPhone(req.getCusPhone());
 			cus.setCusEmail(req.getCusEmail());
@@ -117,6 +118,32 @@ public class CustomerService {
 		return resp;
 	}
 
+	public RestResponseObject listCustomers(Customers customer) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		//resp.setPayload(null);
+		resp.setRequestStatus(false);
+		List<Customers> cust = customerRepository.findByCusName(customer.getCusName().trim());
+		
+		if(cust==null)
+		{
+			resp.setRequestStatus(true);
+			resp.setPayload(cust);
+			resp.setMessage("Customer not found");
+		}
+		else
+		{
+			
+			
+			resp.setRequestStatus(true);
+			resp.setPayload(cust);
+			resp.setMessage("Success");
+		}	
+			
+		
+		return resp;
+	}
+	
 	public RestResponseObject approve(RestRequestObject<Customers[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -206,6 +233,32 @@ public class CustomerService {
 		}
 
 		}
+		return resp;
+	}
+	
+	public RestResponseObject search(Customers cust, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Page<Customers> cus = customerRepository.findByCusName(cust.getCusName(), pageable);
+
+		if (cus == null) {
+			resp.setMessage("Customer not found");
+			resp.setRequestStatus(true);
+		} else {
+			if (!cus.hasContent()) {
+				resp.setPayload(cus);
+				resp.setRequestStatus(true);
+				resp.setMessage("Customer not found");
+			} else {
+				resp.setPayload(cus);
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+
+		}
+
 		return resp;
 	}
 

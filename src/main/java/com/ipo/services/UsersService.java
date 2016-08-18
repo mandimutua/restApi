@@ -75,7 +75,7 @@ public class UsersService {
 					
 					if(usr.getUsrStatus()==BigInteger.valueOf(4)|usr.getUsrStatus()==BigInteger.valueOf(1))
 					{
-					if (password.equalsIgnoreCase(pswd)) {
+					if (password.equals(pswd)) {
 
 						resp.setLoginMessage("Successful login credentials");
 						resp.setLoginStatus(true);

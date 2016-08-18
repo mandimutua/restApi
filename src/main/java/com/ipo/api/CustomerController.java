@@ -15,6 +15,7 @@ import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Customers;
+
 import com.ipo.services.CustomerService;
 import com.ipo.services.UsersService;
 import com.ipo.utils.ErrorUtl;
@@ -76,6 +77,19 @@ public class CustomerController {
 		}
 		return resp;
 	}
+	
+	   @RequestMapping(value = "/custsearch", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+	    @ApiOperation(value = "Search Customers", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	    public RestResponse search(@RequestBody RestRequestObject<Customers> req, HttpServletRequest request, HttpServletResponse response) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "SearchCustomers");
+	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+	        if(authorizeStatus.isRequestStatus()){
+	            resp = new RestResponse(customerService.listCustomers(req.getObject()), HttpStatus.OK);
+	        }else{
+	            resp = ErrorUtl.getFailedMsg();
+	        }
+	        return resp;
+	    }
 
 	@RequestMapping(value = "/approve", method = RequestMethod.POST, consumes = { "application/json",
 			"application/xml" }, produces = { "application/json", "application/xml" })
@@ -101,6 +115,21 @@ public class CustomerController {
 		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 		if (authorizeStatus.isRequestStatus()) {
 			resp = new RestResponse(customerService.reject(req), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Search  Customer", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse search(@RequestBody RestRequestObject<Customers> req, HttpServletRequest request,
+			Pageable pageable, HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_customer");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(customerService.search(req.getObject(), pageable), HttpStatus.OK);
 		} else {
 			resp = ErrorUtl.getFailedMsg();
 		}

@@ -26,6 +26,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author smutua
@@ -63,20 +65,23 @@ public class Application implements Serializable {
     @Column(name = "APP_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date appMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "APP_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date appDate;
-    @JoinColumn(name = "USR_AUTHORISER", referencedColumnName = "USR_CODE")
+    @JoinColumn(name = "APP_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = true)
-    private Users usrAuthoriser;
+    private Users appAuthoriser;
     @JoinColumn(name = "APP_INPUTTER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users appInputter;
     @JoinColumn(name = "APP_CUS_PAL_CODE", referencedColumnName = "CUS_PAL_CODE")
+    @JsonBackReference(value="customer")
     @OneToOne(optional = false)
     private Customers appCusPalCode;
+    
     @JoinColumn(name = "APP_BAT_CODE", referencedColumnName = "BAT_CODE")
+    @JsonBackReference(value="batch")
     @ManyToOne(optional = false)
     private Batch appBatCode;
 
@@ -160,12 +165,12 @@ public class Application implements Serializable {
         this.appDate = appDate;
     }
 
-    public Users getUsrAuthoriser() {
-        return usrAuthoriser;
+    public Users getAppAuthoriser() {
+        return appAuthoriser;
     }
 
-    public void setUsrAuthoriser(Users usrAuthoriser) {
-        this.usrAuthoriser = usrAuthoriser;
+    public void setAppAuthoriser(Users appAuthoriser) {
+        this.appAuthoriser = appAuthoriser;
     }
 
     public Users getAppInputter() {

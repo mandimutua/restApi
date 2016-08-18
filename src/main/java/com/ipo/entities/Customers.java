@@ -27,6 +27,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  * @author smutua
@@ -43,6 +46,7 @@ public class Customers implements Serializable {
     @SequenceGenerator(name = "CUSTOMER_CODE_SEQ", sequenceName = "CUSTOMER_CODE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMER_CODE_SEQ")
     @Column(name = "CUS_PAL_CODE")
+   
     private BigDecimal cusPalCode;
     @Basic(optional = false)
     
@@ -77,13 +81,20 @@ public class Customers implements Serializable {
     @Column(name = "CUS_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date cusDate;
+    
+    
     @JoinColumn(name = "CUS_INPUTTER", referencedColumnName = "USR_CODE")
+    @JsonManagedReference
     @ManyToOne(optional = false)
     private Users cusInputter;
+    
+    @JsonIgnore
     @JoinColumn(name = "CUS_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users cusAuthoriser;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "appCusPalCode")
+    @JsonManagedReference(value="customer")
     private Application application;
 
     public Customers() {
