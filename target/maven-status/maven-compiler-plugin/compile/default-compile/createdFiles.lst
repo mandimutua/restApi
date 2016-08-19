@@ -1,6 +1,9 @@
 com\ipo\services\UsersService$1.class
+com\ipo\api\PaymentController.class
+com\ipo\repositories\ApplicationRepository.class
 com\ipo\services\BatchService.class
 com\ipo\entities\SystemParameters.class
+com\ipo\services\PaymentService.class
 com\ipo\entities\Payments.class
 com\ipo\entities\Brokers.class
 com\ipo\elements\ResetPasswordObject.class
@@ -11,6 +14,7 @@ com\ipo\entities\Roles.class
 com\ipo\entities\Customers.class
 com\ipo\entities\Messages.class
 com\ipo\utils\UserLogin.class
+com\ipo\api\ApplicationController.class
 com\ipo\api\BatchContoller.class
 com\ipo\elements\RestResponseObject.class
 com\ipo\entities\Batch.class
@@ -18,6 +22,7 @@ com\ipo\repositories\CustomerRepository.class
 com\ipo\services\CustomerService.class
 com\ipo\IpoAdminApplication.class
 com\ipo\entities\Application.class
+com\ipo\services\ApplicationService.class
 com\ipo\entities\MessageTemplates.class
 com\ipo\utils\Lg.class
 com\ipo\repositories\UsersRepository.class
@@ -34,6 +39,7 @@ com\ipo\utils\Mailer.class
 com\ipo\services\UsersService.class
 com\ipo\entities\UserRoles.class
 com\ipo\utils\APIFilter.class
+com\ipo\repositories\PaymentRepository.class
 com\ipo\elements\RestRequestObject.class
 com\ipo\entities\Dividends.class
 com\ipo\utils\ErrorUtl.class

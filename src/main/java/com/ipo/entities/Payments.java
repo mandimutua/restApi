@@ -3,90 +3,113 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ipo.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author smutua
+ * @author munenedk-pc
  */
 @Entity
 @Table(name = "PAYMENTS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Payments.findAll", query = "SELECT p FROM Payments p")})
 public class Payments implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
+    @SequenceGenerator(name = "PAYMENTS_CODE_SEQ", sequenceName = "PAYMENTS_CODE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENTS_CODE_SEQ")
     @Basic(optional = false)
     @Column(name = "PAY_CODE")
     private BigDecimal payCode;
-    @Basic(optional = false)
+    
+    
     @Column(name = "PAY_APP_CUS_PAL_CODE")
     private BigInteger payAppCusPalCode;
+    @Basic(optional = false)
+    
     @Column(name = "PAY_TYPE")
     private String payType;
+    @Basic(optional = false)
+    
     @Column(name = "PAY_CHEQUE_NO")
     private String payChequeNo;
+    
     @Column(name = "PAY_BANK_CODE")
     private String payBankCode;
+    
     @Column(name = "PAY_BRANCH")
     private String payBranch;
-    @Basic(optional = false)
+    @Basic(optional = true)
+    
     @Column(name = "PAY_ACCOUNT_NO")
     private String payAccountNo;
+    @Basic(optional = false)
+    
     @Column(name = "PAY_TRANS_REF")
     private String payTransRef;
+    
     @Column(name = "PAY_PHONE_NO")
     private String payPhoneNo;
+    
     @Column(name = "PAY_TERMINAL_ID")
     private String payTerminalId;
+    
     @Column(name = "PAY_ACCOUNT_NAME")
     private String payAccountName;
     @Basic(optional = false)
+    
     @Column(name = "PAY_AMOUNT")
     private double payAmount;
+    @Basic(optional = false)
+    
     @Column(name = "PAY_STATUS")
     private BigInteger payStatus;
     @Basic(optional = false)
+    
     @Column(name = "PAY_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date payCdate;
     @Basic(optional = false)
+    
     @Column(name = "PAY_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date payMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
+    
     @Column(name = "PAY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date payDate;
-    @JoinColumn(name = "PAY_INPUTTER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
-    private Users payInputter;
-    @JoinColumn(name = "PAY_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
-    private Users payAuthoriser;
+    @Basic(optional = false)
+    
     @JoinColumn(name = "PAY_DIV_CODE", referencedColumnName = "DIV_CODE")
     @ManyToOne
     private Dividends payDivCode;
+    
+    @JoinColumn(name = "PAY_AUTHORISER", referencedColumnName = "USR_CODE")
+    @ManyToOne(optional = true)
+    private Users payAuthoriser;
+    
+    @JoinColumn(name = "PAY_INPUTTER", referencedColumnName = "USR_CODE")
+    @ManyToOne(optional = false)
+    private Users payInputter;
 
     public Payments() {
     }
@@ -233,12 +256,12 @@ public class Payments implements Serializable {
         this.payDate = payDate;
     }
 
-    public Users getPayInputter() {
-        return payInputter;
+    public Dividends getPayDivCode() {
+        return payDivCode;
     }
 
-    public void setPayInputter(Users payInputter) {
-        this.payInputter = payInputter;
+    public void setPayDivCode(Dividends payDivCode) {
+        this.payDivCode = payDivCode;
     }
 
     public Users getPayAuthoriser() {
@@ -249,12 +272,12 @@ public class Payments implements Serializable {
         this.payAuthoriser = payAuthoriser;
     }
 
-    public Dividends getPayDivCode() {
-        return payDivCode;
+    public Users getPayInputter() {
+        return payInputter;
     }
 
-    public void setPayDivCode(Dividends payDivCode) {
-        this.payDivCode = payDivCode;
+    public void setPayInputter(Users payInputter) {
+        this.payInputter = payInputter;
     }
 
     @Override

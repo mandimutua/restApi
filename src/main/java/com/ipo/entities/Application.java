@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -26,7 +26,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "APPLICATION")
 @XmlRootElement
-
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="appCode")
 public class Application implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -76,13 +76,13 @@ public class Application implements Serializable {
     @ManyToOne(optional = false)
     private Users appInputter;
     @JoinColumn(name = "APP_CUS_PAL_CODE", referencedColumnName = "CUS_PAL_CODE")
-    @JsonBackReference(value="customer")
+    @JsonManagedReference(value="customer")
     @OneToOne(optional = false)
     private Customers appCusPalCode;
     
     @JoinColumn(name = "APP_BAT_CODE", referencedColumnName = "BAT_CODE")
-    @JsonBackReference(value="batch")
     @ManyToOne(optional = false)
+   // @JsonManagedReference(value="batch")
     private Batch appBatCode;
 
     public Application() {

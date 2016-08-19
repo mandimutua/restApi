@@ -67,7 +67,7 @@ public class BatchService {
 	public RestResponseObject edit(Batch req) {
 
 		RestResponseObject resp = new RestResponseObject();
-		resp.setMessage("Error creating Batch");
+		resp.setMessage("Error Editting Batch");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 		Batch bth = batchRepository.findByBatCode(req.getBatCode());
