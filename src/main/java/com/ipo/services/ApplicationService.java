@@ -12,11 +12,15 @@ import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
 
 import com.ipo.repositories.ApplicationRepository;
+import com.ipo.repositories.BatchRepository;
 
 @Service
 public class ApplicationService {
 	@Autowired
 	private ApplicationRepository appRepository;
+	
+	@Autowired
+	private BatchRepository batchRepository;
 
 	public RestResponseObject create(Application req) {
 		Application app = new Application();
@@ -42,7 +46,9 @@ public class ApplicationService {
 			resp.setPayload(createdapp);
 			resp.setRequestStatus(true);
 		} catch (Exception er) {
-			er.printStackTrace();
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(er.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -58,6 +64,9 @@ public class ApplicationService {
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 
 		}
 		return resp;
@@ -76,21 +85,28 @@ public class ApplicationService {
 			resp.setRequestStatus(true);
 		} else {
 			// check batch status
-			if (app.getAppStatus() == BigInteger.valueOf(2) | app.getAppStatus() == BigInteger.valueOf(1)) {
-				app.setAppStatus(BigInteger.valueOf(2));
-				app.setAppBatCode(req.getAppBatCode());
-				app.setAppCustMobileNo(req.getAppCustMobileNo());
-				app.setAppSharesApplied(req.getAppSharesApplied());
-				app.setAppPaymentMode(req.getAppPaymentMode());
-				app.setAppMdate(Calendar.getInstance().getTime());
-				app.setAppInputter(req.getAppInputter());
-				resp.setMessage("Application Edit Successfull");
-				Application edittedApp = appRepository.save(app);
-				resp.setPayload(edittedApp);
-				resp.setRequestStatus(true);
+			try {
+				if (app.getAppStatus() == BigInteger.valueOf(2) | app.getAppStatus() == BigInteger.valueOf(1)) {
+					app.setAppStatus(BigInteger.valueOf(2));
+					app.setAppBatCode(req.getAppBatCode());
+					app.setAppCustMobileNo(req.getAppCustMobileNo());
+					app.setAppSharesApplied(req.getAppSharesApplied());
+					app.setAppPaymentMode(req.getAppPaymentMode());
+					app.setAppMdate(Calendar.getInstance().getTime());
+					app.setAppInputter(req.getAppInputter());
+					app.setAppDate(Calendar.getInstance().getTime());
+					resp.setMessage("Application Edit Successfull");
+					Application edittedApp = appRepository.save(app);
+					resp.setPayload(edittedApp);
+					resp.setRequestStatus(true);
 
-			} else {
-				resp.setMessage("Application is Inactive");
+				} else {
+					resp.setMessage("Application is Inactive");
+					resp.setRequestStatus(true);
+				}
+			} catch (Exception e) {
+				resp.setMessage("Server Error. Please try again later.");
+				System.err.println(e.toString());
 				resp.setRequestStatus(true);
 			}
 
@@ -106,31 +122,37 @@ public class ApplicationService {
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
-		for (Application r : req.getObject()) {
-			Application app = appRepository.findByAppCode(r.getAppCode());
+		try {
+			for (Application r : req.getObject()) {
+				Application app = appRepository.findByAppCode(r.getAppCode());
 
-			if (app == null) {
-				resp.setMessage("Batch not found");
-				resp.setRequestStatus(true);
-			} else {
-				// check batch status
-				if (app.getAppStatus() == BigInteger.valueOf(2)) {
-
-					app.setAppMdate(Calendar.getInstance().getTime());
-					app.setAppStatus(BigInteger.valueOf(1));
-					app.setAppAuthoriser(r.getAppAuthoriser());
-					app.setAppDate(Calendar.getInstance().getTime());
-					resp.setMessage("Application Approval Successfull");
-					Application approvedApp = appRepository.save(app);
-					resp.setPayload(approvedApp);
+				if (app == null) {
+					resp.setMessage("Batch not found");
 					resp.setRequestStatus(true);
-
 				} else {
-					resp.setMessage("Application is not set for approval");
-					resp.setRequestStatus(true);
-				}
+					// check batch status
+					if (app.getAppStatus() == BigInteger.valueOf(2)) {
 
+						app.setAppMdate(Calendar.getInstance().getTime());
+						app.setAppStatus(BigInteger.valueOf(1));
+						app.setAppAuthoriser(r.getAppAuthoriser());
+						app.setAppDate(Calendar.getInstance().getTime());
+						resp.setMessage("Application Approval Successfull");
+						Application approvedApp = appRepository.save(app);
+						resp.setPayload(approvedApp);
+						resp.setRequestStatus(true);
+
+					} else {
+						resp.setMessage("Application is not set for approval");
+						resp.setRequestStatus(true);
+					}
+
+				}
 			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -142,31 +164,38 @@ public class ApplicationService {
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
-		for (Application r : req.getObject()) {
-			Application app = appRepository.findByAppCode(r.getAppCode());
+		try {
 
-			if (app == null) {
-				resp.setMessage("Batch not found");
-				resp.setRequestStatus(true);
-			} else {
-				// check batch status
-				if (app.getAppStatus() == BigInteger.valueOf(2)) {
+			for (Application r : req.getObject()) {
+				Application app = appRepository.findByAppCode(r.getAppCode());
 
-					app.setAppMdate(Calendar.getInstance().getTime());
-					app.setAppStatus(BigInteger.valueOf(3));
-					app.setAppAuthoriser(r.getAppAuthoriser());
-					app.setAppDate(Calendar.getInstance().getTime());
-					resp.setMessage("Application Rejection Successfull");
-					Application approvedApp = appRepository.save(app);
-					resp.setPayload(approvedApp);
+				if (app == null) {
+					resp.setMessage("Batch not found");
 					resp.setRequestStatus(true);
-
 				} else {
-					resp.setMessage("Application is not set for rejection");
-					resp.setRequestStatus(true);
-				}
+					// check batch status
+					if (app.getAppStatus() == BigInteger.valueOf(2)) {
 
+						app.setAppMdate(Calendar.getInstance().getTime());
+						app.setAppStatus(BigInteger.valueOf(3));
+						app.setAppAuthoriser(r.getAppAuthoriser());
+						app.setAppDate(Calendar.getInstance().getTime());
+						resp.setMessage("Application Rejection Successfull");
+						Application approvedApp = appRepository.save(app);
+						resp.setPayload(approvedApp);
+						resp.setRequestStatus(true);
+
+					} else {
+						resp.setMessage("Application is not set for rejection");
+						resp.setRequestStatus(true);
+					}
+
+				}
 			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}

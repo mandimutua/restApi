@@ -1,6 +1,5 @@
 package com.ipo.services;
 
-
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.List;
@@ -34,7 +33,9 @@ public class BatchService {
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 		} catch (Exception e) {
-
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -59,7 +60,10 @@ public class BatchService {
 			resp.setPayload(createdbatch);
 			resp.setRequestStatus(true);
 		} catch (Exception er) {
-			er.printStackTrace();
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(er.toString());
+			resp.setRequestStatus(true);
+
 		}
 		return resp;
 	}
@@ -72,28 +76,36 @@ public class BatchService {
 		resp.setRequestStatus(false);
 		Batch bth = batchRepository.findByBatCode(req.getBatCode());
 
-		if (bth == null) {
-			resp.setMessage("Batch not found");
-			resp.setRequestStatus(true);
-		} else {
-			// check batch status
-			if (bth.getBatStatus() == BigInteger.valueOf(2) | bth.getBatStatus() == BigInteger.valueOf(1)) {
-				bth.setBatTotalShares(req.getBatTotalShares());
-				bth.setBatDate(Calendar.getInstance().getTime());
-				bth.setBatInputter(req.getBatInputter());
-				bth.setBatStatus(BigInteger.valueOf(2));
-				resp.setMessage("Batch Edit Successfull");
-				Batch createdbroker = batchRepository.save(bth);
-				resp.setPayload(createdbroker);
-				resp.setRequestStatus(true);
+		try {
 
-			} else {
-				resp.setMessage("Batch is Inactive");
+			if (bth == null) {
+				resp.setMessage("Batch not found");
 				resp.setRequestStatus(true);
+			} else {
+				// check batch status
+				if (bth.getBatStatus() == BigInteger.valueOf(2) | bth.getBatStatus() == BigInteger.valueOf(1)) {
+					bth.setBatTotalShares(req.getBatTotalShares());
+					bth.setBatMdate(Calendar.getInstance().getTime());
+					bth.setBatDate(Calendar.getInstance().getTime());
+					bth.setBatInputter(req.getBatInputter());
+					bth.setBatStatus(BigInteger.valueOf(2));
+					resp.setMessage("Batch Edit Successfull");
+					Batch createdbroker = batchRepository.save(bth);
+					resp.setPayload(createdbroker);
+					resp.setRequestStatus(true);
+
+				} else {
+					resp.setMessage("Batch is Inactive");
+					resp.setRequestStatus(true);
+				}
+
 			}
 
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
-
 		return resp;
 	}
 
@@ -104,31 +116,38 @@ public class BatchService {
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
-		for (Batch r : req.getObject()) {
-			Batch bth = batchRepository.findByBatCode(r.getBatCode());
+		try {
 
-			if (bth == null) {
-				resp.setMessage("Batch not found");
-				resp.setRequestStatus(true);
-			} else {
-				// check batch status
-				if (bth.getBatStatus() == BigInteger.valueOf(2)) {
+			for (Batch r : req.getObject()) {
+				Batch bth = batchRepository.findByBatCode(r.getBatCode());
 
-					bth.setBatDate(Calendar.getInstance().getTime());
-					bth.setBatAuthoriser((r.getBatInputter()));
-					bth.setBatMdate((Calendar.getInstance().getTime()));
-					bth.setBatStatus(BigInteger.valueOf(1));
-					resp.setMessage("Batch Approval Successfull");
-					Batch createdbatch = batchRepository.save(bth);
-					resp.setPayload(createdbatch);
+				if (bth == null) {
+					resp.setMessage("Batch not found");
 					resp.setRequestStatus(true);
-
 				} else {
-					resp.setMessage("Batch is not set for approval");
-					resp.setRequestStatus(true);
-				}
+					// check batch status
+					if (bth.getBatStatus() == BigInteger.valueOf(2)) {
 
+						bth.setBatDate(Calendar.getInstance().getTime());
+						bth.setBatAuthoriser((r.getBatInputter()));
+						bth.setBatMdate((Calendar.getInstance().getTime()));
+						bth.setBatStatus(BigInteger.valueOf(1));
+						resp.setMessage("Batch Approval Successfull");
+						Batch createdbatch = batchRepository.save(bth);
+						resp.setPayload(createdbatch);
+						resp.setRequestStatus(true);
+
+					} else {
+						resp.setMessage("Batch is not set for approval");
+						resp.setRequestStatus(true);
+					}
+
+				}
 			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -140,69 +159,72 @@ public class BatchService {
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
-		for (Batch r : req.getObject()) {
-			Batch bth = batchRepository.findByBatCode(r.getBatCode());
 
-			if (bth == null) {
-				resp.setMessage("Batch not found");
-				resp.setRequestStatus(true);
-			} else {
-				// check batch status
-				if (bth.getBatStatus() == BigInteger.valueOf(2)) {
+			for (Batch r : req.getObject()) {
+				Batch bth = batchRepository.findByBatCode(r.getBatCode());
 
-					try {
+				if (bth == null) {
+					resp.setMessage("Batch not found");
+					resp.setRequestStatus(true);
+				} else {
+					// check batch status
+					if (bth.getBatStatus() == BigInteger.valueOf(2)) {
 
-						bth.setBatDate(Calendar.getInstance().getTime());
-						bth.setBatAuthoriser((r.getBatAuthoriser()));
-						bth.setBatMdate((Calendar.getInstance().getTime()));
-						bth.setBatStatus(BigInteger.valueOf(3));
-						resp.setMessage("Batch Rejection Successfull");
-						Batch createdbatch = batchRepository.save(bth);
-						resp.setPayload(createdbatch);
-						resp.setRequestStatus(true);
-					} catch (DataIntegrityViolationException e) {
-						resp.setMessage("Authorizer does not exist");
-						resp.setRequestStatus(true);
-					} catch (Exception e) {
-						resp.setMessage("Authorizer does not exist");
+						try {
+
+							bth.setBatDate(Calendar.getInstance().getTime());
+							bth.setBatAuthoriser((r.getBatAuthoriser()));
+							bth.setBatMdate((Calendar.getInstance().getTime()));
+							bth.setBatStatus(BigInteger.valueOf(3));
+							resp.setMessage("Batch Rejection Successfull");
+							Batch createdbatch = batchRepository.save(bth);
+							resp.setPayload(createdbatch);
+							resp.setRequestStatus(true);
+						} catch (DataIntegrityViolationException e) {
+							resp.setMessage("Authorizer does not exist");
+							resp.setRequestStatus(true);
+						} catch (Exception e) {
+							resp.setMessage("Server Error. Please try again later.");
+							System.err.println(e.toString());
+							resp.setRequestStatus(true);
+						}
+
+					} else {
+						resp.setMessage("Batch is not set for approval");
 						resp.setRequestStatus(true);
 					}
 
-				} else {
-					resp.setMessage("Batch is not set for approval");
-					resp.setRequestStatus(true);
 				}
-
 			}
-		}
-
+		
 		return resp;
 	}
-	
+
 	public RestResponseObject searchbatch(Batch batch) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
-		//resp.setPayload(null);
 		resp.setRequestStatus(false);
 		List<Batch> bat = (List<Batch>) batchRepository.findAllByOrderByBatCodeDesc();
-		
-		if(bat==null)
-		{
+		try {
+
+			if (bat == null) {
+				resp.setRequestStatus(true);
+				resp.setPayload(bat);
+				resp.setMessage("Batch not found");
+			} else {
+
+				resp.setRequestStatus(true);
+				resp.setPayload(bat);
+				resp.setMessage("Success");
+
+			}
+
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
 			resp.setRequestStatus(true);
-			resp.setPayload(bat);
-			resp.setMessage("Batch not found");
 		}
-		else
-		{
-//			if (batch.getBatStatus()==BigInteger.valueOf(1))
-//			{
-			resp.setRequestStatus(true);
-			resp.setPayload(bat);
-			resp.setMessage("Success");
-			//}
-		}	
-			
-		
+
 		return resp;
 	}
 
@@ -211,18 +233,23 @@ public class BatchService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-	Page <Batch> brk = batchRepository.findByBatCode(batch.getBatCode(),pagable);
+		Page<Batch> brk = batchRepository.findByBatCode(batch.getBatCode(), pagable);
 
-		if (brk == null) {
-			resp.setMessage("Batch not found");
-			resp.setRequestStatus(true);
-		} else {
-			
+		try {
+			if (brk == null) {
+				resp.setMessage("Batch not found");
+				resp.setRequestStatus(true);
+			} else {
+
 				resp.setPayload(brk);
 				resp.setRequestStatus(true);
 				resp.setMessage("Success");
 			}
-		
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+		}
 		return resp;
 	}
 }

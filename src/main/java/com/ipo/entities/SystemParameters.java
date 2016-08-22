@@ -3,72 +3,85 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ipo.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author smutua
+ * @author
  */
 @Entity
 @Table(name = "SYSTEM_PARAMETERS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "SystemParameters.findAll", query = "SELECT s FROM SystemParameters s")})
 public class SystemParameters implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Column(name = "PARAM_NAME")
     private String paramName;
+    @Basic(optional = false)
+    
     @Column(name = "PARAM_VALUE_1")
     private String paramValue1;
+    @Basic(optional = false)
+    
     @Column(name = "PARAM_VALUE_2")
     private String paramValue2;
+    
     @Column(name = "PARAM_APPL")
     private String paramAppl;
+    
     @Column(name = "PARAM_EXEMPT")
     private String paramExempt;
+    
     @Column(name = "PARAM_STATUS")
     private BigInteger paramStatus;
     @Basic(optional = false)
+    
     @Column(name = "PARAM_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date paramCdate;
     @Basic(optional = false)
+    
     @Column(name = "PARAM_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date paramMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
+    
     @Column(name = "PARAM_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date paramDate;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Id
     @Basic(optional = false)
+    
+    
+    @Id
+    @SequenceGenerator(name = "SYSTEM_PARAMS_CODE_SEQ", sequenceName = "SYSTEM_PARAMS_CODE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SYSTEM_PARAMS_CODE_SEQ")
     @Column(name = "PARAM_CODE")
     private BigDecimal paramCode;
+    @Basic(optional = false)
+    
+    @JoinColumn(name = "PARAM_AUTHORISER", referencedColumnName = "USR_CODE")
+    @ManyToOne(optional = true)
+    private Users paramAuthoriser;
     @JoinColumn(name = "PARAM_INPUTTER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users paramInputter;
-    @JoinColumn(name = "PARAM_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
-    private Users paramAuthoriser;
 
     public SystemParameters() {
     }
@@ -164,20 +177,20 @@ public class SystemParameters implements Serializable {
         this.paramCode = paramCode;
     }
 
-    public Users getParamInputter() {
-        return paramInputter;
-    }
-
-    public void setParamInputter(Users paramInputter) {
-        this.paramInputter = paramInputter;
-    }
-
     public Users getParamAuthoriser() {
         return paramAuthoriser;
     }
 
     public void setParamAuthoriser(Users paramAuthoriser) {
         this.paramAuthoriser = paramAuthoriser;
+    }
+
+    public Users getParamInputter() {
+        return paramInputter;
+    }
+
+    public void setParamInputter(Users paramInputter) {
+        this.paramInputter = paramInputter;
     }
 
     @Override

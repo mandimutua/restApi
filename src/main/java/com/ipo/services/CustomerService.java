@@ -48,7 +48,9 @@ public class CustomerService {
 			resp.setPayload(createdcustomer);
 			resp.setRequestStatus(true);
 		} catch (Exception er) {
-			er.printStackTrace();
+			resp.setMessage("Server Error. Please try again later.");
+			resp.setRequestStatus(true);
+			System.err.println(er.toString());
 		}
 		return resp;
 	}
@@ -88,8 +90,9 @@ public class CustomerService {
 					resp.setRequestStatus(true);
 
 				} catch (Exception e) {
-					resp.setMessage(e.toString());
+					resp.setMessage("Server Error. Please try again later.");
 					resp.setRequestStatus(true);
+					System.err.println(e.toString());
 				}
 
 			} else {
@@ -113,7 +116,9 @@ public class CustomerService {
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 		} catch (Exception e) {
-
+			resp.setMessage("Server Error. Please try again later.");
+			resp.setRequestStatus(true);
+			System.err.println(e.toString());
 		}
 		return resp;
 	}
@@ -121,121 +126,117 @@ public class CustomerService {
 	public RestResponseObject listCustomers(Customers customer) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
-		//resp.setPayload(null);
 		resp.setRequestStatus(false);
 		List<Customers> cust = customerRepository.findByCusName(customer.getCusName().trim());
-		
-		if(cust==null)
-		{
+
+		if (cust == null) {
 			resp.setRequestStatus(true);
 			resp.setPayload(cust);
 			resp.setMessage("Customer not found");
-		}
-		else
-		{
-			
-			
+		} else {
 			resp.setRequestStatus(true);
 			resp.setPayload(cust);
 			resp.setMessage("Success");
-		}	
-			
-		
+		}
+
 		return resp;
 	}
-	
+
 	public RestResponseObject approve(RestRequestObject<Customers[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Error Approving Customers");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		
 
 		for (Customers r : req.getObject()) {
 			Customers cust = customerRepository.findByCusPalCode(r.getCusPalCode());
-		
-		if (cust == null) {
-			resp.setMessage("Customer not found");
-			resp.setRequestStatus(true);
-		} else {
-			// check batch status
-			if (cust.getCusStatus() == BigInteger.valueOf(2)) {
 
-				try {
-					cust.setCusStatus(BigInteger.valueOf(1));
-					cust.setCusAuthoriser(r.getCusAuthoriser());
-					cust.setCusMdate(Calendar.getInstance().getTime());
-					cust.setCusDate(Calendar.getInstance().getTime());
+			if (cust == null) {
+				resp.setMessage("Customer not found");
+				resp.setRequestStatus(true);
+			} else {
+				// check customer status
+				if (cust.getCusStatus() == BigInteger.valueOf(2)) {
 
-					resp.setMessage("Customer Approval Successfull");
-					Customers approvedcustomer = customerRepository.save(cust);
-					resp.setPayload(approvedcustomer);
-					resp.setRequestStatus(true);
+					try {
+						cust.setCusStatus(BigInteger.valueOf(1));
+						cust.setCusAuthoriser(r.getCusAuthoriser());
+						cust.setCusMdate(Calendar.getInstance().getTime());
+						cust.setCusDate(Calendar.getInstance().getTime());
 
-				} catch (DataIntegrityViolationException e) {
-					resp.setMessage(e.toString());
-					resp.setRequestStatus(true);
-				} catch (Exception e) {
-					resp.setMessage(e.toString());
+						resp.setMessage("Customer Approval Successfull");
+						Customers approvedcustomer = customerRepository.save(cust);
+						resp.setPayload(approvedcustomer);
+						resp.setRequestStatus(true);
+
+					} catch (DataIntegrityViolationException e) {
+						resp.setMessage("Server Error. Please try again later.");
+						resp.setRequestStatus(true);
+						System.err.println(e.toString());
+					} catch (Exception e) {
+						resp.setMessage("Server Error. Please try again later.");
+						resp.setRequestStatus(true);
+						System.err.println(e.toString());
+					}
+				} else {
+					resp.setMessage("Customer is not set for approval");
 					resp.setRequestStatus(true);
 				}
-			} else {
-				resp.setMessage("Customer is not set for approval");
-				resp.setRequestStatus(true);
-			}
 
-		}
+			}
 		}
 		return resp;
 	}
-	
+
 	public RestResponseObject reject(RestRequestObject<Customers[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Error Rejecting Customers");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		
+
 		for (Customers r : req.getObject()) {
-		Customers cust = customerRepository.findByCusPalCode(r.getCusPalCode());
+			Customers cust = customerRepository.findByCusPalCode(r.getCusPalCode());
 
-		if (cust == null) {
-			resp.setMessage("Customer not found");
-			resp.setRequestStatus(true);
-		} else {
-			// check batch status
-			if (cust.getCusStatus() == BigInteger.valueOf(2)) {
+			if (cust == null) {
+				resp.setMessage("Customer not found");
+				resp.setRequestStatus(true);
+			} else {
+				// check customer status
+				if (cust.getCusStatus() == BigInteger.valueOf(2)) {
 
-				try {
-					cust.setCusStatus(BigInteger.valueOf(3));
-					cust.setCusAuthoriser(r.getCusAuthoriser());
-					cust.setCusMdate(Calendar.getInstance().getTime());
-					cust.setCusDate(Calendar.getInstance().getTime());
+					try {
+						cust.setCusStatus(BigInteger.valueOf(3));
+						cust.setCusAuthoriser(r.getCusAuthoriser());
+						cust.setCusMdate(Calendar.getInstance().getTime());
+						cust.setCusDate(Calendar.getInstance().getTime());
 
-					resp.setMessage("Customer Rejection Successfull");
-					Customers approvedcustomer = customerRepository.save(cust);
-					resp.setPayload(approvedcustomer);
-					resp.setRequestStatus(true);
+						resp.setMessage("Customer Rejection Successfull");
+						Customers approvedcustomer = customerRepository.save(cust);
+						resp.setPayload(approvedcustomer);
+						resp.setRequestStatus(true);
 
-				} catch (DataIntegrityViolationException e) {
-					resp.setMessage(e.toString());
-					resp.setRequestStatus(true);
-				} catch (Exception e) {
-					resp.setMessage(e.toString());
+					} catch (DataIntegrityViolationException e) {
+						resp.setMessage("Server Error. Please try again later.");
+						resp.setRequestStatus(true);
+						System.err.println(e.toString());
+					} catch (Exception e) {
+						resp.setMessage("Server Error. Please try again later.");
+						resp.setRequestStatus(true);
+						System.err.println(e.toString());
+					}
+				} else {
+					resp.setMessage("Customer is not set for rejection");
 					resp.setRequestStatus(true);
 				}
-			} else {
-				resp.setMessage("Customer is not set for rejection");
-				resp.setRequestStatus(true);
-			}
 
-		}
+			}
 
 		}
 		return resp;
 	}
-	
+
 	public RestResponseObject search(Customers cust, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
@@ -247,16 +248,22 @@ public class CustomerService {
 			resp.setMessage("Customer not found");
 			resp.setRequestStatus(true);
 		} else {
-			if (!cus.hasContent()) {
-				resp.setPayload(cus);
-				resp.setRequestStatus(true);
-				resp.setMessage("Customer not found");
-			} else {
-				resp.setPayload(cus);
-				resp.setRequestStatus(true);
-				resp.setMessage("Success");
-			}
+			try {
+				if (!cus.hasContent()) {
+					resp.setPayload(cus);
+					resp.setRequestStatus(true);
+					resp.setMessage("Customer not found");
+				} else {
+					resp.setPayload(cus);
+					resp.setRequestStatus(true);
+					resp.setMessage("Success");
+				}
 
+			} catch (Exception e) {
+				resp.setMessage("Server Error. Please try again later.");
+				resp.setRequestStatus(true);
+				System.err.println(e.toString());
+			}
 		}
 
 		return resp;

@@ -30,7 +30,9 @@ public class BrokersService {
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 		} catch (Exception e) {
-
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());;
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -46,7 +48,9 @@ public class BrokersService {
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 		} catch (Exception e) {
-
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -58,28 +62,34 @@ public class BrokersService {
 		resp.setRequestStatus(false);
 		Page<Brokers> brk = brokersRepository.findByBrkName(broker.getBrkName(), (pageable));
 
-		if (brk == null) {
-			resp.setMessage("Broker not found");
-			resp.setRequestStatus(true);
-		} else {
-			if (!brk.hasContent()) {
-				resp.setPayload(brk);
-				resp.setRequestStatus(true);
+		try {
+
+			if (brk == null) {
 				resp.setMessage("Broker not found");
-			} else {
-				resp.setPayload(brk);
 				resp.setRequestStatus(true);
-				resp.setMessage("Success");
+			} else {
+				if (!brk.hasContent()) {
+					resp.setPayload(brk);
+					resp.setRequestStatus(true);
+					resp.setMessage("Broker not found");
+				} else {
+					resp.setPayload(brk);
+					resp.setRequestStatus(true);
+					resp.setMessage("Success");
+				}
+
 			}
 
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
-
 		return resp;
 	}
 
 	public RestResponseObject create(Brokers req) {
 		Brokers brk = new Brokers();
-		// Users usr = new Users();
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Error creating broker");
 		resp.setPayload(null);
@@ -93,14 +103,16 @@ public class BrokersService {
 			brk.setBrkEmail(req.getBrkEmail());
 			brk.setBrkStatus(BigInteger.valueOf(2));
 			brk.setBrkInputter(req.getBrkInputter());
-
 			brk.setBrkCdate(Calendar.getInstance().getTime());
+			brk.setBrkDate(Calendar.getInstance().getTime());
 			Brokers createdbroker = brokersRepository.save(brk);
 			resp.setMessage("Success");
 			resp.setPayload(createdbroker);
 			resp.setRequestStatus(true);
 		} catch (Exception er) {
-			er.printStackTrace();
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(er.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -112,32 +124,39 @@ public class BrokersService {
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 		Brokers brk = brokersRepository.findBybrkCode(req.getBrkCode());
-		System.out.println(("Printed BRK_INPUTTER" + req.getBrkInputter()));
 
-		if (brk == null) {
-			resp.setMessage("User not found");
-			resp.setRequestStatus(true);
-		} else {
-			// check if broker is active
-			if (brk.getBrkStatus() == BigInteger.valueOf(1)) {
-				brk.setBrkName(req.getBrkName());
-				brk.setBrkAddress(req.getBrkAddress());
-				brk.setBrkTown(req.getBrkTown());
-				brk.setBrkPhone(req.getBrkPhone());
-				brk.setBrkEmail(req.getBrkEmail());
-				brk.setBrkStatus(req.getBrkStatus());
-				brk.setBrkMdate(Calendar.getInstance().getTime());
-				brk.setBrkDate(Calendar.getInstance().getTime());
-				brk.setBrkAuthoriser(req.getBrkInputter());
-				resp.setMessage("Broker Edit Successfull");
-				Brokers createdbroker = brokersRepository.save(brk);
-				resp.setPayload(createdbroker);
+		try {
+
+			if (brk == null) {
+				resp.setMessage("User not found");
 				resp.setRequestStatus(true);
-
 			} else {
-				resp.setMessage("Broker is Inactive");
-			}
+				// check if broker is active
+				if (brk.getBrkStatus() == BigInteger.valueOf(1) | brk.getBrkStatus() == BigInteger.valueOf(2)) {
+					brk.setBrkName(req.getBrkName());
+					brk.setBrkStatus(BigInteger.valueOf(2));
+					brk.setBrkAddress(req.getBrkAddress());
+					brk.setBrkTown(req.getBrkTown());
+					brk.setBrkPhone(req.getBrkPhone());
+					brk.setBrkEmail(req.getBrkEmail());
+					brk.setBrkStatus(req.getBrkStatus());
+					brk.setBrkMdate(Calendar.getInstance().getTime());
+					brk.setBrkDate(Calendar.getInstance().getTime());
+					brk.setBrkAuthoriser(req.getBrkInputter());
+					resp.setMessage("Broker Edit Successfull");
+					Brokers createdbroker = brokersRepository.save(brk);
+					resp.setPayload(createdbroker);
+					resp.setRequestStatus(true);
 
+				} else {
+					resp.setMessage("Broker is Inactive");
+				}
+
+			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
 		}
 
 		return resp;
@@ -162,7 +181,6 @@ public class BrokersService {
 					try {
 						brk.setBrkStatus((BigInteger.valueOf(1)));
 						brk.setBrkAuthoriser((r.getBrkInputter()));
-						System.out.println(r.getBrkInputter());
 						brk.setBrkMdate(Calendar.getInstance().getTime());
 						resp.setMessage("Broker Approval Successfull");
 						resp.setRequestStatus(true);
@@ -170,13 +188,16 @@ public class BrokersService {
 
 					} catch (Exception e) {
 
-						e.printStackTrace();
-					} // Default
+						resp.setMessage("Server Error. Please try again later.");
+						System.err.println(e.toString());
+						resp.setRequestStatus(true);
+					}
 				} else {
 					resp.setMessage("Broker has not been marked for approval");
 				}
 			}
 		}
+
 		return resp;
 
 	}
@@ -205,14 +226,16 @@ public class BrokersService {
 						brokersRepository.save(brk);
 
 					} catch (Exception e) {
-
-						e.printStackTrace();
-					} // Default
+						resp.setMessage("Server Error. Please try again later.");
+						System.err.println(e.toString());
+						resp.setRequestStatus(true);
+					}
 				} else {
 					resp.setMessage("Broker has not been marked for approval");
 				}
 			}
 		}
+
 		return resp;
 
 	}

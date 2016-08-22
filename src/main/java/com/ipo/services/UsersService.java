@@ -110,7 +110,7 @@ public class UsersService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 				}
 				else{
@@ -221,7 +221,9 @@ public class UsersService {
 			resp.setPayload(createdUser);
 			resp.setRequestStatus(true);
 			} catch (Exception er) {
-			er.printStackTrace();
+				resp.setMessage("Server Error. Please try again later.");
+				System.err.println(er.toString());
+				resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -279,9 +281,10 @@ public class UsersService {
 			resp.setMessage("Password Reset Successful");
 			resp.setStatus(true);
 			
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				resp.setMessage("Server Error. Please try again later.");
+				System.err.println(e.toString());
+				resp.setStatus(true);
 			}
 			}
 			else
@@ -338,9 +341,10 @@ public class UsersService {
 						usersRepository.save(usr);
 						sendMail();
 
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (Exception e) {
+						resp.setMessage("Server Error. Please try again later.");
+						System.err.println(e.toString());
+						resp.setRequestStatus(true);
 					} // Default
 				} else {
 					resp.setMessage("User has not been marked for approval");
@@ -376,9 +380,10 @@ public class UsersService {
 						
 
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} // Default
+						resp.setMessage("Server Error. Please try again later.");
+						System.err.println(e.toString());
+						resp.setRequestStatus(true);
+					} 
 				} else {
 					resp.setMessage("Cannot reject");
 				}
@@ -420,8 +425,9 @@ public class UsersService {
 			
 			
 			} catch (Exception e) {
-				
-				e.printStackTrace();
+				resp.setMessage("Server Error. Please try again later.");
+				System.err.println(e.toString());
+				resp.setRequestStatus(true);
 			} 
 			}else
 			{

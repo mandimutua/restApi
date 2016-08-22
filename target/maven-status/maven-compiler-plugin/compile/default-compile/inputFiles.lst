@@ -8,6 +8,7 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Permissio
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\ApplicationService.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\TokenClass.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\PaymentService.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\SystemParamsService.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\MessageTemplates.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Dividends.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\services\CustomerService.java
@@ -18,8 +19,10 @@ E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\Payme
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\UserRoles.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\Lg.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\api\PaymentController.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\api\SystemParamsController.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\utils\LoginResponse.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\BatchRepository.java
+E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\repositories\SystemParamsRepository.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\SystemParameters.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Brokers.java
 E:\MyProjects\Right Issue Data\IPOAdmin\src\main\java\com\ipo\entities\Roles.java

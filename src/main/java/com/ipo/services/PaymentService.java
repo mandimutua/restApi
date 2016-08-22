@@ -29,7 +29,9 @@ public class PaymentService {
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 		} catch (Exception e) {
-
+			resp.setMessage("Server Error. Please try again later.");
+			resp.setRequestStatus(true);
+			System.err.println(e.toString());
 		}
 		return resp;
 	}
@@ -57,13 +59,14 @@ public class PaymentService {
 			pay.setPayCdate(Calendar.getInstance().getTime());
 			pay.setPayInputter(req.getPayInputter());
 			pay.setPayDate(Calendar.getInstance().getTime());
-
 			Payments createdpayments = paymentRepository.save(pay);
 			resp.setMessage("Success");
 			resp.setPayload(createdpayments);
 			resp.setRequestStatus(true);
 		} catch (Exception er) {
-			er.printStackTrace();
+			resp.setMessage("Server Error. Please try again later.");
+			resp.setRequestStatus(true);
+			System.err.println(er.toString());
 		}
 		return resp;
 	}
@@ -80,7 +83,8 @@ public class PaymentService {
 			resp.setMessage("Payment not found");
 			resp.setRequestStatus(true);
 		} else {
-			// check batch status
+			try{
+			// check payment status
 			if (pay.getPayStatus() == BigInteger.valueOf(2)) {
 
 				pay.setPayType(req.getPayType());
@@ -107,6 +111,12 @@ public class PaymentService {
 				resp.setRequestStatus(true);
 			}
 
+			}catch(Exception e)
+			{
+				resp.setMessage("Server Error. Please try again later.");
+				resp.setRequestStatus(true);
+				System.err.println(e.toString());
+			}
 		}
 
 		return resp;
@@ -126,9 +136,9 @@ public class PaymentService {
 				resp.setMessage("Batch not found");
 				resp.setRequestStatus(true);
 			} else {
-				// check batch status
+				try{
+				// check payment status
 				if (pay.getPayStatus() == BigInteger.valueOf(2)) {
-
 					pay.setPayDate(Calendar.getInstance().getTime());
 					pay.setPayAuthoriser(r.getPayInputter());
 					pay.setPayMdate(Calendar.getInstance().getTime());
@@ -141,6 +151,13 @@ public class PaymentService {
 				} else {
 					resp.setMessage("Payment is not set for approval");
 					resp.setRequestStatus(true);
+				}
+				}catch(Exception e)
+				{
+					resp.setMessage("Server Error. Please try again later.");
+					resp.setRequestStatus(true);
+					System.err.println(e.toString());
+					
 				}
 
 			}
@@ -162,9 +179,9 @@ public class PaymentService {
 				resp.setMessage("Batch not found");
 				resp.setRequestStatus(true);
 			} else {
-				// check batch status
+				try{
+				// check payment status
 				if (pay.getPayStatus() == BigInteger.valueOf(2)) {
-
 					pay.setPayDate(Calendar.getInstance().getTime());
 					pay.setPayAuthoriser(r.getPayInputter());
 					pay.setPayMdate(Calendar.getInstance().getTime());
@@ -179,6 +196,12 @@ public class PaymentService {
 					resp.setRequestStatus(true);
 				}
 
+				}catch(Exception e)
+				{
+					resp.setMessage("Server Error. Please try again later.");
+					resp.setRequestStatus(true);
+					System.err.println(e.toString());
+				}
 			}
 		}
 		return resp;
