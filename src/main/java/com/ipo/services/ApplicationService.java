@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
-
+import com.ipo.entities.SystemParameters;
 import com.ipo.repositories.ApplicationRepository;
-import com.ipo.repositories.BatchRepository;
+import com.ipo.repositories.SystemParamsRepository;
+
+
+
 
 @Service
 public class ApplicationService {
@@ -20,7 +23,9 @@ public class ApplicationService {
 	private ApplicationRepository appRepository;
 	
 	@Autowired
-	private BatchRepository batchRepository;
+	private SystemParamsRepository sysParamRepository;
+	
+	
 
 	public RestResponseObject create(Application req) {
 		Application app = new Application();
@@ -28,8 +33,32 @@ public class ApplicationService {
 		resp.setMessage("Error creating Application");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
+		
+	
 
 		try {
+			//if(appRepository.countByAppBatCode(req.getAppBatCode())sysParamRepository.){}
+			SystemParameters params = sysParamRepository.findByParamName("BatchSize".trim());
+			System.out.println("Batch System Param size"+(params.getParamValue1()));
+			int batch_size = appRepository.countByAppBatCode(req.getAppBatCode()).intValueExact();
+			int batch_limit = Integer.parseInt(params.getParamValue1());
+			
+			if(params.getParamStatus()==BigInteger.valueOf(2))
+			{
+				resp.setMessage("Batch Size is not Approved");
+				resp.setRequestStatus(true);
+			}
+			else{
+			System.out.println("===============Batch size"+batch_size+"=========batch limit"+batch_limit);
+			if(batch_size >=batch_limit){
+				resp.setMessage("Batch Limit reached");
+				resp.setRequestStatus(true);
+			} else{
+				//insert
+			
+			//if(appRepository.countByAppBatCode(req.getAppBatCode())==(((BigDecimal)sysParamRepository.findByParamName("BatchSize")))){}
+			System.out.println("Batch Number=============="+appRepository.countByAppBatCode(req.getAppBatCode()));
+			
 			app.setAppCustMobileNo(req.getAppCustMobileNo());
 			app.setAppBatCode(req.getAppBatCode());
 			app.setAppCusPalCode(req.getAppCusPalCode());
@@ -45,7 +74,10 @@ public class ApplicationService {
 			resp.setMessage("Success");
 			resp.setPayload(createdapp);
 			resp.setRequestStatus(true);
+			}
+			}
 		} catch (Exception er) {
+			er.printStackTrace();
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(er.toString());
 			resp.setRequestStatus(true);

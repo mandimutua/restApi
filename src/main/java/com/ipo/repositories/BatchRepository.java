@@ -17,6 +17,8 @@ public interface BatchRepository extends PagingAndSortingRepository<Batch, Long>
 	
 	Page<Batch> findByBatCode(BigDecimal batcode, Pageable pageable);
 	
+	
+	
 	Batch findByBatCode(BigDecimal batcode);
 	
 	//select u from Customers u where u.cusName like %?1%"

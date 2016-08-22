@@ -11,4 +11,5 @@ public interface SystemParamsRepository extends PagingAndSortingRepository<Syste
 
 	SystemParameters findByParamCode(BigDecimal paramCode);
 	
+	SystemParameters findByParamName(String name);
 }
