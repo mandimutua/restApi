@@ -22,7 +22,7 @@ public interface BatchRepository extends PagingAndSortingRepository<Batch, Long>
 	Batch findByBatCode(BigDecimal batcode);
 	
 	//select u from Customers u where u.cusName like %?1%"
-	@Query("select b from Batch b where b.batStatus =1 order by b.batCode DESC")
+	@Query("select b from Batch b where b.batStatus =2 order by b.batCode DESC")
 	List<Batch> findAllByOrderByBatCodeDesc();
 	
 

@@ -1,5 +1,6 @@
 package com.ipo.services;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.List;
@@ -12,16 +13,26 @@ import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Application;
 import com.ipo.entities.Batch;
-
+import com.ipo.entities.Customers;
+import com.ipo.entities.Payments;
+import com.ipo.repositories.ApplicationRepository;
 import com.ipo.repositories.BatchRepository;
+import com.ipo.repositories.PaymentRepository;
 
 @Service
 public class BatchService {
 
 	@Autowired
 	private BatchRepository batchRepository;
-
+	
+	@Autowired
+	private PaymentRepository payRepository;
+		
+	@Autowired
+	private ApplicationRepository appRepository;
+	
 	public RestResponseObject listall(Batch broker, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
@@ -88,7 +99,7 @@ public class BatchService {
 					bth.setBatMdate(Calendar.getInstance().getTime());
 					bth.setBatDate(Calendar.getInstance().getTime());
 					bth.setBatInputter(req.getBatInputter());
-					bth.setBatStatus(BigInteger.valueOf(2));
+					bth.setBatStatus(req.getBatStatus());
 					resp.setMessage("Batch Edit Successfull");
 					Batch createdbroker = batchRepository.save(bth);
 					resp.setPayload(createdbroker);
@@ -120,22 +131,35 @@ public class BatchService {
 
 			for (Batch r : req.getObject()) {
 				Batch bth = batchRepository.findByBatCode(r.getBatCode());
-
+				
+								
+				
 				if (bth == null) {
 					resp.setMessage("Batch not found");
 					resp.setRequestStatus(true);
 				} else {
 					// check batch status
 					if (bth.getBatStatus() == BigInteger.valueOf(2)) {
+						
+						if(balance(r.getBatCode()))
+						{
+							bth.setBatDate(Calendar.getInstance().getTime());
+							bth.setBatAuthoriser((r.getBatInputter()));
+							bth.setBatMdate((Calendar.getInstance().getTime()));
+							bth.setBatStatus(BigInteger.valueOf(1));
+							resp.setMessage("Batch Approval Successfull");
+							Batch createdbatch = batchRepository.save(bth);
+							resp.setPayload(createdbatch);
+							resp.setRequestStatus(true);
+						}
+						else
+						{
+							resp.setMessage("Batch and Applications does not balance");
+							resp.setRequestStatus(true);
+							
+						}
 
-						bth.setBatDate(Calendar.getInstance().getTime());
-						bth.setBatAuthoriser((r.getBatInputter()));
-						bth.setBatMdate((Calendar.getInstance().getTime()));
-						bth.setBatStatus(BigInteger.valueOf(1));
-						resp.setMessage("Batch Approval Successfull");
-						Batch createdbatch = batchRepository.save(bth);
-						resp.setPayload(createdbatch);
-						resp.setRequestStatus(true);
+						
 
 					} else {
 						resp.setMessage("Batch is not set for approval");
@@ -151,7 +175,77 @@ public class BatchService {
 		}
 		return resp;
 	}
+	
+	public boolean balance(BigDecimal num) {
 
+		Application app = new Application();
+		Batch bat = new Batch();
+		bat.setBatCode(num);
+		app.setAppBatCode(bat);
+
+		Customers cus = new Customers();
+
+		bat = app.getAppBatCode();
+
+		List<Application> apps = appRepository.findBatchSize(app.getAppBatCode());
+
+		if (apps == null) {
+
+			return false;
+
+		} else {
+			BigInteger sum = BigInteger.ZERO;
+			BigInteger amt = BigInteger.ZERO;
+			for (Application x : apps) {
+				sum = sum.add(x.getAppSharesApplied());
+				System.out.println("Shares Applied per Bat====================" + x.getAppSharesApplied());
+				cus = (x.getAppCusPalCode());
+
+				System.out.println("Customer pal codes of the same Batch" + cus.getCusPalCode());
+
+				List<Payments> cust = payRepository.findAmount(cus.getCusPalCode());
+				System.out.println("Printing Cust" + cust);
+
+				for (Payments p : cust) {
+					amt =amt.add(p.getPayAmount());
+					System.out.println("Payamout===============" + p.getPayAmount());
+				}
+
+				// System.out.println("Customer pal codes of the same
+				// Batch"+x.getAppCusPalCode());
+			}
+			System.out.println("Total Price Amount====================" + amt);
+			System.out.println("Total shares====================" + sum);
+			Batch batch = batchRepository.findByBatCode(bat.getBatCode());
+			System.out.println("Created Batch Size========================" + batch.getBatTotalShares());
+
+			//BigInteger x= amt.multiply(BigInteger.valueOf(100));
+			BigInteger y = sum.multiply(BigInteger.valueOf(100));
+			
+			System.out.println(" balance value of y"+y);
+			System.out.println(" balance value of x"+amt);
+			
+			if (sum.equals(batch.getBatTotalShares())) {
+				if (amt.equals(y))
+				{
+					System.out.println("Zime balance value of y"+y);
+					System.out.println("Zime balance value of x"+amt);
+					return true;
+					
+				}
+				else {
+					return false;
+				}
+								
+			} else {
+				return false;
+			}
+
+		}
+	}
+	
+	
+	
 	public RestResponseObject reject(RestRequestObject<Batch[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -227,7 +321,7 @@ public class BatchService {
 
 		return resp;
 	}
-
+			
 	public RestResponseObject search(Batch batch, Pageable pagable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");

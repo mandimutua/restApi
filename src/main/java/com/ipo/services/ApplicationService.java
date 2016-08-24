@@ -3,15 +3,19 @@ package com.ipo.services;
 import java.math.BigInteger;
 import java.util.Calendar;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
+
 import com.ipo.entities.SystemParameters;
 import com.ipo.repositories.ApplicationRepository;
+
 import com.ipo.repositories.SystemParamsRepository;
 
 
@@ -24,6 +28,7 @@ public class ApplicationService {
 	
 	@Autowired
 	private SystemParamsRepository sysParamRepository;
+
 	
 	
 
@@ -104,6 +109,39 @@ public class ApplicationService {
 		return resp;
 	}
 
+	
+	public RestResponseObject search(Application app, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Page<Application> apps = appRepository.findByAppBatCode(app.getAppBatCode(),pageable);
+
+
+		try {
+			if (apps==null){
+				resp.setMessage("Applications Not Found");
+				resp.setRequestStatus(true);
+			}
+			else{
+			resp.setPayload(apps);
+			resp.setRequestStatus(true);
+			resp.setMessage("Success");
+			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+
+		}
+		return resp;
+	}
+	
+	
+
+	
+	
+	
 	public RestResponseObject edit(Application req) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -231,5 +269,7 @@ public class ApplicationService {
 		}
 		return resp;
 	}
+	
+	
 
 }

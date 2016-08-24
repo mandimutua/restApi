@@ -42,7 +42,7 @@ public class Payments implements Serializable {
     
     
     @Column(name = "PAY_APP_CUS_PAL_CODE")
-    private BigInteger payAppCusPalCode;
+    private BigDecimal payAppCusPalCode;
     @Basic(optional = false)
     
     @Column(name = "PAY_TYPE")
@@ -77,7 +77,7 @@ public class Payments implements Serializable {
     @Basic(optional = false)
     
     @Column(name = "PAY_AMOUNT")
-    private double payAmount;
+    private BigInteger payAmount;
     @Basic(optional = false)
     
     @Column(name = "PAY_STATUS")
@@ -118,7 +118,7 @@ public class Payments implements Serializable {
         this.payCode = payCode;
     }
 
-    public Payments(BigDecimal payCode, BigInteger payAppCusPalCode, String payAccountNo, double payAmount, Date payCdate, Date payMdate, Date payDate) {
+    public Payments(BigDecimal payCode, BigDecimal payAppCusPalCode, String payAccountNo, BigInteger payAmount, Date payCdate, Date payMdate, Date payDate) {
         this.payCode = payCode;
         this.payAppCusPalCode = payAppCusPalCode;
         this.payAccountNo = payAccountNo;
@@ -136,11 +136,11 @@ public class Payments implements Serializable {
         this.payCode = payCode;
     }
 
-    public BigInteger getPayAppCusPalCode() {
+    public BigDecimal getPayAppCusPalCode() {
         return payAppCusPalCode;
     }
 
-    public void setPayAppCusPalCode(BigInteger payAppCusPalCode) {
+    public void setPayAppCusPalCode(BigDecimal payAppCusPalCode) {
         this.payAppCusPalCode = payAppCusPalCode;
     }
 
@@ -216,11 +216,11 @@ public class Payments implements Serializable {
         this.payAccountName = payAccountName;
     }
 
-    public double getPayAmount() {
+    public BigInteger getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(double payAmount) {
+    public void setPayAmount(BigInteger payAmount) {
         this.payAmount = payAmount;
     }
 
