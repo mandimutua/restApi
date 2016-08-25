@@ -53,7 +53,7 @@ public class Customers implements Serializable {
     
     @Column(name = "CUS_SHARES_AC_NO")
     private String cusSharesAcNo;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "CUS_NAME")
     private String cusName;
     @Column(name = "CUS_ADDRESS")

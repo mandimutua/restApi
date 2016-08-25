@@ -17,9 +17,11 @@ import com.ipo.entities.Application;
 import com.ipo.entities.Batch;
 import com.ipo.entities.Customers;
 import com.ipo.entities.Payments;
+import com.ipo.entities.SystemParameters;
 import com.ipo.repositories.ApplicationRepository;
 import com.ipo.repositories.BatchRepository;
 import com.ipo.repositories.PaymentRepository;
+import com.ipo.repositories.SystemParamsRepository;
 
 @Service
 public class BatchService {
@@ -32,6 +34,9 @@ public class BatchService {
 		
 	@Autowired
 	private ApplicationRepository appRepository;
+	
+	@Autowired
+	private SystemParamsRepository sysParamRepository;
 	
 	public RestResponseObject listall(Batch broker, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
@@ -196,6 +201,8 @@ public class BatchService {
 		} else {
 			BigInteger sum = BigInteger.ZERO;
 			BigInteger amt = BigInteger.ZERO;
+			SystemParameters params = sysParamRepository.findByParamName("SharePrice".trim());
+			int share_price = Integer.parseInt(params.getParamValue1());
 			for (Application x : apps) {
 				sum = sum.add(x.getAppSharesApplied());
 				System.out.println("Shares Applied per Bat====================" + x.getAppSharesApplied());
@@ -218,9 +225,9 @@ public class BatchService {
 			System.out.println("Total shares====================" + sum);
 			Batch batch = batchRepository.findByBatCode(bat.getBatCode());
 			System.out.println("Created Batch Size========================" + batch.getBatTotalShares());
-
+			System.out.println("System Param Share Price"+(params.getParamValue1()));
 			//BigInteger x= amt.multiply(BigInteger.valueOf(100));
-			BigInteger y = sum.multiply(BigInteger.valueOf(100));
+			BigInteger y = sum.multiply(BigInteger.valueOf(share_price));
 			
 			System.out.println(" balance value of y"+y);
 			System.out.println(" balance value of x"+amt);
