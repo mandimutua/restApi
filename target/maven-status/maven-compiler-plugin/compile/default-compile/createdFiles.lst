@@ -1,8 +1,10 @@
 com\ipo\repositories\ApplicationRepository.class
 com\ipo\services\BatchService.class
 com\ipo\entities\Brokers.class
+com\ipo\entities\Recieving.class
 com\ipo\elements\ResetPasswordObject.class
 com\ipo\repositories\SystemParamsRepository.class
+com\ipo\services\RecievingService.class
 com\ipo\utils\LoginResponse.class
 com\ipo\services\BrokersService.class
 com\ipo\entities\Users.class
@@ -18,6 +20,7 @@ com\ipo\api\BrokersController.class
 com\ipo\services\RefundsService.class
 com\ipo\services\SystemParamsService.class
 com\ipo\api\CustomerController.class
+com\ipo\api\RecievingController.class
 com\ipo\repositories\BatchRepository.class
 com\ipo\repositories\BrokersRepository.class
 com\ipo\repositories\RefundsRepository.class
@@ -38,6 +41,7 @@ com\ipo\entities\Batch.class
 com\ipo\services\CustomerService.class
 com\ipo\IpoAdminApplication.class
 com\ipo\services\ApplicationService.class
+com\ipo\repositories\RecievingRepository.class
 com\ipo\repositories\UsersRepository.class
 com\ipo\api\UsersController.class
 com\ipo\entities\Permissions.class

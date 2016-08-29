@@ -13,9 +13,11 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BatchService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\BrokersController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\CustomerRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RecievingService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\Mailer.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RefundsController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BrokersService.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RecievingController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RefundsRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\ResetPasswordObject.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestRequestObject.java
@@ -35,8 +37,10 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\SystemPa
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestResponseObject.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\CustomerController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Batch.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Recieving.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\PaymentRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Users.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RecievingRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\APIFilter.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\PaymentService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\UserLogin.java
