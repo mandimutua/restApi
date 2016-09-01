@@ -45,7 +45,7 @@ import com.ipo.utils.Mailer;
 
 @Service
 public class UsersService {
-	
+
 	String userEmail;
 	String password;
 	String userName;
@@ -65,32 +65,31 @@ public class UsersService {
 			resp.setSessID("");
 			resp.setNames("");
 		} else {
-			
+
 			if (usr.getSessionExpiry() == null) {
 				// String password;
 				try {
 					password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
 
 					String pswd = request.getPassword();
-					
-					if(usr.getUsrStatus()==BigInteger.valueOf(4)|usr.getUsrStatus()==BigInteger.valueOf(1))
-					{
-					if (password.equals(pswd)) {
 
-						resp.setLoginMessage("Successful login credentials");
-						resp.setLoginStatus(true);
-						resp.setUserID(usr.getUsrCode());
-						
-						resp.setUsr_status(usr.getUsrStatus());
+					if (usr.getUsrStatus() == BigInteger.valueOf(4) | usr.getUsrStatus() == BigInteger.valueOf(1)) {
+						if (password.equals(pswd)) {
 
-						LoginLdapUtl utl = new LoginLdapUtl();
-						
+							resp.setLoginMessage("Successful login credentials");
+							resp.setLoginStatus(true);
+							resp.setUserID(usr.getUsrCode());
+
+							resp.setUsr_status(usr.getUsrStatus());
+
+							LoginLdapUtl utl = new LoginLdapUtl();
+
 							TokenClass tokenObj = utl.generateToken(usr);
 							resp.setSessID(tokenObj.getToken());
 							usr.setUsrAuthSalt(tokenObj.getAuthSalt());
 							resp.setUsr_email(request.getUsrEmail().trim());
 							resp.setBatCode(usr.getUsrBrkCode());
-							
+
 							Calendar now = Calendar.getInstance();
 							now.add(Calendar.MINUTE, 30);
 							usr.setSessionExpiry(now);
@@ -98,25 +97,78 @@ public class UsersService {
 							usr.setUsrLastLogin(Calendar.getInstance().getTime());
 							resp.setNames((usr.getUsrName().toUpperCase()));
 							usersRepository.save(usr);
-					
+
+						} else {
+							resp.setLoginMessage("Invalid login credentials");
+						}
 					} else {
-						resp.setLoginMessage("Invalid login credentials");
+						resp.setLoginMessage("User has not been authorized");
 					}
-				}else
-				{
-					resp.setLoginMessage("User has not been authorized");
-				}
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				}
-				else{
-				resp.setLoginMessage("User already logged in");
-				resp.setLoginStatus(false);
 			}
+			// add logic to check if session is active
+
+			else if (usr.getSessionExpiry() != null) {
+
+				Calendar x = usr.getSessionExpiry();
+				Calendar y = Calendar.getInstance();
+
+				if (x.after(y)) {
+					resp.setLoginMessage("User already logged in");
+					resp.setLoginStatus(false);
+				} else if (y.after(x)) {
+					try {
+						password = new String(Base64.decodeBase64(usr.getUsrPass()), "UTF-8");
+
+						String pswd = request.getPassword();
+
+						if (usr.getUsrStatus() == BigInteger.valueOf(4) | usr.getUsrStatus() == BigInteger.valueOf(1)) {
+							if (password.equals(pswd)) {
+
+								resp.setLoginMessage("Successful login credentials");
+								resp.setLoginStatus(true);
+								resp.setUserID(usr.getUsrCode());
+
+								resp.setUsr_status(usr.getUsrStatus());
+
+								LoginLdapUtl utl = new LoginLdapUtl();
+
+								TokenClass tokenObj = utl.generateToken(usr);
+								resp.setSessID(tokenObj.getToken());
+								usr.setUsrAuthSalt(tokenObj.getAuthSalt());
+								resp.setUsr_email(request.getUsrEmail().trim());
+								resp.setBatCode(usr.getUsrBrkCode());
+
+								Calendar now = Calendar.getInstance();
+								now.add(Calendar.MINUTE, 30);
+								usr.setSessionExpiry(now);
+								resp.setLoginMessage("Success");
+								usr.setUsrLastLogin(Calendar.getInstance().getTime());
+								resp.setNames((usr.getUsrName().toUpperCase()));
+								usersRepository.save(usr);
+
+							} else {
+								resp.setLoginMessage("Invalid login credentials");
+							}
+						} else {
+							resp.setLoginMessage("User has not been authorized");
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+
 		}
 		return resp;
 	}
@@ -165,7 +217,7 @@ public class UsersService {
 			if (Calendar.getInstance().after(user.getSessionExpiry())) {
 				obj.setMessage("Your session timed out");
 				Lg.storeLog("Session timed out for:" + username);
-				
+
 			} else {
 				Calendar expTime = Calendar.getInstance();
 				expTime.add(Calendar.MINUTE, 30);
@@ -210,7 +262,7 @@ public class UsersService {
 			user.setUsrName(req.getUsrName().trim());
 			user.setUsrEmail(req.getUsrEmail().trim());
 			password = RandomStringUtils.randomAlphanumeric(8);
-			user.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8"));																	// Pass
+			user.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8")); // Pass
 			user.setUsrBrkCode(req.getUsrBrkCode());
 			user.setUsrStatus(BigInteger.valueOf(2)); // First Time created
 			user.setUsrCdate(Calendar.getInstance().getTime());
@@ -220,10 +272,10 @@ public class UsersService {
 			resp.setMessage("Success");
 			resp.setPayload(createdUser);
 			resp.setRequestStatus(true);
-			} catch (Exception er) {
-				resp.setMessage("Server Error. Please try again later.");
-				System.err.println(er.toString());
-				resp.setRequestStatus(true);
+		} catch (Exception er) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(er.toString());
+			resp.setRequestStatus(true);
 		}
 		return resp;
 	}
@@ -235,9 +287,9 @@ public class UsersService {
 		String url = request.getScheme() + "://" + request.getServerName() + "/IPO";
 		String subject = "IPO Admin Credentials";
 		String content = "<h1>Greetings, </h1><p>Welcome To RIGHTS ISSUE Portal. These are your login credentials: "
-				+ "<br><strong>Email: </strong>" + userEmail+ "<br/><strong>Password: </strong>" + password
+				+ "<br><strong>Email: </strong>" + userEmail + "<br/><strong>Password: </strong>" + password
 				+ "<br/>Please Visit " + url + " to get started.</p>";
-				
+
 		final Mailer mailer = new Mailer(userEmail, subject, content);
 		ExecutorService executor = Executors.newFixedThreadPool(1);
 		executor.execute(new Runnable() {
@@ -249,15 +301,14 @@ public class UsersService {
 			}
 		});
 
-		
 	}
 
 	public ResetPasswordObject reset(ResetPasswordObject req) {
-		
+
 		ResetPasswordObject resp = new ResetPasswordObject();
 		resp.setMessage("Error resetting password");
-		//resp.setPayload(null);
-		//resp.setRequestStatus(false);
+		// resp.setPayload(null);
+		// resp.setRequestStatus(false);
 		Users usr = usersRepository.findByusrEmailIgnoreCase(req.getUsrEmail().trim());
 		System.out.println("UserCode================================" + req.getUsrEmail());
 		if (usr == null) {
@@ -265,62 +316,59 @@ public class UsersService {
 			resp.setStatus(false);
 
 		} else {
-			if(usr.getUsrStatus()==BigInteger.valueOf(4)|usr.getUsrStatus()==BigInteger.valueOf(1))
-			{
-				System.out.println("Status======"+usr.getUsrStatus());
-			try {
-			usr.setUsrPass(new String(Base64.encodeBase64(req.getUsr_password().getBytes()), "UTF-8"));
-			usr.setUsrLastPassChange(Calendar.getInstance().getTime());
-			usr.setUsrStatus(BigInteger.valueOf(1));
-			usr.setUsrAuthSalt(null);
-			usr.setSessionExpiry(null);
-			password = req.getUsr_password().trim();
-			userEmail =req.getUsrEmail().trim();
-			sendMail();
-			usersRepository.save(usr);
-			resp.setMessage("Password Reset Successful");
-			resp.setStatus(true);
-			
-			} catch (Exception e) {
-				resp.setMessage("Server Error. Please try again later.");
-				System.err.println(e.toString());
-				resp.setStatus(true);
-			}
-			}
-			else
-			{
-			resp.setMessage("Password Reset Failure");
-			resp.setStatus(false);
+			if (usr.getUsrStatus() == BigInteger.valueOf(4) | usr.getUsrStatus() == BigInteger.valueOf(1)) {
+				System.out.println("Status======" + usr.getUsrStatus());
+				try {
+					usr.setUsrPass(new String(Base64.encodeBase64(req.getUsr_password().getBytes()), "UTF-8"));
+					usr.setUsrLastPassChange(Calendar.getInstance().getTime());
+					usr.setUsrStatus(BigInteger.valueOf(1));
+					usr.setUsrAuthSalt(null);
+					usr.setSessionExpiry(null);
+					password = req.getUsr_password().trim();
+					userEmail = req.getUsrEmail().trim();
+					sendMail();
+					usersRepository.save(usr);
+					resp.setMessage("Password Reset Successful");
+					resp.setStatus(true);
+
+				} catch (Exception e) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(e.toString());
+					resp.setStatus(true);
+				}
+			} else {
+				resp.setMessage("Password Reset Failure");
+				resp.setStatus(false);
 			}
 
 		}
-		
+
 		return resp;
 	}
-	
-	public RestResponseObject listUsers(Users req,Pageable pageable) {
-		
+
+	public RestResponseObject listUsers(Users req, Pageable pageable) {
+
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-	          try {
-	           resp.setPayload(usersRepository.findAll(pageable));
-	           resp.setRequestStatus(true);
-	           resp.setMessage("Success");
-	        } catch (Exception e) {
-	          
-	        }
-	        return resp;
+		try {
+			resp.setPayload(usersRepository.findAll(pageable));
+			resp.setRequestStatus(true);
+			resp.setMessage("Success");
+		} catch (Exception e) {
+
+		}
+		return resp;
 	}
-	
+
 	public RestResponseObject approve(RestRequestObject<Users[]> req) {
-	
+
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		
+
 		for (Users r : req.getObject()) {
 
 			Users usr = usersRepository.findByusrCode(r.getUsrCode());
@@ -354,14 +402,14 @@ public class UsersService {
 		return resp;
 
 	}
-	
+
 	public RestResponseObject reject(RestRequestObject<Users[]> req) {
-		
+
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		
+
 		for (Users r : req.getObject()) {
 
 			Users usr = usersRepository.findByusrCode(r.getUsrCode());
@@ -377,13 +425,12 @@ public class UsersService {
 						resp.setMessage("User Rejection Successfull");
 						resp.setRequestStatus(true);
 						usersRepository.save(usr);
-						
 
 					} catch (Exception e) {
 						resp.setMessage("Server Error. Please try again later.");
 						System.err.println(e.toString());
 						resp.setRequestStatus(true);
-					} 
+					}
 				} else {
 					resp.setMessage("Cannot reject");
 				}
@@ -394,50 +441,44 @@ public class UsersService {
 	}
 
 	public RestResponseObject edit(Users req) {
-		
+
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 		Users usr = usersRepository.findByusrCode(req.getUsrCode());
-		System.out.println("User code entring============="+req.getUsrCode());
-		if(usr==null)
-		{
+		System.out.println("User code entring=============" + req.getUsrCode());
+		if (usr == null) {
 			resp.setMessage("User not found");
 			resp.setRequestStatus(true);
-		}
-		else
-		{
-			if(usr.getUsrStatus()==BigInteger.valueOf(1)|usr.getUsrStatus()==BigInteger.valueOf(0))
-			{
-			try {
-			
-			usr.setUsrAuthoriser(req.getUsrAuthoriser());
-			usr.setUsrEmail(req.getUsrEmail().trim());
-			usr.setUsrMdate(Calendar.getInstance().getTime());
-			usr.setUsrName(req.getUsrName().trim());
-			usr.setUsrStatus(req.getUsrStatus());
-			usr.setUsrBrkCode(req.getUsrBrkCode());
-			usersRepository.save(usr);
-			resp.setMessage("User Edit Successfull");
-			resp.setPayload(usr);
-			resp.setRequestStatus(true);
-			
-			
-			} catch (Exception e) {
-				resp.setMessage("Server Error. Please try again later.");
-				System.err.println(e.toString());
-				resp.setRequestStatus(true);
-			} 
-			}else
-			{
+		} else {
+			if (usr.getUsrStatus() == BigInteger.valueOf(1) | usr.getUsrStatus() == BigInteger.valueOf(0)) {
+				try {
+
+					usr.setUsrAuthoriser(req.getUsrAuthoriser());
+					usr.setUsrEmail(req.getUsrEmail().trim());
+					usr.setUsrMdate(Calendar.getInstance().getTime());
+					usr.setUsrName(req.getUsrName().trim());
+					usr.setUsrStatus(req.getUsrStatus());
+					usr.setUsrBrkCode(req.getUsrBrkCode());
+					usersRepository.save(usr);
+					resp.setMessage("User Edit Successfull");
+					resp.setPayload(usr);
+					resp.setRequestStatus(true);
+
+				} catch (Exception e) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(e.toString());
+					resp.setRequestStatus(true);
+				}
+			} else {
 				resp.setMessage("User is Inactive");
 			}
 		}
-	       
-	        return resp;
+
+		return resp;
 	}
-	
+
 	public RestResponseObject search(Users req) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -445,7 +486,7 @@ public class UsersService {
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 		Users usr = usersRepository.findByusrEmailIgnoreCase(req.getUsrEmail().trim());
-		
+
 		if (usr == null) {
 			resp.setMessage("User not found");
 			resp.setRequestStatus(true);

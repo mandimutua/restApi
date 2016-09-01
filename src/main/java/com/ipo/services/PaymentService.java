@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Application;
 import com.ipo.entities.Payments;
 import com.ipo.repositories.PaymentRepository;
 
@@ -19,16 +20,29 @@ public class PaymentService {
 	@Autowired
 	private PaymentRepository paymentRepository;
 
-	public RestResponseObject listall(Payments payment, Pageable pageable) {
+	public RestResponseObject listall(Application payment, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
 		try {
-			resp.setPayload(paymentRepository.findAll(pageable));
-			resp.setRequestStatus(true);
-			resp.setMessage("Success");
+			if(payment.getAppBatCode()==null)
+			{
+				//resp.setPayload("Without search Criteria");
+				resp.setPayload(paymentRepository.findAll(pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			else
+			{
+				resp.setPayload(paymentRepository.findSpecific(payment.getAppBatCode(),pageable));
+				//resp.setPayload(payment.getAppBatCode());
+				System.out.println("Batch code being sent"+payment.getAppBatCode().toString());
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			resp.setRequestStatus(true);

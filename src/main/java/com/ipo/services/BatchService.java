@@ -45,9 +45,18 @@ public class BatchService {
 		resp.setRequestStatus(false);
 
 		try {
-			resp.setPayload(batchRepository.findAll(pageable));
-			resp.setRequestStatus(true);
-			resp.setMessage("Success");
+			if(broker.getBatBrkCode()==null)
+			{
+				resp.setPayload(batchRepository.findAll(pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			else
+			{
+				resp.setPayload(batchRepository.findSpecific(broker.getBatBrkCode(), pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());

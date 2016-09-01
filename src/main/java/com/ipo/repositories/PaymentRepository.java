@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+
+import com.ipo.entities.Batch;
 import com.ipo.entities.Payments;
 
 public interface PaymentRepository extends PagingAndSortingRepository<Payments, Long> {
@@ -20,5 +22,7 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payments, 
 	
 	@Query("select a from Payments a where a.payStatus = 1 and a.payAppCusPalCode = :cus_pal_code")
 	List<Payments> findAmount(@Param("cus_pal_code") BigDecimal cus_pal_code);
-	
+
+	@Query("select a from Payments a where a.payAppCusPalCode in(select b.appCusPalCode from Application b where b.appBatCode =:appBatCode)")
+	Page<Payments> findSpecific(@Param("appBatCode")Batch bat, Pageable pageable);
 }
