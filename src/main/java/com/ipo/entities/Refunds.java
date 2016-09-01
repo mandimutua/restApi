@@ -68,7 +68,7 @@ public class Refunds implements Serializable {
     @Column(name = "RFD_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date rfdMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "RFD_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date rfdDate;

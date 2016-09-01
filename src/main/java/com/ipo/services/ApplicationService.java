@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
-
+import com.ipo.entities.Batch;
 import com.ipo.entities.SystemParameters;
 import com.ipo.repositories.ApplicationRepository;
 
@@ -81,7 +82,16 @@ public class ApplicationService {
 			resp.setRequestStatus(true);
 			}
 			}
-		} catch (Exception er) {
+			
+		}catch(DataIntegrityViolationException e) 
+		{
+			e.printStackTrace();
+			resp.setMessage("Customer already has an application");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+			
+		}
+		catch (Exception er) {
 			er.printStackTrace();
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(er.toString());
@@ -90,16 +100,28 @@ public class ApplicationService {
 		return resp;
 	}
 
-	public RestResponseObject listall(Application app, Pageable pageable) {
+	public RestResponseObject listall(Batch bat, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
 		try {
-			resp.setPayload(appRepository.findAll(pageable));
-			resp.setRequestStatus(true);
-			resp.setMessage("Success");
+			if(bat.getBatBrkCode()==null)
+			{
+				//resp.setMessage("entered null"+bat.getBatBrkCode());
+				resp.setPayload(appRepository.findAll(pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			else
+			{
+				//resp.setMessage("entered not null"+bat.getBatBrkCode());
+				resp.setPayload(appRepository.findSpecific(bat.getBatBrkCode(), pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());

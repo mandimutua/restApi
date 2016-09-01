@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,14 @@ public class RefundsService {
 			resp.setMessage("Success");
 			resp.setPayload(createdRefund);
 			resp.setRequestStatus(true);
-		} catch (Exception er) {
+		} catch (DataIntegrityViolationException er) {
+			resp.setMessage("Server Error Application or Paycode");
+			System.err.println(er.toString());
+			resp.setRequestStatus(true);
+
+		}
+
+		catch (Exception er) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(er.toString());
 			resp.setRequestStatus(true);
@@ -161,7 +169,7 @@ public class RefundsService {
 		}
 		return resp;
 	}
-	
+
 	public RestResponseObject reject(RestRequestObject<Refunds[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();

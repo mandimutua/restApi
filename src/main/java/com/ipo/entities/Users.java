@@ -87,7 +87,7 @@ public class Users implements Serializable {
     @Column(name = "USR_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date usrMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     
     @Column(name = "USR_INPUTTER")
     private BigInteger usrInputter;
@@ -95,7 +95,7 @@ public class Users implements Serializable {
     
     @Column(name = "USR_AUTHORISER")
     private BigInteger usrAuthoriser;
-    @Basic(optional = false)
+    @Basic(optional = true)
     
     @Column(name = "USR_DATE")
     @Temporal(TemporalType.TIMESTAMP)

@@ -106,5 +106,21 @@ public class PaymentController {
 		}
 		return resp;
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Search Payments", notes = "Search Payments")
+public RestResponse search(@RequestBody RestRequestObject<Payments> req,Pageable pageable,HttpServletRequest request,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "createpayments");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(paymentService.search(req.getObject(),pageable), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
+	
 
 }

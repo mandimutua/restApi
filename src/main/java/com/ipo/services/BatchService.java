@@ -250,9 +250,7 @@ public class BatchService {
 
 		}
 	}
-	
-	
-	
+			
 	public RestResponseObject reject(RestRequestObject<Batch[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();

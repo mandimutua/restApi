@@ -50,7 +50,6 @@ public class Customers implements Serializable {
     private BigDecimal cusPalCode;
     @Basic(optional = false)
 
-    
     @Column(name = "CUS_SHARES_AC_NO")
     private String cusSharesAcNo;
     @Basic(optional = true)
@@ -91,7 +90,7 @@ public class Customers implements Serializable {
     
     @JsonIgnore
     @JoinColumn(name = "CUS_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Users cusAuthoriser;
     
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "appCusPalCode")

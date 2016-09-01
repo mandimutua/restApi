@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.ipo.entities.Application;
 import com.ipo.entities.Batch;
+import com.ipo.entities.Brokers;
 
 
 
@@ -27,5 +28,9 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	
 	@Query("select app from Application app ")
 	Page<Application> findAll(Pageable pageable);
+	
+	
+	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode)")
+	Page<Application> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);
 	
 }

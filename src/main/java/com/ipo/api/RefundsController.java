@@ -22,7 +22,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/api/v1/refunds")
+@RequestMapping(value = "/api/v1/refund")
 @Api(value = "Refunds management", description = "Refunds API")
 public class RefundsController {
 
