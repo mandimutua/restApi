@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Application;
 import com.ipo.entities.Refunds;
 import com.ipo.services.RefundsService;
 import com.ipo.services.UsersService;
@@ -35,7 +36,7 @@ public class RefundsController {
 	@RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = { "application/json",
 			"application/xml" }, produces = { "application/json", "application/xml" })
 	@ApiOperation(value = "Reunds list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	public RestResponse list(@RequestBody RestRequestObject<Refunds> req, HttpServletRequest request, Pageable pageable,
+	public RestResponse list(@RequestBody RestRequestObject<Application> req, HttpServletRequest request, Pageable pageable,
 			HttpServletResponse response) {
 		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "list_refunds");
 		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);

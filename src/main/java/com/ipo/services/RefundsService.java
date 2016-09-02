@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Application;
 import com.ipo.entities.Refunds;
 import com.ipo.repositories.RefundsRepository;
 
@@ -18,16 +19,26 @@ public class RefundsService {
 	@Autowired
 	private RefundsRepository refundsRepository;
 
-	public RestResponseObject listall(Refunds refund, Pageable pageable) {
+	public RestResponseObject listall(Application refund, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Refunds Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
 		try {
-			resp.setPayload(refundsRepository.findAll(pageable));
-			resp.setRequestStatus(true);
-			resp.setMessage("Success");
+			if(refund.getAppBatCode()==null)
+			{
+				resp.setPayload(refundsRepository.findAll(pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			else
+			{
+				resp.setPayload(refundsRepository.findSpecific(refund.getAppBatCode(),pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());

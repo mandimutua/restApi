@@ -29,7 +29,6 @@ public class PaymentService {
 		try {
 			if(payment.getAppBatCode()==null)
 			{
-				//resp.setPayload("Without search Criteria");
 				resp.setPayload(paymentRepository.findAll(pageable));
 				resp.setRequestStatus(true);
 				resp.setMessage("Success");
@@ -37,8 +36,6 @@ public class PaymentService {
 			else
 			{
 				resp.setPayload(paymentRepository.findSpecific(payment.getAppBatCode(),pageable));
-				//resp.setPayload(payment.getAppBatCode());
-				System.out.println("Batch code being sent"+payment.getAppBatCode().toString());
 				resp.setRequestStatus(true);
 				resp.setMessage("Success");
 			}
