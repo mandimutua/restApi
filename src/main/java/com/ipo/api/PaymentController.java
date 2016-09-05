@@ -15,6 +15,7 @@ import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
+import com.ipo.entities.Customers;
 import com.ipo.entities.Payments;
 import com.ipo.services.PaymentService;
 import com.ipo.services.UsersService;
@@ -117,6 +118,21 @@ final RestResponseObject authorizeStatus = userService.authorize(req.getToken(),
 RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 if (authorizeStatus.isRequestStatus()) {
 	resp = new RestResponse(paymentService.search(req.getObject(),pageable), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
+	
+	@RequestMapping(value = "/searchPay", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Search  Payment", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse searchApp(@RequestBody RestRequestObject<Customers> req, HttpServletRequest request,
+	Pageable pageable, HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_batch");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(paymentService.searchPay(req.getObject(),pageable), HttpStatus.OK);
 } else {
 	resp = ErrorUtl.getFailedMsg();
 }

@@ -40,10 +40,13 @@ public class Payments implements Serializable {
     @Column(name = "PAY_CODE")
     private BigDecimal payCode;
     
+    @JoinColumn(name = "PAY_APP_CUS_PAL_CODE", referencedColumnName = "APP_CUS_PAL_CODE")
+    @ManyToOne(optional = true)
+    private Application payAppCusPalCode;
     
-    @Column(name = "PAY_APP_CUS_PAL_CODE")
-    private BigDecimal payAppCusPalCode;
-    @Basic(optional = false)
+//    @Column(name = "PAY_APP_CUS_PAL_CODE")
+//    private BigDecimal payAppCusPalCode;
+//    @Basic(optional = false)
     
     @Column(name = "PAY_TYPE")
     private String payType;
@@ -118,7 +121,7 @@ public class Payments implements Serializable {
         this.payCode = payCode;
     }
 
-    public Payments(BigDecimal payCode, BigDecimal payAppCusPalCode, String payAccountNo, BigInteger payAmount, Date payCdate, Date payMdate, Date payDate) {
+    public Payments(BigDecimal payCode, Application payAppCusPalCode, String payAccountNo, BigInteger payAmount, Date payCdate, Date payMdate, Date payDate) {
         this.payCode = payCode;
         this.payAppCusPalCode = payAppCusPalCode;
         this.payAccountNo = payAccountNo;
@@ -136,11 +139,11 @@ public class Payments implements Serializable {
         this.payCode = payCode;
     }
 
-    public BigDecimal getPayAppCusPalCode() {
+    public Application getPayAppCusPalCode() {
         return payAppCusPalCode;
     }
 
-    public void setPayAppCusPalCode(BigDecimal payAppCusPalCode) {
+    public void setPayAppCusPalCode(Application payAppCusPalCode) {
         this.payAppCusPalCode = payAppCusPalCode;
     }
 

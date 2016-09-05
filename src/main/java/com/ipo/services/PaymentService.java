@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
+import com.ipo.entities.Customers;
 import com.ipo.entities.Payments;
 import com.ipo.repositories.PaymentRepository;
 
@@ -224,8 +225,9 @@ public class PaymentService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Page<Payments> pays = paymentRepository.findByPayAppCusPalCode(pay.getPayAppCusPalCode(),pageable);
+		Page<Payments> pays = paymentRepository.findPayment(pay.getPayAppCusPalCode(),pageable);
 
+		System.out.println("Pay code being sent============="+pay.getPayAppCusPalCode());
 		if (pays == null) {
 			resp.setMessage("Payment not found");
 			resp.setRequestStatus(true);
@@ -252,6 +254,33 @@ public class PaymentService {
 	}
 
 
+	public RestResponseObject searchPay(Customers app, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Page<Payments> apps = paymentRepository.findSpecificPay(app.getCusName().trim(),pageable);
+
+
+		try {
+			if (apps==null){
+				resp.setMessage("Applications Not Found");
+				resp.setRequestStatus(true);
+			}
+			else{
+			resp.setPayload(apps);
+			resp.setRequestStatus(true);
+			resp.setMessage("Success");
+			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+
+		}
+		return resp;
+	}
+	
 	
 	
 	

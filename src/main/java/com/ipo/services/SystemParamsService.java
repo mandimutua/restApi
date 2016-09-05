@@ -4,11 +4,13 @@ import java.math.BigInteger;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
+
 import com.ipo.entities.SystemParameters;
 import com.ipo.repositories.SystemParamsRepository;
 
@@ -194,5 +196,38 @@ public RestResponseObject reject(RestRequestObject<SystemParameters[]> req) {
 	}
 	return resp;
 }
+
+public RestResponseObject search(SystemParameters cust, Pageable pageable) {
+	RestResponseObject resp = new RestResponseObject();
+	resp.setMessage("Not Found");
+	resp.setPayload(null);
+	resp.setRequestStatus(false);
+	Page<SystemParameters> cus = paramsRepository.findSpecif(cust.getParamName(),pageable);
+
+	if (cus == null) {
+		resp.setMessage("Customer not found");
+		resp.setRequestStatus(true);
+	} else {
+		try {
+			if (!cus.hasContent()) {
+				resp.setPayload(cus);
+				resp.setRequestStatus(true);
+				resp.setMessage("Customer not found");
+			} else {
+				resp.setPayload(cus);
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			resp.setRequestStatus(true);
+			System.err.println(e.toString());
+		}
+	}
+
+	return resp;
+}
+
 
 }

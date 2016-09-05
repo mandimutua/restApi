@@ -16,6 +16,7 @@ import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
 import com.ipo.entities.Batch;
+import com.ipo.entities.Customers;
 import com.ipo.services.ApplicationService;
 import com.ipo.services.UsersService;
 import com.ipo.utils.ErrorUtl;
@@ -122,6 +123,20 @@ if (authorizeStatus.isRequestStatus()) {
 return resp;
 }
 	
+	@RequestMapping(value = "/searchApp", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Search  Application", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse searchApp(@RequestBody RestRequestObject<Customers> req, HttpServletRequest request,
+	Pageable pageable, HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_batch");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(applicationService.searchApp(req.getObject(),pageable), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
 
 	
 }

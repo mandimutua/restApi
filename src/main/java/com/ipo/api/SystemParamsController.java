@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
+
 import com.ipo.entities.SystemParameters;
 import com.ipo.services.SystemParamsService;
 import com.ipo.services.UsersService;
@@ -101,6 +102,21 @@ final RestResponseObject authorizeStatus = userService.authorize(req.getToken(),
 RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 if (authorizeStatus.isRequestStatus()) {
 	resp = new RestResponse(paramsService.reject(req), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Search  System Parameters", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse search(@RequestBody RestRequestObject<SystemParameters> req, HttpServletRequest request,
+	Pageable pageable, HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_system params");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(paramsService.search(req.getObject(), pageable), HttpStatus.OK);
 } else {
 	resp = ErrorUtl.getFailedMsg();
 }

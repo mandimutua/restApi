@@ -33,4 +33,11 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode)")
 	Page<Application> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);
 	
+	
+//	select * from APPLICATION where APPLICATION.APP_CUS_PAL_CODE in(select CUSTOMERS.CUS_PAL_CODE FROM CUSTOMERS where CUSTOMERS.CUS_NAME like '%S%');
+	
+	@Query("select a from Application a  where a.appCusPalCode in(select b.cusPalCode from Customers b where b.cusName like %?1%)")
+	Page<Application> findSpecificCus(String cus, Pageable pageable);
+	
+	
 }

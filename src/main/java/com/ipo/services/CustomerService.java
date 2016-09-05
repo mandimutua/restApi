@@ -242,7 +242,7 @@ public class CustomerService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Page<Customers> cus = customerRepository.findByCusName(cust.getCusName(), pageable);
+		Page<Customers> cus = customerRepository.findByCusName(cust.getCusName().trim(), pageable);
 
 		if (cus == null) {
 			resp.setMessage("Customer not found");
