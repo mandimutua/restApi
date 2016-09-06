@@ -20,4 +20,6 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customers
 
 	@Query("select u from Customers u where u.cusName like %?1%")
 	List<Customers> findByCusName(String customername);
+	
+	
 }

@@ -2,6 +2,7 @@ package com.ipo.services;
 
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
+
 import com.ipo.entities.Customers;
 import com.ipo.entities.Payments;
 import com.ipo.repositories.PaymentRepository;
@@ -278,6 +280,44 @@ public class PaymentService {
 			resp.setRequestStatus(true);
 
 		}
+		return resp;
+	}
+	
+	public RestResponseObject searchPayments(Payments pay) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setRequestStatus(false);
+		List<Payments> bat = (List<Payments>) paymentRepository.findAllByPayCode();
+		try {
+
+			if (bat == null) {
+				resp.setRequestStatus(true);
+				resp.setPayload(bat);
+				resp.setMessage("Payment not found");
+			} else {
+				if(bat.isEmpty())
+				{
+					resp.setRequestStatus(true);
+					resp.setPayload(bat);
+					resp.setMessage("No Authorized Payments Available");
+				}
+				else
+				{
+					resp.setRequestStatus(true);
+					resp.setPayload(bat);
+					resp.setMessage("Success");
+				}
+
+				
+
+			}
+
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+		}
+
 		return resp;
 	}
 	

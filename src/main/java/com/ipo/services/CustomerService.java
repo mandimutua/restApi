@@ -71,10 +71,10 @@ public class CustomerService {
 			if (cust.getCusStatus() == BigInteger.valueOf(2) | cust.getCusStatus() == BigInteger.valueOf(1)) {
 				try {
 					cust.setCusSharesAcNo(req.getCusSharesAcNo());
-					cust.setCusName(req.getCusName());
-					cust.setCusAddress(req.getCusAddress());
-					cust.setCusTown(req.getCusTown());
-					cust.setCusCountry(req.getCusCountry());
+					cust.setCusName(req.getCusName().toUpperCase());
+					cust.setCusAddress(req.getCusAddress().toUpperCase());
+					cust.setCusTown(req.getCusTown().toUpperCase());
+					cust.setCusCountry(req.getCusCountry().toUpperCase());
 					cust.setCusShareholding(req.getCusShareholding());
 					cust.setCusPhone(req.getCusPhone());
 					cust.setCusEmail(req.getCusEmail());

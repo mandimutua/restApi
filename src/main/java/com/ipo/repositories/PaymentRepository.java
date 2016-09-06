@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.ipo.entities.Application;
 import com.ipo.entities.Batch;
-import com.ipo.entities.Customers;
 import com.ipo.entities.Payments;
 
 public interface PaymentRepository extends PagingAndSortingRepository<Payments, Long> {
@@ -31,4 +30,7 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payments, 
 	
 	@Query("select a from Payments a where a.payAppCusPalCode in(select b.appCusPalCode from Application b where b.appBatCode =:appBatCode)")
 	Page<Payments> findSpecific(@Param("appBatCode")Batch bat, Pageable pageable);
+	
+	@Query("select b from Payments b where b.payStatus =1 order by b.payCode DESC")
+	List<Payments> findAllByPayCode();
 }

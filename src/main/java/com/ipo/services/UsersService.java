@@ -286,7 +286,7 @@ public class UsersService {
 				.getRequest();
 		String url = request.getScheme() + "://" + request.getServerName() + "/IPO";
 		String subject = "IPO Admin Credentials";
-		String content = "<h1>Greetings, </h1><p>Welcome To RIGHTS ISSUE Portal. These are your login credentials: "
+		String content = "<h1>Greetings, </h1><p>Welcome To KCB GROUP IPO MANAGEMENT Portal. These are your login credentials: "
 				+ "<br><strong>Email: </strong>" + userEmail + "<br/><strong>Password: </strong>" + password
 				+ "<br/>Please Visit " + url + " to get started.</p>";
 
@@ -302,6 +302,52 @@ public class UsersService {
 		});
 
 	}
+	
+	public ResetPasswordObject forgot(ResetPasswordObject req) {
+
+		ResetPasswordObject resp = new ResetPasswordObject();
+		resp.setMessage("Error resetting password");
+		// resp.setPayload(null);
+		// resp.setRequestStatus(false);
+		Users usr = usersRepository.findByusrEmailIgnoreCase(req.getUsrEmail().trim());
+		System.out.println("UserCode================================" + req.getUsrEmail());
+		if (usr == null) {
+			resp.setMessage("Error user does't exist");
+			resp.setStatus(false);
+
+		} else {
+			if (usr.getUsrStatus() == BigInteger.valueOf(1)) {
+				System.out.println("Status======" + usr.getUsrStatus());
+				try {
+					password = RandomStringUtils.randomAlphanumeric(8);
+					usr.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8")); // Pass
+					usr.setUsrLastPassChange(Calendar.getInstance().getTime());
+					usr.setUsrStatus(BigInteger.valueOf(4));
+					usr.setUsrAuthSalt(null);
+					usr.setSessionExpiry(null);
+					
+					sendMail();
+					usersRepository.save(usr);
+					resp.setMessage("Password Reset Successful");
+					resp.setStatus(true);
+
+				} catch (Exception e) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(e.toString());
+					resp.setStatus(true);
+				}
+			} else {
+				resp.setMessage("Password Reset Failure for an Inactive User");
+				resp.setStatus(false);
+			}
+
+		}
+
+		return resp;
+	}
+	
+	
+	
 
 	public ResetPasswordObject reset(ResetPasswordObject req) {
 
@@ -326,7 +372,7 @@ public class UsersService {
 					usr.setSessionExpiry(null);
 					password = req.getUsr_password().trim();
 					userEmail = req.getUsrEmail().trim();
-					sendMail();
+					//sendMail();
 					usersRepository.save(usr);
 					resp.setMessage("Password Reset Successful");
 					resp.setStatus(true);

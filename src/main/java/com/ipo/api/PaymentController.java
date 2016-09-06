@@ -139,5 +139,19 @@ if (authorizeStatus.isRequestStatus()) {
 return resp;
 }
 	
+	@RequestMapping(value = "/searchPayCode", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Search  Batch", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse search(@RequestBody RestRequestObject<Payments> req, HttpServletRequest request, Pageable pageable,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_batch");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(paymentService.searchPayments(req.getObject()),HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
 
 }

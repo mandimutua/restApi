@@ -39,5 +39,8 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	@Query("select a from Application a  where a.appCusPalCode in(select b.cusPalCode from Customers b where b.cusName like %?1%)")
 	Page<Application> findSpecificCus(String cus, Pageable pageable);
 	
+	@Query("select b from Application b where b.appStatus =1 order by b.appCode DESC")
+	List<Application> findAllByAppCode();
+	
 	
 }

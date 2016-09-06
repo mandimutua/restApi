@@ -15,6 +15,7 @@ import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
+import com.ipo.entities.Customers;
 import com.ipo.entities.Refunds;
 import com.ipo.services.RefundsService;
 import com.ipo.services.UsersService;
@@ -108,4 +109,17 @@ public class RefundsController {
 		return resp;
 	}
 
+	   @RequestMapping(value = "/refundSearch", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+	    @ApiOperation(value = "Search Refunds", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	    public RestResponse search(@RequestBody RestRequestObject<Customers> req, HttpServletRequest request, HttpServletResponse response, Pageable pageable) {
+	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "SearchRefunds");
+	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+	        if(authorizeStatus.isRequestStatus()){
+	            resp = new RestResponse(refundService.searchRefund(req.getObject(),pageable), HttpStatus.OK);
+	        }else{
+	            resp = ErrorUtl.getFailedMsg();
+	        }
+	        return resp;
+	    }
+	
 }

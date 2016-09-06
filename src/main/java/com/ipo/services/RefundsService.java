@@ -5,12 +5,14 @@ import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
+import com.ipo.entities.Customers;
 import com.ipo.entities.Refunds;
 import com.ipo.repositories.RefundsRepository;
 
@@ -224,5 +226,40 @@ public class RefundsService {
 		}
 		return resp;
 	}
+	
+	
+	public RestResponseObject searchRefund(Customers cust, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		System.out.println("CUST VALUE BEING SENT"+cust.getCusName());
+		Page<Refunds> cus = refundsRepository.findRefund(cust.getCusName().trim(), pageable);
+
+		if (cus == null) {
+			resp.setMessage("Customer not found");
+			resp.setRequestStatus(true);
+		} else {
+			try {
+				if (!cus.hasContent()) {
+					resp.setPayload(cus);
+					resp.setRequestStatus(true);
+					resp.setMessage("Customer not found");
+				} else {
+					resp.setPayload(cus);
+					resp.setRequestStatus(true);
+					resp.setMessage("Success");
+				}
+
+			} catch (Exception e) {
+				resp.setMessage("Server Error. Please try again later.");
+				resp.setRequestStatus(true);
+				System.err.println(e.toString());
+			}
+		}
+
+		return resp;
+	}
+	
 
 }
