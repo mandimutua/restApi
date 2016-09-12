@@ -74,14 +74,17 @@ public class Batch implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date batDate;
     
-    
+    @Column(name = "BAT_NUMBER")
+    private BigInteger batNumber;
+    @Basic(optional = false)
     
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "appCusPalCode")
     @JsonBackReference(value="customer")
     private Application application;
     
     
-    @JsonIgnore
+   
+	@JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "appBatCode")
     //@JsonBackReference(value="batch")
     private Collection<Application> applicationCollection;
@@ -106,13 +109,14 @@ public class Batch implements Serializable {
         this.batCode = batCode;
     }
 
-    public Batch(BigDecimal batCode, Date batCreateDate, BigInteger batTotalShares, Date batCdate, Date batMdate, Date batDate) {
+    public Batch(BigDecimal batCode,BigInteger batNumber,Date batCreateDate, BigInteger batTotalShares, Date batCdate, Date batMdate, Date batDate) {
         this.batCode = batCode;
         this.batCreateDate = batCreateDate;
         this.batTotalShares = batTotalShares;
         this.batCdate = batCdate;
         this.batMdate = batMdate;
         this.batDate = batDate;
+        this.batNumber = batNumber;
     }
 
     public BigDecimal getBatCode() {
@@ -170,6 +174,16 @@ public class Batch implements Serializable {
     public void setBatDate(Date batDate) {
         this.batDate = batDate;
     }
+    
+    
+    public BigInteger getBatNumber() {
+		return batNumber;
+	}
+
+	public void setBatNumber(BigInteger batNumber) {
+		this.batNumber = batNumber;
+	}
+
 
     @XmlTransient
     public Collection<Application> getApplicationCollection() {

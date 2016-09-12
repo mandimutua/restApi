@@ -11,16 +11,18 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,15 +36,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ROLES")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")})
+
 public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "ROLE_CODE_SEQ", sequenceName = "ROLE_CODE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_CODE_SEQ")
     @Basic(optional = false)
     @Column(name = "ROLE_CODE")
     private BigDecimal roleCode;
+    
     @Column(name = "ROLE_NAME")
     private String roleName;
     @Column(name = "ROLE_DESC")
@@ -58,7 +62,7 @@ public class Roles implements Serializable {
     @Column(name = "ROLE_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date roleMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "ROLE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date roleDate;
@@ -66,7 +70,7 @@ public class Roles implements Serializable {
     @ManyToOne(optional = false)
     private Users roleInputter;
     @JoinColumn(name = "ROLE_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Users roleAuthoriser;
     @OneToMany(mappedBy = "permRoleCode")
     private Collection<Permissions> permissionsCollection;

@@ -203,7 +203,7 @@ public class RefundsService {
 					if (ref.getRfdStatus() == BigInteger.valueOf(2)) {
 
 						ref.setRfdMdate(Calendar.getInstance().getTime());
-						;
+						
 						ref.setRfdAuthoriser(r.getRfdAuthoriser());
 
 						ref.setRfdStatus(BigInteger.valueOf(3));
@@ -233,8 +233,8 @@ public class RefundsService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		System.out.println("CUST VALUE BEING SENT"+cust.getCusName());
-		Page<Refunds> cus = refundsRepository.findRefund(cust.getCusName().trim(), pageable);
+		System.out.println("CUST VALUE BEING SENT"+cust.getCusSurname());
+		Page<Refunds> cus = refundsRepository.findRefund(cust.getCusSurname().trim(), pageable);
 
 		if (cus == null) {
 			resp.setMessage("Customer not found");

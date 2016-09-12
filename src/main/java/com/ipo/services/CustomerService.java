@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Batch;
+
 import com.ipo.entities.Customers;
 
 import com.ipo.repositories.CustomerRepository;
@@ -30,19 +32,40 @@ public class CustomerService {
 		resp.setRequestStatus(false);
 
 		try {
-			cus.setCusSharesAcNo(req.getCusSharesAcNo());
-			cus.setCusName(req.getCusName().toUpperCase());
-			cus.setCusAddress(req.getCusAddress().toUpperCase());
-			cus.setCusTown(req.getCusTown().toUpperCase());
-			cus.setCusCountry(req.getCusCountry().toUpperCase());
-			cus.setCusShareholding(req.getCusShareholding());
-			cus.setCusPhone(req.getCusPhone());
+			cus.setCusCdscAcNo(req.getCusCdscAcNo().trim().toUpperCase());
+			cus.setCusSurname(req.getCusSurname().trim().toUpperCase());
+			cus.setCusAddress(req.getCusAddress().trim().toUpperCase());
+			cus.setCusTown(req.getCusTown().trim().toUpperCase());
+			cus.setCusCitizenship(req.getCusCitizenship().trim().toUpperCase());
+			cus.setCusMobilePhone(req.getCusMobilePhone().trim().toUpperCase());
 			cus.setCusEmail(req.getCusEmail());
 			cus.setCusStatus(BigInteger.valueOf(2));
 			cus.setCusCdate(Calendar.getInstance().getTime());
 			cus.setCusInputter(req.getCusInputter());
 			cus.setCusDate(Calendar.getInstance().getTime());
-
+			cus.setcusFormSerialNo(req.getcusFormSerialNo());
+			cus.setCusApplicantCategory(req.getCusApplicantCategory().trim().toUpperCase());
+			cus.setCusApplicantResidence(req.getCusApplicantCategory().trim().toUpperCase());
+			cus.setCusTaxExmpt(req.getCusTaxExmpt().trim().toUpperCase());
+			cus.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
+			cus.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
+			cus.setCusJointSurname(req.getCusJointSurname().trim().toUpperCase());
+			cus.setCusJointOthernames(req.getCusJointOthernames().trim().toUpperCase());
+			cus.setCusJointApplicantIdNo(req.getCusJointApplicantIdNo().trim().toUpperCase());
+			cus.setCusCompanyName(req.getCusCompanyName().trim().toUpperCase());
+			cus.setCusCompanyRegNo(req.getCusCompanyRegNo().trim().toUpperCase());
+			cus.setCusCompanyDateOfInc(req.getCusCompanyDateOfInc());
+			cus.setCusNomineeName(req.getCusNomineeName().trim().toUpperCase());
+			cus.setCusNomineeAc(req.getCusNomineeAc());
+			cus.setCusPostalCode(req.getCusPostalCode().trim().toUpperCase());
+			cus.setCusStreet(req.getCusStreet().trim().toUpperCase());
+			cus.setCusTelNo(req.getCusTelNo().trim().toUpperCase());
+			cus.setCusFaxNo(req.getCusFaxNo().trim().toUpperCase());
+			cus.setCusBrkCode(req.getCusBrkCode());
+			cus.setCusCountry(req.getCusCountry().trim().toUpperCase());
+			cus.setCusApplicantType(req.getCusApplicantType().trim().toUpperCase());
+			
+		
 			Customers createdcustomer = customerRepository.save(cus);
 			resp.setMessage("Success");
 			resp.setPayload(createdcustomer);
@@ -70,17 +93,41 @@ public class CustomerService {
 			// check batch status
 			if (cust.getCusStatus() == BigInteger.valueOf(2) | cust.getCusStatus() == BigInteger.valueOf(1)) {
 				try {
-					cust.setCusSharesAcNo(req.getCusSharesAcNo());
-					cust.setCusName(req.getCusName().toUpperCase());
-					cust.setCusAddress(req.getCusAddress().toUpperCase());
-					cust.setCusTown(req.getCusTown().toUpperCase());
-					cust.setCusCountry(req.getCusCountry().toUpperCase());
-					cust.setCusShareholding(req.getCusShareholding());
-					cust.setCusPhone(req.getCusPhone());
+					
+					cust.setCusCdscAcNo(req.getCusCdscAcNo().trim().toUpperCase());
+					cust.setCusSurname(req.getCusSurname().trim().toUpperCase());
+					cust.setCusAddress(req.getCusAddress().trim().toUpperCase());
+					cust.setCusTown(req.getCusTown().trim().toUpperCase());
+					cust.setCusCitizenship(req.getCusCitizenship().trim().toUpperCase());
+					cust.setCusMobilePhone(req.getCusMobilePhone().trim().toUpperCase());
 					cust.setCusEmail(req.getCusEmail());
-					cust.setCusStatus(req.getCusStatus());
+					cust.setCusStatus(BigInteger.valueOf(2));
+					//cust.setCusCdate(Calendar.getInstance().getTime());
 					cust.setCusInputter(req.getCusInputter());
 					cust.setCusDate(Calendar.getInstance().getTime());
+					cust.setcusFormSerialNo(req.getcusFormSerialNo());
+					cust.setCusApplicantCategory(req.getCusApplicantCategory().trim().toUpperCase());
+					cust.setCusApplicantResidence(req.getCusApplicantCategory().trim().toUpperCase());
+					cust.setCusTaxExmpt(req.getCusTaxExmpt().trim().toUpperCase());
+					cust.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
+					cust.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
+					cust.setCusJointSurname(req.getCusJointSurname().trim().toUpperCase());
+					cust.setCusJointOthernames(req.getCusJointOthernames().trim().toUpperCase());
+					cust.setCusJointApplicantIdNo(req.getCusJointApplicantIdNo().trim().toUpperCase());
+					cust.setCusCompanyName(req.getCusCompanyName().trim().toUpperCase());
+					cust.setCusCompanyRegNo(req.getCusCompanyRegNo().trim().toUpperCase());
+					cust.setCusCompanyDateOfInc(req.getCusCompanyDateOfInc());
+					cust.setCusNomineeName(req.getCusNomineeName().trim().toUpperCase());
+					cust.setCusNomineeAc(req.getCusNomineeAc());
+					cust.setCusPostalCode(req.getCusPostalCode().trim().toUpperCase());
+					cust.setCusStreet(req.getCusStreet().trim().toUpperCase());
+					cust.setCusTelNo(req.getCusTelNo().trim().toUpperCase());
+					cust.setCusFaxNo(req.getCusFaxNo().trim().toUpperCase());
+					cust.setCusCountry(req.getCusCountry().trim().toUpperCase());
+					cust.setCusApplicantType(req.getCusApplicantType().trim().toUpperCase());
+					
+					
+					
 					resp.setMessage("Customer Edit Successfull");
 					Customers createdcustomer = customerRepository.save(cust);
 					resp.setPayload(createdcustomer);
@@ -105,16 +152,26 @@ public class CustomerService {
 		return resp;
 	}
 
-	public RestResponseObject listall(Customers customer, Pageable pageable) {
+	public RestResponseObject listall(Batch customer, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
 		try {
-			resp.setPayload(customerRepository.findAll(pageable));
-			resp.setRequestStatus(true);
-			resp.setMessage("Success");
+			if(customer.getBatBrkCode()==null)
+			{
+				resp.setPayload(customerRepository.findAll(pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			else
+			{
+				resp.setPayload(customerRepository.findSpecific(customer.getBatBrkCode(),pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			resp.setRequestStatus(true);
@@ -127,7 +184,7 @@ public class CustomerService {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setRequestStatus(false);
-		List<Customers> cust = customerRepository.findByCusName(customer.getCusName().trim());
+		List<Customers> cust = customerRepository.findByCusSurname(customer.getCusSurname().trim());
 
 		if (cust == null) {
 			resp.setRequestStatus(true);
@@ -242,7 +299,7 @@ public class CustomerService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Page<Customers> cus = customerRepository.findByCusName(cust.getCusName().trim(), pageable);
+		Page<Customers> cus = customerRepository.findByCusSurname(cust.getCusSurname().trim(), pageable);
 
 		if (cus == null) {
 			resp.setMessage("Customer not found");

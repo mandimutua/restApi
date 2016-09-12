@@ -10,14 +10,16 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,12 +32,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "PERMISSIONS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Permissions.findAll", query = "SELECT p FROM Permissions p")})
+
 public class Permissions implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "PERMISSION_CODE_SEQ", sequenceName = "PERMISSION_CODE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERMISSION_CODE_SEQ")
     @Basic(optional = false)
     @Column(name = "PERM_CODE")
     private BigDecimal permCode;
@@ -53,7 +56,7 @@ public class Permissions implements Serializable {
     @Column(name = "PERM_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date permMdate;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "PERM_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date permDate;
@@ -61,7 +64,7 @@ public class Permissions implements Serializable {
     @ManyToOne(optional = false)
     private Users permInputter;
     @JoinColumn(name = "PERM_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Users permAuthoriser;
     @JoinColumn(name = "PERM_ROLE_CODE", referencedColumnName = "ROLE_CODE")
     @ManyToOne

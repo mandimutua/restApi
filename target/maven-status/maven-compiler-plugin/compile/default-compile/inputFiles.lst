@@ -11,6 +11,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Bro
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\PaymentController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\BatchRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BatchService.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RolesController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\BrokersController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\CustomerRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RecievingService.java
@@ -19,6 +20,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RefundsC
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BrokersService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RecievingController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RefundsRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RolesService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\ResetPasswordObject.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestRequestObject.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RefundsService.java
@@ -26,6 +28,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\Sys
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\MessageTemplates.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestResponse.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\BrokersRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\PermissionService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\Lg.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Roles.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\UsersService.java
@@ -40,6 +43,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Bat
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Recieving.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\PaymentRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Users.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\PermissionController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RecievingRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\APIFilter.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\PaymentService.java
@@ -50,6 +54,8 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\App
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\ApplicationRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Permissions.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\UserRoles.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RolesRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\PermissionRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\UsersRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\ErrorUtl.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\SystemParameters.java

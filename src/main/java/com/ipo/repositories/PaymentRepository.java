@@ -20,12 +20,12 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payments, 
 	@Query("select a from Payments a where a.payAppCusPalCode = :payAppCusPalCode")
 	Page<Payments> findPayment(@Param("payAppCusPalCode") Application brkcode, Pageable page);
 	
-	@Query("select a from Payments a where a.payStatus = 1 and a.payAppCusPalCode = :cus_pal_code")
+	@Query("select a from Payments a where a.payStatus = 2 and a.payAppCusPalCode = :cus_pal_code")
 	List<Payments> findAmount(@Param("cus_pal_code") BigDecimal cus_pal_code);
 	
 	//select * from PAYMENTS where PAYMENTS.PAY_APP_CUS_PAL_CODE in(select CUSTOMERS.CUS_PAL_CODE FROM CUSTOMERS where CUSTOMERS.CUS_NAME like '%Gle%');
 
-	@Query("select a from Payments a  where a.payAppCusPalCode in(select b.cusPalCode from Customers b where b.cusName like %?1%)")
+	@Query("select a from Payments a  where a.payAppCusPalCode in(select b.cusPalCode from Customers b where b.cusSurname like %?1%)")
 	Page<Payments> findSpecificPay(String cus, Pageable pageable);
 	
 	@Query("select a from Payments a where a.payAppCusPalCode in(select b.appCusPalCode from Application b where b.appBatCode =:appBatCode)")

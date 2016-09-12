@@ -31,6 +31,7 @@ import com.auth0.jwt.internal.com.fasterxml.jackson.databind.JsonNode;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Batch;
 import com.ipo.entities.Users;
 import com.ipo.utils.Lg;
 import com.ipo.elements.ResetPasswordObject;
@@ -392,16 +393,26 @@ public class UsersService {
 		return resp;
 	}
 
-	public RestResponseObject listUsers(Users req, Pageable pageable) {
+	public RestResponseObject listUsers(Batch req, Pageable pageable) {
 
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 		try {
-			resp.setPayload(usersRepository.findAll(pageable));
-			resp.setRequestStatus(true);
-			resp.setMessage("Success");
+			if(req.getBatBrkCode()==null)
+			{
+				resp.setPayload(usersRepository.findAll(pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			else
+			{
+				resp.setPayload(usersRepository.findSpecific(req.getBatBrkCode(),pageable));
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+			
 		} catch (Exception e) {
 
 		}

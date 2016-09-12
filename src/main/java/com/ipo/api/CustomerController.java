@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Batch;
+
 import com.ipo.entities.Customers;
 
 import com.ipo.services.CustomerService;
@@ -66,7 +68,7 @@ public class CustomerController {
 	@RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = { "application/json",
 			"application/xml" }, produces = { "application/json", "application/xml" })
 	@ApiOperation(value = "Customers list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	public RestResponse list(@RequestBody RestRequestObject<Customers> req, HttpServletRequest request,
+	public RestResponse list(@RequestBody RestRequestObject<Batch> req, HttpServletRequest request,
 			Pageable pageable, HttpServletResponse response) {
 		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "list_batch");
 		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);

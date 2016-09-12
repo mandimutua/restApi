@@ -78,6 +78,7 @@ public class BatchService {
 			bth.setBatTotalShares(req.getBatTotalShares());
 			bth.setBatStatus(BigInteger.valueOf(2));
 			bth.setBatBrkCode(req.getBatBrkCode());
+			bth.setBatNumber(req.getBatNumber());
 			bth.setBatInputter(req.getBatInputter());
 			bth.setBatDate(Calendar.getInstance().getTime());
 			Batch createdbatch = batchRepository.save(bth);
@@ -108,12 +109,13 @@ public class BatchService {
 				resp.setRequestStatus(true);
 			} else {
 				// check batch status
-				if (bth.getBatStatus() == BigInteger.valueOf(2) | bth.getBatStatus() == BigInteger.valueOf(1)) {
+				if (bth.getBatStatus() == BigInteger.valueOf(2)) {
 					bth.setBatTotalShares(req.getBatTotalShares());
+					bth.setBatNumber(req.getBatNumber());
 					bth.setBatMdate(Calendar.getInstance().getTime());
 					bth.setBatDate(Calendar.getInstance().getTime());
 					bth.setBatInputter(req.getBatInputter());
-					bth.setBatStatus(req.getBatStatus());
+					bth.setBatStatus(BigInteger.valueOf(2));
 					resp.setMessage("Batch Edit Successfull");
 					Batch createdbroker = batchRepository.save(bth);
 					resp.setPayload(createdbroker);
@@ -246,6 +248,7 @@ public class BatchService {
 				{
 					System.out.println("Zime balance value of y"+y);
 					System.out.println("Zime balance value of x"+amt);
+					
 					return true;
 					
 				}
@@ -312,7 +315,7 @@ public class BatchService {
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Not Found");
 		resp.setRequestStatus(false);
-		List<Batch> bat = (List<Batch>) batchRepository.findAllByOrderByBatCodeDesc();
+		List<Batch> bat = (List<Batch>) batchRepository.findSpecificBatch(batch.getBatBrkCode());
 		try {
 
 			if (bat == null) {

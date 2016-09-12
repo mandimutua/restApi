@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Payments implements Serializable {
     private BigDecimal payCode;
     
     @JoinColumn(name = "PAY_APP_CUS_PAL_CODE", referencedColumnName = "APP_CUS_PAL_CODE")
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false, cascade =CascadeType.ALL)
     private Application payAppCusPalCode;
     
 //    @Column(name = "PAY_APP_CUS_PAL_CODE")

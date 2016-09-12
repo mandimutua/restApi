@@ -147,7 +147,7 @@ public class ApplicationService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Page<Application> apps = appRepository.findSpecificCus(app.getCusName().trim(), pageable);
+		Page<Application> apps = appRepository.findSpecificCus(app.getCusSurname().trim(), pageable);
 
 		try {
 			if (apps == null) {

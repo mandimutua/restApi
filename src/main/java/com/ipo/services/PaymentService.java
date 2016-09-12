@@ -52,29 +52,30 @@ public class PaymentService {
 	}
 
 	public RestResponseObject create(Payments req) {
-		Payments pay = new Payments();
+		//Payments pay = new Payments();
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Error creating payments");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
 		try {
-			pay.setPayAppCusPalCode(req.getPayAppCusPalCode());
-			pay.setPayType(req.getPayType());
-			pay.setPayChequeNo(req.getPayChequeNo());
-			pay.setPayBankCode(req.getPayBankCode());
-			pay.setPayBranch(req.getPayBranch());
-			pay.setPayAccountName(req.getPayAccountName());
-			pay.setPayTransRef(req.getPayTransRef());
-			pay.setPayPhoneNo(req.getPayPhoneNo());
-			pay.setPayTerminalId(req.getPayTerminalId());
-			pay.setPayAccountNo(req.getPayAccountNo());
-			pay.setPayAmount(req.getPayAmount());
-			pay.setPayStatus(BigInteger.valueOf(2));
-			pay.setPayCdate(Calendar.getInstance().getTime());
-			pay.setPayInputter(req.getPayInputter());
-			pay.setPayDate(Calendar.getInstance().getTime());
-			Payments createdpayments = paymentRepository.save(pay);
+			req.setPayAppCusPalCode(req.getPayAppCusPalCode());
+			System.out.println("CusPalCode========="+req.getPayAppCusPalCode().getAppCode());
+			req.setPayType(req.getPayType());
+			req.setPayChequeNo(req.getPayChequeNo());
+			req.setPayBankCode(req.getPayBankCode());
+			req.setPayBranch(req.getPayBranch());
+			req.setPayAccountName(req.getPayAccountName());
+			req.setPayTransRef(req.getPayTransRef());
+			req.setPayPhoneNo(req.getPayPhoneNo());
+			req.setPayTerminalId(req.getPayTerminalId());
+			req.setPayAccountNo(req.getPayAccountNo());
+			req.setPayAmount(req.getPayAmount());
+			req.setPayStatus(BigInteger.valueOf(2));
+			req.setPayCdate(Calendar.getInstance().getTime());
+			req.setPayInputter(req.getPayInputter());
+			req.setPayDate(Calendar.getInstance().getTime());
+			Payments createdpayments = paymentRepository.save(req);
 			resp.setMessage("Success");
 			resp.setPayload(createdpayments);
 			resp.setRequestStatus(true);
@@ -261,7 +262,7 @@ public class PaymentService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Page<Payments> apps = paymentRepository.findSpecificPay(app.getCusName().trim(),pageable);
+		Page<Payments> apps = paymentRepository.findSpecificPay(app.getCusSurname().trim(),pageable);
 
 
 		try {

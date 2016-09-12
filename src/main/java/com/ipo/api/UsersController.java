@@ -18,6 +18,7 @@ import com.ipo.elements.ResetPasswordObject;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Batch;
 import com.ipo.entities.Users;
 import com.ipo.services.UsersService;
 import com.wordnik.swagger.annotations.Api;
@@ -70,7 +71,7 @@ public class UsersController {
 	
 	   @RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
 	    @ApiOperation(value = "Listing all users", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
-	    public RestResponse list(@RequestBody RestRequestObject<Users> req, HttpServletRequest request,Pageable pageable, HttpServletResponse response) {
+	    public RestResponse list(@RequestBody RestRequestObject<Batch> req, HttpServletRequest request,Pageable pageable, HttpServletResponse response) {
 	        final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "listUsers");
 	        RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 	        if(authorizeStatus.isRequestStatus()){

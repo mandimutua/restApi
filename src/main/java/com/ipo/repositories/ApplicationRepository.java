@@ -21,7 +21,7 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	
 	Page<Application> findByAppBatCode(Batch appBatCode, Pageable page);
 	
-	@Query("select a from Application a where a.appStatus = 1 and a.appBatCode = :appBatCode")
+	@Query("select a from Application a where a.appStatus = 2 and a.appBatCode = :appBatCode")
 	List<Application> findBatchSize(@Param("appBatCode") Batch appBatCode);
 	
 	BigDecimal countByAppBatCode(Batch batcode);
@@ -36,7 +36,7 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	
 //	select * from APPLICATION where APPLICATION.APP_CUS_PAL_CODE in(select CUSTOMERS.CUS_PAL_CODE FROM CUSTOMERS where CUSTOMERS.CUS_NAME like '%S%');
 	
-	@Query("select a from Application a  where a.appCusPalCode in(select b.cusPalCode from Customers b where b.cusName like %?1%)")
+	@Query("select a from Application a  where a.appCusPalCode in(select b.cusPalCode from Customers b where b.cusSurname like %?1%)")
 	Page<Application> findSpecificCus(String cus, Pageable pageable);
 	
 	@Query("select b from Application b where b.appStatus =1 order by b.appCode DESC")
