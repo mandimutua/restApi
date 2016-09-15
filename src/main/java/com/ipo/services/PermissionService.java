@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ipo.elements.RestRequestObject;
@@ -15,7 +16,7 @@ import com.ipo.repositories.PermissionRepository;
 public class PermissionService {
 	@Autowired
 	private PermissionRepository pemRepo;
-	
+
 	public RestResponseObject create(Permissions pem) {
 		Permissions bth = new Permissions();
 		RestResponseObject resp = new RestResponseObject();
@@ -31,7 +32,7 @@ public class PermissionService {
 			bth.setPermName(pem.getPermName());
 			bth.setPermDesc(pem.getPermDesc());
 			bth.setPermRoleCode(pem.getPermRoleCode());
-			
+
 			Permissions createdpem = pemRepo.save(bth);
 			resp.setMessage("Success");
 			resp.setPayload(createdpem);
@@ -44,6 +45,7 @@ public class PermissionService {
 		}
 		return resp;
 	}
+
 	public RestResponseObject edit(Permissions pem) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -60,7 +62,7 @@ public class PermissionService {
 			} else {
 				// check batch status
 				if (bth.getPermStatus() == BigInteger.valueOf(2)) {
-					
+
 					bth.setPermDate(Calendar.getInstance().getTime());
 					bth.setPermDesc(pem.getPermDesc());
 					bth.setPermInputter(pem.getPermInputter());
@@ -86,7 +88,7 @@ public class PermissionService {
 		}
 		return resp;
 	}
-	
+
 	public RestResponseObject approve(RestRequestObject<Permissions[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -98,17 +100,14 @@ public class PermissionService {
 
 			for (Permissions r : req.getObject()) {
 				Permissions bth = pemRepo.findByPermCode(r.getPermCode());
-				
-								
-				
+
 				if (bth == null) {
 					resp.setMessage("Permissions not found");
 					resp.setRequestStatus(true);
 				} else {
 					// check batch status
 					if (bth.getPermStatus() == BigInteger.valueOf(2)) {
-						
-						
+
 						{
 							bth.setPermMdate(Calendar.getInstance().getTime());
 							bth.setPermAuthoriser(r.getPermAuthoriser());
@@ -119,9 +118,6 @@ public class PermissionService {
 							resp.setPayload(createdpem);
 							resp.setRequestStatus(true);
 						}
-						
-
-						
 
 					} else {
 						resp.setMessage("Permission is not set for approval");
@@ -137,7 +133,7 @@ public class PermissionService {
 		}
 		return resp;
 	}
-	
+
 	public RestResponseObject reject(RestRequestObject<Permissions[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
@@ -149,17 +145,14 @@ public class PermissionService {
 
 			for (Permissions r : req.getObject()) {
 				Permissions bth = pemRepo.findByPermCode(r.getPermCode());
-				
-								
-				
+
 				if (bth == null) {
 					resp.setMessage("Permissions not found");
 					resp.setRequestStatus(true);
 				} else {
 					// check batch status
 					if (bth.getPermStatus() == BigInteger.valueOf(2)) {
-						
-						
+
 						{
 							bth.setPermMdate(Calendar.getInstance().getTime());
 							bth.setPermAuthoriser(r.getPermAuthoriser());
@@ -170,9 +163,6 @@ public class PermissionService {
 							resp.setPayload(createdpem);
 							resp.setRequestStatus(true);
 						}
-						
-
-						
 
 					} else {
 						resp.setMessage("Permission is not set for rejection");
@@ -189,6 +179,24 @@ public class PermissionService {
 		return resp;
 	}
 
-	
-	
+	public RestResponseObject listall(Permissions pem, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+
+		try {
+
+			resp.setPayload(pemRepo.findAll(pageable));
+			resp.setRequestStatus(true);
+			resp.setMessage("Success");
+
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			resp.setRequestStatus(true);
+			System.err.println(e.toString());
+		}
+		return resp;
+	}
+
 }

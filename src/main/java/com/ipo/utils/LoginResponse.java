@@ -11,7 +11,16 @@ public class LoginResponse {
 	private String sessID, LoginMessage, names;
 	private BigDecimal userID;
 	Brokers batCode;
+	private String [] permissions;
 	
+
+	public String[] getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(String[] permissions) {
+		this.permissions = permissions;
+	}
 
 	private BigInteger usr_status;
 	private String usr_email;

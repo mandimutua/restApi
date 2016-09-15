@@ -29,6 +29,9 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  *
  * @author smutua
@@ -69,11 +72,18 @@ public class Roles implements Serializable {
     @JoinColumn(name = "ROLE_INPUTTER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users roleInputter;
+    
     @JoinColumn(name = "ROLE_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = true)
     private Users roleAuthoriser;
+    
+    @JsonBackReference(value="permission")
     @OneToMany(mappedBy = "permRoleCode")
     private Collection<Permissions> permissionsCollection;
+   
+   
+    
+    @JsonManagedReference(value="roles")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usroleRoleCode")
     private Collection<UserRoles> userRolesCollection;
 

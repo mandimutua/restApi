@@ -158,7 +158,7 @@ public RestResponseObject approve(RestRequestObject<SystemParameters[]> req) {
 public RestResponseObject reject(RestRequestObject<SystemParameters[]> req) {
 
 	RestResponseObject resp = new RestResponseObject();
-	resp.setMessage("Error Approving Application");
+	resp.setMessage("Error Approving System Params");
 	resp.setPayload(null);
 	resp.setRequestStatus(false);
 

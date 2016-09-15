@@ -25,6 +25,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  * @author smutua
@@ -63,9 +66,13 @@ public class Permissions implements Serializable {
     @JoinColumn(name = "PERM_INPUTTER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users permInputter;
+    
+    @JsonIgnore
     @JoinColumn(name = "PERM_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = true)
     private Users permAuthoriser;
+    
+    @JsonBackReference(value="permission")
     @JoinColumn(name = "PERM_ROLE_CODE", referencedColumnName = "ROLE_CODE")
     @ManyToOne
     private Roles permRoleCode;

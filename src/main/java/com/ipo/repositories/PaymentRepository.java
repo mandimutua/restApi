@@ -15,7 +15,7 @@ import com.ipo.entities.Payments;
 
 public interface PaymentRepository extends PagingAndSortingRepository<Payments, Long> {
 
-	Payments findByPayCode(BigDecimal brkcode);
+	Payments findByPayCode(BigDecimal paymentcode);
 	
 	@Query("select a from Payments a where a.payAppCusPalCode = :payAppCusPalCode")
 	Page<Payments> findPayment(@Param("payAppCusPalCode") Application brkcode, Pageable page);

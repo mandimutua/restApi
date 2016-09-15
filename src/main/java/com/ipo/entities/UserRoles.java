@@ -10,18 +10,23 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
@@ -30,36 +35,46 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "USER_ROLES")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UserRoles.findAll", query = "SELECT u FROM UserRoles u")})
 public class UserRoles implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "USER_ROLE_CODE_SEQ", sequenceName = "USER_ROLE_CODE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ROLE_CODE_SEQ")
     @Basic(optional = false)
     @Column(name = "USROLE_CODE")
     private BigDecimal usroleCode;
+    
     @Column(name = "USROLE_STATUS")
     private BigInteger usroleStatus;
     @Basic(optional = false)
+    
     @Column(name = "USROLE_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date usroleCdate;
+    
     @Column(name = "USROLE_MDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date usroleMdate;
+    
     @Column(name = "USROLE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date usroleDate;
+    
     @JoinColumn(name = "USROLE_USR_CODE", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users usroleUsrCode;
+    
     @JoinColumn(name = "USROLE_INPUTTER", referencedColumnName = "USR_CODE")
     @ManyToOne(optional = false)
     private Users usroleInputter;
+    
+    @JsonIgnore
     @JoinColumn(name = "USROLE_AUTHORISER", referencedColumnName = "USR_CODE")
     @ManyToOne
     private Users usroleAuthoriser;
+    
+    @JsonBackReference(value="roles")
     @JoinColumn(name = "USROLE_ROLE_CODE", referencedColumnName = "ROLE_CODE")
     @ManyToOne(optional = false)
     private Roles usroleRoleCode;

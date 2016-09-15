@@ -76,8 +76,8 @@ public class Application implements Serializable {
     @ManyToOne(optional = false)
     private Users appInputter;
     
-    @JoinColumn(name = "APP_CUS_PAL_CODE", referencedColumnName = "CUS_PAL_CODE")
     @JsonManagedReference(value="customer")
+    @JoinColumn(name = "APP_CUS_PAL_CODE", referencedColumnName = "CUS_PAL_CODE")
     @OneToOne(optional = false)
     private Customers appCusPalCode;
     

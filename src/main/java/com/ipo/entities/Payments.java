@@ -11,7 +11,6 @@ import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,13 +40,13 @@ public class Payments implements Serializable {
     @Column(name = "PAY_CODE")
     private BigDecimal payCode;
     
-    @JoinColumn(name = "PAY_APP_CUS_PAL_CODE", referencedColumnName = "APP_CUS_PAL_CODE")
-    @ManyToOne(optional = false, cascade =CascadeType.ALL)
-    private Application payAppCusPalCode;
+//    @JoinColumn(name = "PAY_APP_CUS_PAL_CODE", referencedColumnName = "APP_CUS_PAL_CODE")
+//    @ManyToOne(optional = false, cascade =CascadeType.PERSIST)
+//    private Application payAppCusPalCode;
     
-//    @Column(name = "PAY_APP_CUS_PAL_CODE")
-//    private BigDecimal payAppCusPalCode;
-//    @Basic(optional = false)
+   @Column(name = "PAY_APP_CUS_PAL_CODE")
+   private BigDecimal payAppCusPalCode;
+   @Basic(optional = false)
     
     @Column(name = "PAY_TYPE")
     private String payType;
@@ -122,7 +121,7 @@ public class Payments implements Serializable {
         this.payCode = payCode;
     }
 
-    public Payments(BigDecimal payCode, Application payAppCusPalCode, String payAccountNo, BigInteger payAmount, Date payCdate, Date payMdate, Date payDate) {
+    public Payments(BigDecimal payCode, BigDecimal payAppCusPalCode, String payAccountNo, BigInteger payAmount, Date payCdate, Date payMdate, Date payDate) {
         this.payCode = payCode;
         this.payAppCusPalCode = payAppCusPalCode;
         this.payAccountNo = payAccountNo;
@@ -140,11 +139,11 @@ public class Payments implements Serializable {
         this.payCode = payCode;
     }
 
-    public Application getPayAppCusPalCode() {
+    public BigDecimal getPayAppCusPalCode() {
         return payAppCusPalCode;
     }
 
-    public void setPayAppCusPalCode(Application payAppCusPalCode) {
+    public void setPayAppCusPalCode(BigDecimal payAppCusPalCode) {
         this.payAppCusPalCode = payAppCusPalCode;
     }
 

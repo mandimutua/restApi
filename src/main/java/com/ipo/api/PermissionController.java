@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/api/v1/permission")
 @Api(value = "Permission management", description = "Permission management API")
 public class PermissionController {
-
 
 	@Autowired
 	PermissionService pemService;
@@ -91,8 +91,19 @@ public class PermissionController {
 		return resp;
 	}
 
-	
-
-
+	@RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = { "application/json",
+			"application/xml" }, produces = { "application/json", "application/xml" })
+	@ApiOperation(value = "Edit  Batch", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+	public RestResponse list(@RequestBody RestRequestObject<Permissions> req, HttpServletRequest request, Pageable page,
+			HttpServletResponse response) {
+		final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "editbatch");
+		RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+		if (authorizeStatus.isRequestStatus()) {
+			resp = new RestResponse(pemService.listall(req.getObject(), page), HttpStatus.OK);
+		} else {
+			resp = ErrorUtl.getFailedMsg();
+		}
+		return resp;
+	}
 
 }

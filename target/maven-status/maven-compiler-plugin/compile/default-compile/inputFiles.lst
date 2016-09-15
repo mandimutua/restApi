@@ -16,11 +16,13 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\BrokersC
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\CustomerRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RecievingService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\Mailer.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\UserRolesController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RefundsController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BrokersService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RecievingController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RefundsRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RolesService.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\UserRoleRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\ResetPasswordObject.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestRequestObject.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RefundsService.java
@@ -50,6 +52,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\Pay
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\UserLogin.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\LoginResponse.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\IpoAdminApplication.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\UserRoleService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Application.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\ApplicationRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Permissions.java
