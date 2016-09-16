@@ -29,7 +29,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlTransient;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -52,6 +51,7 @@ public class Users implements Serializable {
     @Basic(optional = false)
     
   
+    
     @Column(name = "USR_CODE")
     private BigDecimal usrCode;
     @Basic(optional = false)

@@ -1,14 +1,13 @@
 package com.ipo.services;
 
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-
 import java.util.Calendar;
-
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,10 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -30,19 +27,19 @@ import com.auth0.jwt.JWTVerifyException;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.JsonNode;
 import com.auth0.jwt.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
+import com.ipo.elements.ResetPasswordObject;
+import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Batch;
 import com.ipo.entities.Users;
-import com.ipo.utils.Lg;
-import com.ipo.elements.ResetPasswordObject;
-import com.ipo.elements.RestRequestObject;
+import com.ipo.repositories.RolesRepository;
 import com.ipo.repositories.UsersRepository;
+import com.ipo.utils.Lg;
 import com.ipo.utils.LoginLdapUtl;
 import com.ipo.utils.LoginResponse;
+import com.ipo.utils.Mailer;
 import com.ipo.utils.TokenClass;
 import com.ipo.utils.UserLogin;
-
-import com.ipo.utils.Mailer;
 
 @Service
 public class UsersService {
@@ -53,6 +50,9 @@ public class UsersService {
 
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	@Autowired
+	private RolesRepository roleRepositoty;
 
 	public LoginResponse userLogin(UserLogin request) {
 		LoginResponse resp = new LoginResponse();
@@ -90,6 +90,16 @@ public class UsersService {
 							usr.setUsrAuthSalt(tokenObj.getAuthSalt());
 							resp.setUsr_email(request.getUsrEmail().trim());
 							resp.setBatCode(usr.getUsrBrkCode());
+							
+							Users user = new Users();
+							user.setUsrCode(usr.getUsrCode());
+							
+							String [] rol = roleRepositoty.findRoles(user);
+							resp.setPermissions(rol);
+							
+							
+							
+							//resp.setPermissions(permissions);
 
 							Calendar now = Calendar.getInstance();
 							now.add(Calendar.MINUTE, 30);

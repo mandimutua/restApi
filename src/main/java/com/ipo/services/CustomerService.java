@@ -219,6 +219,7 @@ public class CustomerService {
 					try {
 						cust.setCusStatus(BigInteger.valueOf(1));
 						cust.setCusAuthoriser(r.getCusAuthoriser());
+						System.out.println("Authorizer being sent"+r.getCusAuthoriser());
 						cust.setCusMdate(Calendar.getInstance().getTime());
 						cust.setCusDate(Calendar.getInstance().getTime());
 

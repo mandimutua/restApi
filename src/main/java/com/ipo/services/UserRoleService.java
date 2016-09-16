@@ -145,29 +145,33 @@ public class UserRoleService {
 
 		try {
 			for (UserRoles r : req.getObject()) {
-				UserRoles app = userRoleRepository.findByUsroleCode(r.getUsroleCode());
 
-				if (app == null) {
-					resp.setMessage("User Role not found");
+				try {
+
+					UserRoles app = userRoleRepository.findForDeletion(r.getUsroleUsrCode(), r.getUsroleRoleCode());
+					
+					if(app.getUsroleStatus()==BigInteger.valueOf(2))
+					{	
+					app.setUsroleStatus(BigInteger.valueOf(1));
+					app.setUsroleAuthoriser(r.getUsroleAuthoriser());
+					app.setUsroleDate(Calendar.getInstance().getTime());
+					app.setUsroleMdate(Calendar.getInstance().getTime());
+					UserRoles updatedRole = userRoleRepository.save(app);
+					resp.setPayload(updatedRole);
+					resp.setMessage("Role Approval Success");
 					resp.setRequestStatus(true);
-				} else {
-
-					if (app.getUsroleStatus() == BigInteger.valueOf(2)) {
-
-						app.setUsroleMdate(Calendar.getInstance().getTime());
-						app.setUsroleStatus(BigInteger.valueOf(1));
-						app.setUsroleAuthoriser(r.getUsroleAuthoriser());
-						app.setUsroleMdate(Calendar.getInstance().getTime());
-						resp.setMessage("User Roles Approval Successfull");
-						UserRoles approvedRole = userRoleRepository.save(app);
-						resp.setPayload(approvedRole);
+					}
+					else
+					{
+						resp.setMessage("Role is not set for Approval");
 						resp.setRequestStatus(true);
-
-					} else {
-						resp.setMessage("System Param is not set for approval");
-						resp.setRequestStatus(true);
+						
 					}
 
+				} catch (Exception er) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(er.toString());
+					resp.setRequestStatus(true);
 				}
 			}
 		} catch (Exception e) {
@@ -181,29 +185,42 @@ public class UserRoleService {
 	public RestResponseObject reject(RestRequestObject<UserRoles[]> req) {
 
 		RestResponseObject resp = new RestResponseObject();
-		resp.setMessage("Error Approving User Roles");
+		resp.setMessage("Error Rejecting User Roles");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 
 		try {
 			for (UserRoles r : req.getObject()) {
-				UserRoles app = userRoleRepository.findByUsroleUsrCode(r.getUsroleUsrCode());
 
-				if (app == null) {
-					resp.setMessage("User Role not found");
-					resp.setRequestStatus(true);
-				} else {
-					app.setUsroleMdate(Calendar.getInstance().getTime());
-					app.setUsroleStatus(BigInteger.valueOf(1));
+				try {
+
+					UserRoles app = userRoleRepository.findForDeletion(r.getUsroleUsrCode(), r.getUsroleRoleCode());
+					
+					if(app.getUsroleStatus()==BigInteger.valueOf(2))
+					{
+					System.out.println("User Authorizer"+r.getUsroleAuthoriser());	
+					app.setUsroleStatus(BigInteger.valueOf(3));
 					app.setUsroleAuthoriser(r.getUsroleAuthoriser());
+					app.setUsroleDate(Calendar.getInstance().getTime());
 					app.setUsroleMdate(Calendar.getInstance().getTime());
-					resp.setMessage("User Roles Rejection Successfull");
-					UserRoles approvedRole = userRoleRepository.save(app);
-					resp.setPayload(approvedRole);
+					UserRoles updatedRole = userRoleRepository.save(app);
+					resp.setPayload(updatedRole);
+					resp.setMessage("Role Rejection Success");
 					resp.setRequestStatus(true);
+					}
+					else
+					{
+						resp.setMessage("Role is not set for Approval");
+						resp.setRequestStatus(true);
+					}
 
+				} catch (Exception er) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(er.toString());
+					resp.setRequestStatus(true);
 				}
-			}
+			
+		}
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());

@@ -29,4 +29,8 @@ public interface RolesRepository extends PagingAndSortingRepository<Roles, Long>
 	Page<Roles> findSpecific(@Param("userCode")Users userCode, Pageable pageable);
 	
 	
+	//select ROLE_NAME FROM ROLES where ROLE_CODE  in (select USROLE_ROLE_CODE  from USER_ROLES where USROLE_USR_CODE ='43' and USER_ROLES.USROLE_STATUS=1);
+	
+	@Query("select a.roleName from Roles a  where a.roleCode in(select b.usroleRoleCode from UserRoles b where b.usroleUsrCode =:userCode and b.usroleStatus=1)")
+	String[] findRoles(@Param("userCode")Users userCode);
 }

@@ -16,8 +16,9 @@ public interface UserRoleRepository extends PagingAndSortingRepository<UserRoles
 
 	UserRoles findByUsroleCode(BigDecimal usrRoleCode);
 	
-	@Query("select a from Roles a  where a.roleCode in (select b.usroleRoleCode from UserRoles b where b.usroleUsrCode =:userCode)")
-	Page<UserRoles> findSpecific(@Param("userCode")Users bat, Pageable pageable);
+	@Query("select r.roleName, u.usroleStatus,r.roleCode from Roles r, UserRoles u where r.roleCode = u.usroleRoleCode and u.usroleUsrCode =:userCode")
+    Page<UserRoles> findSpecific(@Param("userCode")Users bat, Pageable pageable);
+
 	
 	//DELETE USER_ROLES where USROLE_USR_CODE='66' and USROLE_ROLE_CODE ='21'
 	@Query("select a from UserRoles a where a.usroleUsrCode =:userCode and a.usroleRoleCode =:roleCode")

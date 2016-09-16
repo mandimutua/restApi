@@ -26,7 +26,6 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
@@ -69,9 +68,10 @@ public class UserRoles implements Serializable {
     @ManyToOne(optional = false)
     private Users usroleInputter;
     
-    @JsonIgnore
+  
+    
     @JoinColumn(name = "USROLE_AUTHORISER", referencedColumnName = "USR_CODE")
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Users usroleAuthoriser;
     
     @JsonBackReference(value="roles")

@@ -1,3 +1,4 @@
+com\ipo\repositories\BankRepository.class
 com\ipo\services\PermissionService.class
 com\ipo\repositories\ApplicationRepository.class
 com\ipo\services\BatchService.class
@@ -5,6 +6,7 @@ com\ipo\entities\Brokers.class
 com\ipo\entities\Recieving.class
 com\ipo\entities\SystemParameters_.class
 com\ipo\elements\ResetPasswordObject.class
+com\ipo\entities\Banks_.class
 com\ipo\repositories\SystemParamsRepository.class
 com\ipo\services\RecievingService.class
 com\ipo\utils\LoginResponse.class
@@ -52,6 +54,7 @@ com\ipo\entities\Customers_.class
 com\ipo\entities\Recieving_.class
 com\ipo\entities\MessageTemplates_.class
 com\ipo\entities\Roles.class
+com\ipo\entities\Banks.class
 com\ipo\entities\Customers.class
 com\ipo\entities\Messages.class
 com\ipo\services\RolesService.class
@@ -74,6 +77,8 @@ com\ipo\elements\RestResponse.class
 com\ipo\services\UserRoleService.class
 com\ipo\utils\Mailer.class
 com\ipo\services\UsersService.class
+com\ipo\api\BanksController.class
+com\ipo\services\BankService.class
 com\ipo\utils\APIFilter.class
 com\ipo\repositories\PaymentRepository.class
 com\ipo\entities\Dividends.class

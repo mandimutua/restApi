@@ -10,10 +10,12 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\Applicat
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Brokers.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\PaymentController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\BatchRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\BanksController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BatchService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RolesController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\BrokersController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\CustomerRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Banks.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RecievingService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\Mailer.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\UserRolesController.java
@@ -35,6 +37,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\Lg.jav
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Roles.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\UsersService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Payments.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\BankRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\SystemParamsRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\TokenClass.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Customers.java
@@ -59,6 +62,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Per
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\UserRoles.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RolesRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\PermissionRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BankService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\UsersRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\ErrorUtl.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\SystemParameters.java

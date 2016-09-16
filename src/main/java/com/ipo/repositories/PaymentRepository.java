@@ -31,6 +31,6 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payments, 
 	@Query("select a from Payments a where a.payAppCusPalCode in(select b.appCusPalCode from Application b where b.appBatCode =:appBatCode)")
 	Page<Payments> findSpecific(@Param("appBatCode")Batch bat, Pageable pageable);
 	
-	@Query("select b from Payments b where b.payStatus =1 order by b.payCode DESC")
+	@Query("select b from Payments b where b.payStatus =2 order by b.payCode DESC")
 	List<Payments> findAllByPayCode();
 }

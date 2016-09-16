@@ -49,12 +49,12 @@ return resp;
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = { "application/json",
 	"application/xml" }, produces = { "application/json", "application/xml" })
 @ApiOperation(value = "Creates Recieiving Batch", notes = "Creating Recieving Batch")
-public RestResponse create(@RequestBody RestRequestObject<Recieving> req, HttpServletRequest request,
+public RestResponse create(@RequestBody RestRequestObject<Recieving[]> req, HttpServletRequest request,
 	HttpServletResponse response) {
 final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "createRecieving");
 RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 if (authorizeStatus.isRequestStatus()) {
-	resp = new RestResponse(recievingService.create(req.getObject()), HttpStatus.OK);
+	resp = new RestResponse(recievingService.create(req), HttpStatus.OK);
 } else {
 	resp = ErrorUtl.getFailedMsg();
 }
