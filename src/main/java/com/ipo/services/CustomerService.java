@@ -24,7 +24,7 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	public RestResponseObject create(Customers req) {
+	public RestResponseObject create(Customers req) throws NullPointerException {
 		Customers cus = new Customers();
 		RestResponseObject resp = new RestResponseObject();
 		resp.setMessage("Error creating customer");
@@ -33,43 +33,108 @@ public class CustomerService {
 
 		try {
 			cus.setCusCdscAcNo(req.getCusCdscAcNo().trim().toUpperCase());
-			cus.setCusSurname(req.getCusSurname().trim().toUpperCase());
-			cus.setCusAddress(req.getCusAddress().trim().toUpperCase());
-			cus.setCusTown(req.getCusTown().trim().toUpperCase());
 			cus.setCusCitizenship(req.getCusCitizenship().trim().toUpperCase());
-			cus.setCusMobilePhone(req.getCusMobilePhone().trim().toUpperCase());
-			cus.setCusEmail(req.getCusEmail());
+			cus.setCusApplicantType(req.getCusApplicantType().trim().toUpperCase());
+			
+			cus.setCusTaxExmpt(req.getCusTaxExmpt().trim().toUpperCase());
+			
 			cus.setCusStatus(BigInteger.valueOf(2));
 			cus.setCusCdate(Calendar.getInstance().getTime());
 			cus.setCusInputter(req.getCusInputter());
 			cus.setCusDate(Calendar.getInstance().getTime());
 			cus.setcusFormSerialNo(req.getcusFormSerialNo());
-			cus.setCusApplicantCategory(req.getCusApplicantCategory().trim().toUpperCase());
-			cus.setCusApplicantResidence(req.getCusApplicantCategory().trim().toUpperCase());
-			cus.setCusTaxExmpt(req.getCusTaxExmpt().trim().toUpperCase());
-			cus.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
-			cus.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
-			cus.setCusJointSurname(req.getCusJointSurname().trim().toUpperCase());
-			cus.setCusJointOthernames(req.getCusJointOthernames().trim().toUpperCase());
-			cus.setCusJointApplicantIdNo(req.getCusJointApplicantIdNo().trim().toUpperCase());
-			cus.setCusCompanyName(req.getCusCompanyName().trim().toUpperCase());
-			cus.setCusCompanyRegNo(req.getCusCompanyRegNo().trim().toUpperCase());
-			cus.setCusCompanyDateOfInc(req.getCusCompanyDateOfInc());
-			cus.setCusNomineeName(req.getCusNomineeName().trim().toUpperCase());
-			cus.setCusNomineeAc(req.getCusNomineeAc());
-			cus.setCusPostalCode(req.getCusPostalCode().trim().toUpperCase());
-			cus.setCusStreet(req.getCusStreet().trim().toUpperCase());
-			cus.setCusTelNo(req.getCusTelNo().trim().toUpperCase());
-			cus.setCusFaxNo(req.getCusFaxNo().trim().toUpperCase());
+			cus.setCusApplicantResidence(req.getCusApplicantResidence().trim().toUpperCase());
 			cus.setCusBrkCode(req.getCusBrkCode());
-			cus.setCusCountry(req.getCusCountry().trim().toUpperCase());
-			cus.setCusApplicantType(req.getCusApplicantType().trim().toUpperCase());
+			cus.setCusApplicantCategory(req.getCusApplicantCategory().trim().toUpperCase());
 			
+			if (req.getCusApplicantCategory().trim().equalsIgnoreCase("INDIVIDUAL"))
+			{
+				cus.setCusSurname(req.getCusSurname().trim().toUpperCase());
+				cus.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
+				cus.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
+			}
+			else if(req.getCusApplicantCategory().trim().equalsIgnoreCase("JOINT"))
+			{
+				cus.setCusSurname(req.getCusSurname().trim().toUpperCase());
+				cus.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
+				cus.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
+				cus.setCusJointSurname(req.getCusJointSurname().trim().toUpperCase());
+				cus.setCusJointOthernames(req.getCusJointOthernames().trim().toUpperCase());
+				cus.setCusJointApplicantIdNo(req.getCusJointApplicantIdNo().trim().toUpperCase());
+			}else if (req.getCusApplicantCategory().trim().equalsIgnoreCase("COMPANY"))
+			{
+				cus.setCusCompanyName(req.getCusCompanyName().trim().toUpperCase());
+				cus.setCusCompanyRegNo(req.getCusCompanyRegNo().trim().toUpperCase());
+				cus.setCusCompanyDateOfInc(req.getCusCompanyDateOfInc());
+				
+			}
+			else if (req.getCusApplicantCategory().trim().equalsIgnoreCase("NOMINEE"))
+			{
+				cus.setCusNomineeName(req.getCusNomineeName().trim().toUpperCase());
+				cus.setCusNomineeAc(req.getCusNomineeAc());
+			}
+			
+			 if (req.getCusCountry()!=null)
+			{
+				cus.setCusCountry(req.getCusCountry().trim().toUpperCase());
+			}
+				
+			 if (req.getCusTown()!=null)
+			{
+				cus.setCusTown(req.getCusTown().trim().toUpperCase());
+			}
+			
+			 if (req.getCusAddress()!=null)
+			{
+				cus.setCusAddress(req.getCusAddress().trim().toUpperCase());
+			}
+			
+			 if (req.getCusMobilePhone()!=null)
+			{
+				cus.setCusMobilePhone(req.getCusMobilePhone().trim().toUpperCase());
+			}
+				
+			 if (req.getCusEmail()!=null)
+			{
+				cus.setCusEmail(req.getCusEmail().trim());
+			}
+			
+			 if (req.getCusPostalCode()!=null)
+			{
+				cus.setCusPostalCode(req.getCusPostalCode().trim());
+			}
+			
+			 if (req.getCusStreet()!=null)
+			{
+				cus.setCusStreet(req.getCusStreet().trim().toUpperCase());
+			}
+			
+			 if (req.getCusTelNo()!=null)
+			{
+				cus.setCusTelNo(req.getCusTelNo().trim().toUpperCase());
+			}
+			
+			 if (req.getCusFaxNo()!=null)
+			{
+				cus.setCusFaxNo(req.getCusFaxNo().trim().toUpperCase());
+			}
+			
+		
 		
 			Customers createdcustomer = customerRepository.save(cus);
 			resp.setMessage("Success");
 			resp.setPayload(createdcustomer);
 			resp.setRequestStatus(true);
+			
+			
+		}catch(NullPointerException e)
+		{
+			resp.setMessage("Server Error. Please try again later.");
+			System.out.println("Null Pointer Being Caught");
+			resp.setMessage(e.toString());
+
+		
+			
 		} catch (Exception er) {
 			resp.setMessage("Server Error. Please try again later.");
 			resp.setRequestStatus(true);
@@ -93,41 +158,93 @@ public class CustomerService {
 			// check batch status
 			if (cust.getCusStatus() == BigInteger.valueOf(2) | cust.getCusStatus() == BigInteger.valueOf(1)) {
 				try {
-					
 					cust.setCusCdscAcNo(req.getCusCdscAcNo().trim().toUpperCase());
-					cust.setCusSurname(req.getCusSurname().trim().toUpperCase());
-					cust.setCusAddress(req.getCusAddress().trim().toUpperCase());
-					cust.setCusTown(req.getCusTown().trim().toUpperCase());
 					cust.setCusCitizenship(req.getCusCitizenship().trim().toUpperCase());
-					cust.setCusMobilePhone(req.getCusMobilePhone().trim().toUpperCase());
-					cust.setCusEmail(req.getCusEmail());
+					cust.setCusApplicantType(req.getCusApplicantType().trim().toUpperCase());
+					
+					cust.setCusTaxExmpt(req.getCusTaxExmpt().trim().toUpperCase());
+					
 					cust.setCusStatus(BigInteger.valueOf(2));
-					//cust.setCusCdate(Calendar.getInstance().getTime());
+					cust.setCusCdate(Calendar.getInstance().getTime());
 					cust.setCusInputter(req.getCusInputter());
 					cust.setCusDate(Calendar.getInstance().getTime());
 					cust.setcusFormSerialNo(req.getcusFormSerialNo());
+					cust.setCusApplicantResidence(req.getCusApplicantResidence().trim().toUpperCase());
+					cust.setCusBrkCode(req.getCusBrkCode());
 					cust.setCusApplicantCategory(req.getCusApplicantCategory().trim().toUpperCase());
-					cust.setCusApplicantResidence(req.getCusApplicantCategory().trim().toUpperCase());
-					cust.setCusTaxExmpt(req.getCusTaxExmpt().trim().toUpperCase());
-					cust.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
-					cust.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
-					cust.setCusJointSurname(req.getCusJointSurname().trim().toUpperCase());
-					cust.setCusJointOthernames(req.getCusJointOthernames().trim().toUpperCase());
-					cust.setCusJointApplicantIdNo(req.getCusJointApplicantIdNo().trim().toUpperCase());
-					cust.setCusCompanyName(req.getCusCompanyName().trim().toUpperCase());
-					cust.setCusCompanyRegNo(req.getCusCompanyRegNo().trim().toUpperCase());
-					cust.setCusCompanyDateOfInc(req.getCusCompanyDateOfInc());
-					cust.setCusNomineeName(req.getCusNomineeName().trim().toUpperCase());
-					cust.setCusNomineeAc(req.getCusNomineeAc());
-					cust.setCusPostalCode(req.getCusPostalCode().trim().toUpperCase());
-					cust.setCusStreet(req.getCusStreet().trim().toUpperCase());
-					cust.setCusTelNo(req.getCusTelNo().trim().toUpperCase());
-					cust.setCusFaxNo(req.getCusFaxNo().trim().toUpperCase());
-					cust.setCusCountry(req.getCusCountry().trim().toUpperCase());
-					cust.setCusApplicantType(req.getCusApplicantType().trim().toUpperCase());
 					
+					if (req.getCusApplicantCategory().trim().equalsIgnoreCase("INDIVIDUAL"))
+					{
+						cust.setCusSurname(req.getCusSurname().trim().toUpperCase());
+						cust.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
+						cust.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
+					}
+					else if(req.getCusApplicantCategory().trim().equalsIgnoreCase("JOINT"))
+					{
+						cust.setCusSurname(req.getCusSurname().trim().toUpperCase());
+						cust.setCusOtherNames(req.getCusOtherNames().trim().toUpperCase());
+						cust.setCusIdNo(req.getCusIdNo().trim().toUpperCase());
+						cust.setCusJointSurname(req.getCusJointSurname().trim().toUpperCase());
+						cust.setCusJointOthernames(req.getCusJointOthernames().trim().toUpperCase());
+						cust.setCusJointApplicantIdNo(req.getCusJointApplicantIdNo().trim().toUpperCase());
+					}else if (req.getCusApplicantCategory().trim().equalsIgnoreCase("COMPANY"))
+					{
+						cust.setCusCompanyName(req.getCusCompanyName().trim().toUpperCase());
+						cust.setCusCompanyRegNo(req.getCusCompanyRegNo().trim().toUpperCase());
+						cust.setCusCompanyDateOfInc(req.getCusCompanyDateOfInc());
+						
+					}
+					else if (req.getCusApplicantCategory().trim().equalsIgnoreCase("NOMINEE"))
+					{
+						cust.setCusNomineeName(req.getCusNomineeName().trim().toUpperCase());
+						cust.setCusNomineeAc(req.getCusNomineeAc());
+					}
 					
+					 if (req.getCusCountry()!=null)
+					{
+						 cust.setCusCountry(req.getCusCountry().trim().toUpperCase());
+					}
+						
+					 if (req.getCusTown()!=null)
+					{
+						 cust.setCusTown(req.getCusTown().trim().toUpperCase());
+					}
 					
+					 if (req.getCusAddress()!=null)
+					{
+						 cust.setCusAddress(req.getCusAddress().trim().toUpperCase());
+					}
+					
+					 if (req.getCusMobilePhone()!=null)
+					{
+						 cust.setCusMobilePhone(req.getCusMobilePhone().trim().toUpperCase());
+					}
+						
+					 if (req.getCusEmail()!=null)
+					{
+						 cust.setCusEmail(req.getCusEmail().trim());
+					}
+					
+					 if (req.getCusPostalCode()!=null)
+					{
+						 cust.setCusPostalCode(req.getCusPostalCode().trim());
+					}
+					
+					 if (req.getCusStreet()!=null)
+					{
+						 cust.setCusStreet(req.getCusStreet().trim().toUpperCase());
+					}
+					
+					 if (req.getCusTelNo()!=null)
+					{
+						 cust.setCusTelNo(req.getCusTelNo().trim().toUpperCase());
+					}
+					
+					 if (req.getCusFaxNo()!=null)
+					{
+						 cust.setCusFaxNo(req.getCusFaxNo().trim().toUpperCase());
+					}
+												
 					resp.setMessage("Customer Edit Successfull");
 					Customers createdcustomer = customerRepository.save(cust);
 					resp.setPayload(createdcustomer);

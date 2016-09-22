@@ -344,7 +344,7 @@ public class BatchService {
 		resp.setMessage("Not Found");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
-		Page<Batch> brk = batchRepository.findByBatCode(batch.getBatCode(), pagable);
+		Page<Batch> brk = batchRepository.findByBatCode(batch.getBatBrkCode(),batch.getBatNumber(), pagable);
 
 		try {
 			if (brk == null) {

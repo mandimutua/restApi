@@ -54,7 +54,7 @@ public class Application implements Serializable {
     @Basic(optional = false)
     @Column(name = "APP_PAYMENT_MODE")
     private String appPaymentMode;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "APP_STATUS")
     private BigInteger appStatus;
     @Basic(optional = false)

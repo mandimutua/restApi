@@ -1,6 +1,7 @@
 package com.ipo.repositories;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -32,6 +33,10 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	
 	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode)")
 	Page<Application> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);
+	
+	
+	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode and b.batNumber =:batNum)")
+	Page<Application> findSpecificForReports(@Param("batBrkCode")Brokers bat, @Param("batNum")BigInteger batNum,Pageable pageable);
 	
 	
 //	select * from APPLICATION where APPLICATION.APP_CUS_PAL_CODE in(select CUSTOMERS.CUS_PAL_CODE FROM CUSTOMERS where CUSTOMERS.CUS_NAME like '%S%');

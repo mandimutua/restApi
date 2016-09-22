@@ -373,7 +373,8 @@ public class UsersService {
 			resp.setStatus(false);
 
 		} else {
-			if (usr.getUsrStatus() == BigInteger.valueOf(4) | usr.getUsrStatus() == BigInteger.valueOf(1)) {
+			if (usr.getUsrStatus() == BigInteger.valueOf(4)) {
+				
 				System.out.println("Status======" + usr.getUsrStatus());
 				try {
 					usr.setUsrPass(new String(Base64.encodeBase64(req.getUsr_password().getBytes()), "UTF-8"));
@@ -393,10 +394,32 @@ public class UsersService {
 					System.err.println(e.toString());
 					resp.setStatus(true);
 				}
+			}
+			else if (usr.getUsrStatus() == BigInteger.valueOf(1)) {
+				System.out.println("Status======" + usr.getUsrStatus());
+				try {
+					password = RandomStringUtils.randomAlphanumeric(8);
+					usr.setUsrPass(new String(Base64.encodeBase64(password.getBytes()), "UTF-8")); // Pass
+					usr.setUsrLastPassChange(Calendar.getInstance().getTime());
+					usr.setUsrStatus(BigInteger.valueOf(4));
+					usr.setUsrAuthSalt(null);
+					usr.setSessionExpiry(null);
+					userEmail = req.getUsrEmail().trim();
+					sendMail();
+					usersRepository.save(usr);
+					resp.setMessage("Password Reset Successful");
+					resp.setStatus(true);
+
+				} catch (Exception e) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(e.toString());
+					resp.setStatus(true);
+				}
 			} else {
-				resp.setMessage("Password Reset Failure");
+				resp.setMessage("Password Reset Failure for an Inactive User");
 				resp.setStatus(false);
 			}
+			
 
 		}
 

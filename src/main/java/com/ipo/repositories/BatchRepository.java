@@ -1,6 +1,7 @@
 package com.ipo.repositories;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -17,7 +18,8 @@ import com.ipo.entities.Brokers;
 
 public interface BatchRepository extends PagingAndSortingRepository<Batch, Long> {
 	
-	Page<Batch> findByBatCode(BigDecimal batcode, Pageable pageable);
+	@Query("select a from Batch a  where a.batBrkCode =:batBrkCode and a.batNumber =:batNum)")
+	Page<Batch> findByBatCode(@Param("batBrkCode")Brokers bat,@Param("batNum")BigInteger bats, Pageable pageable);
 	
 	@Query("select a from Batch a  where a.batBrkCode =:batBrkCode)")
 	Page<Batch> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);

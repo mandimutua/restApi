@@ -56,12 +56,12 @@ public class ApplicationService {
 					System.out.println(
 							"Batch Number==============" + appRepository.countByAppBatCode(req.getAppBatCode()));
 
-					app.setAppCustMobileNo(req.getAppCustMobileNo());
+					//app.setAppCustMobileNo(req.getAppCustMobileNo());
 					app.setAppBatCode(req.getAppBatCode());
 					app.setAppCusPalCode(req.getAppCusPalCode());
-					app.setAppCustMobileNo(req.getAppCustMobileNo());
+					//app.setAppCustMobileNo(req.getAppCustMobileNo());
 					app.setAppSharesApplied(req.getAppSharesApplied());
-					app.setAppPaymentMode(req.getAppPaymentMode());
+					//app.setAppPaymentMode(req.getAppPaymentMode());
 					app.setAppStatus(BigInteger.valueOf(2));
 					app.setAppCdate(Calendar.getInstance().getTime());
 					app.setAppInputter(req.getAppInputter());
@@ -76,7 +76,7 @@ public class ApplicationService {
 
 		} catch (DataIntegrityViolationException e) {
 			e.printStackTrace();
-			resp.setMessage("Customer already has an application");
+			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());
 			resp.setRequestStatus(true);
 
@@ -129,6 +129,7 @@ public class ApplicationService {
 				resp.setMessage("Applications Not Found");
 				resp.setRequestStatus(true);
 			} else {
+								
 				resp.setPayload(apps);
 				resp.setRequestStatus(true);
 				resp.setMessage("Success");
@@ -184,9 +185,9 @@ public class ApplicationService {
 				if (app.getAppStatus() == BigInteger.valueOf(2) | app.getAppStatus() == BigInteger.valueOf(1)) {
 					app.setAppStatus(BigInteger.valueOf(2));
 					app.setAppBatCode(req.getAppBatCode());
-					app.setAppCustMobileNo(req.getAppCustMobileNo());
+					//app.setAppCustMobileNo(req.getAppCustMobileNo());
 					app.setAppSharesApplied(req.getAppSharesApplied());
-					app.setAppPaymentMode(req.getAppPaymentMode());
+					//app.setAppPaymentMode(req.getAppPaymentMode());
 					app.setAppMdate(Calendar.getInstance().getTime());
 					app.setAppInputter(req.getAppInputter());
 					app.setAppDate(Calendar.getInstance().getTime());

@@ -22,7 +22,7 @@ public class BankService {
 
 		try {
 			
-				resp.setPayload(bankRepo.findAll(pageable));
+				resp.setPayload(bankRepo.findAll());
 				resp.setRequestStatus(true);
 				resp.setMessage("Success");
 			

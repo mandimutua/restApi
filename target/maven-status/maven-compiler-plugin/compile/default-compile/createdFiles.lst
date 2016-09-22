@@ -17,6 +17,7 @@ com\ipo\api\ApplicationController.class
 com\ipo\api\BatchContoller.class
 com\ipo\elements\RestResponseObject.class
 com\ipo\repositories\RolesRepository.class
+com\ipo\services\ReportsService.class
 com\ipo\repositories\CustomerRepository.class
 com\ipo\entities\Application.class
 com\ipo\entities\Messages_.class
@@ -60,6 +61,7 @@ com\ipo\entities\Messages.class
 com\ipo\services\RolesService.class
 com\ipo\utils\UserLogin.class
 com\ipo\api\SystemParamsController.class
+com\ipo\api\ReportController.class
 com\ipo\entities\Batch.class
 com\ipo\services\CustomerService.class
 com\ipo\IpoAdminApplication.class

@@ -27,6 +27,11 @@ public class Banks implements Serializable {
     private String bankBranch;
     @Id
     @Basic(optional = false)
+    @Column(name = "BANK_ID")
+    private String bankId;
+    
+   
+	@Basic(optional = false)
     @Column(name = "BANK_CODE")
     private String bankCode;
 
@@ -66,6 +71,15 @@ public class Banks implements Serializable {
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
     }
+    
+    public String getBankId() {
+		return bankId;
+	}
+
+	public void setBankId(String bankId) {
+		this.bankId = bankId;
+	}
+
 
     @Override
     public int hashCode() {

@@ -61,26 +61,42 @@ public class PaymentService {
 		try {
 			pay.setPayAppCusPalCode(req.getPayAppCusPalCode());
 			//System.out.println("CusPalCode========="+req.getPayAppCusPalCode().getAppCusPalCode().getCusPalCode());
-			pay.setPayType(req.getPayType());
-			pay.setPayChequeNo(req.getPayChequeNo());
-			pay.setPayBankCode(req.getPayBankCode());
-			pay.setPayBranch(req.getPayBranch());
+			
 			pay.setPayAccountName(req.getPayAccountName());
-			pay.setPayTransRef(req.getPayTransRef());
-			pay.setPayPhoneNo(req.getPayPhoneNo());
-			pay.setPayTerminalId(req.getPayTerminalId());
 			pay.setPayAccountNo(req.getPayAccountNo());
 			pay.setPayAmount(req.getPayAmount());
 			pay.setPayStatus(BigInteger.valueOf(2));
 			pay.setPayCdate(Calendar.getInstance().getTime());
 			pay.setPayInputter(req.getPayInputter());
 			pay.setPayDate(Calendar.getInstance().getTime());
+			pay.setPayType(req.getPayType());
+			
+			if(req.getPayType().trim().equalsIgnoreCase("CHEQUE"))
+			{
+				pay.setPayChequeNo(req.getPayChequeNo());
+			}
+			else if (req.getPayType().trim().equalsIgnoreCase("KCB MTAANI"))
+			{
+				pay.setPayTerminalId(req.getPayTerminalId());
+			}
+			
+			
+			pay.setPayBankCode(req.getPayBankCode());
+			pay.setPayBranch(req.getPayBranch());
+			
+			pay.setPayTransRef(req.getPayTransRef());
+			
+		
+			
+			
+	
 			Payments createdpayments = paymentRepository.save(pay);
 			resp.setMessage("Success");
 			resp.setPayload(createdpayments);
 			resp.setRequestStatus(true);
 		} catch (Exception er) {
-			resp.setMessage("Server Error. Please try again later.");
+			//resp.setMessage("Server Error. Please try again later.");
+			resp.setMessage(er.toString());
 			resp.setRequestStatus(true);
 			System.err.println(er.toString());
 		}
@@ -103,27 +119,37 @@ public class PaymentService {
 			// check payment status
 			if (pay.getPayStatus() == BigInteger.valueOf(2)) {
 
-				pay.setPayType(req.getPayType());
-				pay.setPayChequeNo(req.getPayChequeNo());
-				pay.setPayBankCode(req.getPayBankCode());
-				pay.setPayBranch(req.getPayBranch());
+				pay.setPayAppCusPalCode(req.getPayAppCusPalCode());
+				//System.out.println("CusPalCode========="+req.getPayAppCusPalCode().getAppCusPalCode().getCusPalCode());
+				
 				pay.setPayAccountName(req.getPayAccountName());
-				pay.setPayTransRef(req.getPayTransRef());
-				pay.setPayPhoneNo(req.getPayPhoneNo());
-				pay.setPayTerminalId(req.getPayTerminalId());
 				pay.setPayAccountNo(req.getPayAccountNo());
 				pay.setPayAmount(req.getPayAmount());
 				pay.setPayStatus(BigInteger.valueOf(2));
 				pay.setPayCdate(Calendar.getInstance().getTime());
 				pay.setPayInputter(req.getPayInputter());
 				pay.setPayDate(Calendar.getInstance().getTime());
-				resp.setMessage("Payment Edit Successfull");
-				Payments edittedpayments = paymentRepository.save(pay);
-				resp.setPayload(edittedpayments);
-				resp.setRequestStatus(true);
+				pay.setPayType(req.getPayType());
+				
+				if(req.getPayType().trim().equalsIgnoreCase("CHEQUE"))
+				{
+					pay.setPayChequeNo(req.getPayChequeNo());
+				}
+				else if (req.getPayType().trim().equalsIgnoreCase("KCB MTAANI"))
+				{
+					pay.setPayTerminalId(req.getPayTerminalId());
+				}
+				
+				
+				pay.setPayBankCode(req.getPayBankCode());
+				pay.setPayBranch(req.getPayBranch());
+				
+				pay.setPayTransRef(req.getPayTransRef());
+				
+			
 
 			} else {
-				resp.setMessage("Batch is Inactive");
+				resp.setMessage("Payment is Inactive");
 				resp.setRequestStatus(true);
 			}
 

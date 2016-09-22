@@ -41,7 +41,7 @@ public class Refunds implements Serializable {
     @Basic(optional = false)
     @Column(name = "RFD_CODE")
     private BigDecimal rfdCode;
-    @Basic(optional = false)
+    
     @Column(name = "RFD_AMOUNT")
     private double rfdAmount;
     @Column(name = "RFD_MODE")
@@ -52,13 +52,15 @@ public class Refunds implements Serializable {
     private String rfdBankCode;
     @Column(name = "RFD_BRANCH")
     private String rfdBranch;
+    @Column(name = "RFD_BANK_NAME")
+    private String rfdBankName;
     @Column(name = "RFD_ACCOUNT_NO")
     private String rfdAccountNo;
     @Column(name = "RFD_TRANS_REF")
     private String rfdTransRef;
     @Column(name = "RFD_PHONE_NO")
     private String rfdPhoneNo;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "RFD_STATUS")
     private BigInteger rfdStatus;
     @Basic(optional = false)
@@ -235,6 +237,15 @@ public class Refunds implements Serializable {
     public void setRfdAppCode(Application rfdAppCode) {
         this.rfdAppCode = rfdAppCode;
     }
+    
+    public String getRfdBankName() {
+  		return rfdBankName;
+  	}
+
+  	public void setRfdBankName(String rfdBankName) {
+  		this.rfdBankName = rfdBankName;
+  	}
+
 
     @Override
     public int hashCode() {

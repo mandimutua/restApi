@@ -59,13 +59,20 @@ public class RefundsService {
 		try {
 			ref.setRfdPayCode(req.getRfdPayCode());
 			ref.setRfdAppCode(req.getRfdAppCode());
-			ref.setRfdAmount(req.getRfdAmount());
+			//ref.setRfdAmount(req.getRfdAmount());
 			ref.setRfdMode(req.getRfdMode());
-			ref.setRfdChequeNo(req.getRfdChequeNo());
-			ref.setRfdBankCode(req.getRfdBankCode());
-			ref.setRfdAccountNo(req.getRfdAccountNo());
-			ref.setRfdTransRef(req.getRfdTransRef());
-			ref.setRfdPhoneNo(req.getRfdPhoneNo());
+			if(req.getRfdMode().equals("EFT/RTGS"))
+			{
+				
+				ref.setRfdBranch(req.getRfdBranch());
+				ref.setRfdBankName(req.getRfdBankName());
+				ref.setRfdAccountNo(req.getRfdAccountNo());
+			}
+			
+			//ref.setRfdChequeNo(req.getRfdChequeNo());
+			
+			//ref.setRfdTransRef(req.getRfdTransRef());
+			//ref.setRfdPhoneNo(req.getRfdPhoneNo());
 			ref.setRfdStatus(BigInteger.valueOf(2));
 			ref.setRfdCdate(Calendar.getInstance().getTime());
 			ref.setRfdInputter(req.getRfdInputter());
@@ -76,7 +83,7 @@ public class RefundsService {
 			resp.setPayload(createdRefund);
 			resp.setRequestStatus(true);
 		} catch (DataIntegrityViolationException er) {
-			resp.setMessage("Server Error Application or Paycode");
+			resp.setMessage(er.toString());
 			System.err.println(er.toString());
 			resp.setRequestStatus(true);
 
@@ -99,43 +106,56 @@ public class RefundsService {
 		resp.setRequestStatus(false);
 		Refunds ref = refundsRepository.findByRfdCode(req.getRfdCode());
 
-		try {
-
-			if (ref == null) {
-				resp.setMessage("Refund not found");
-				resp.setRequestStatus(true);
-			} else {
-				// check batch status
-				if (ref.getRfdStatus() == BigInteger.valueOf(2)) {
+		if (ref == null) {
+			resp.setMessage("Refund not found");
+			resp.setRequestStatus(true);
+		} else {
+			// check batch status
+			if (ref.getRfdStatus() == BigInteger.valueOf(2)) {
+				try {
 					ref.setRfdPayCode(req.getRfdPayCode());
 					ref.setRfdAppCode(req.getRfdAppCode());
-					ref.setRfdAmount(req.getRfdAmount());
+					// ref.setRfdAmount(req.getRfdAmount());
 					ref.setRfdMode(req.getRfdMode());
-					ref.setRfdChequeNo(req.getRfdChequeNo());
-					ref.setRfdBankCode(req.getRfdBankCode());
-					ref.setRfdAccountNo(req.getRfdAccountNo());
-					ref.setRfdTransRef(req.getRfdTransRef());
-					ref.setRfdPhoneNo(req.getRfdPhoneNo());
+					if (req.getRfdMode().equals("EFT/RTGS")) {
+
+						ref.setRfdBranch(req.getRfdBranch());
+						ref.setRfdBankName(req.getRfdBankName());
+						ref.setRfdAccountNo(req.getRfdAccountNo());
+					}
+
+					// ref.setRfdChequeNo(req.getRfdChequeNo());
+
+					// ref.setRfdTransRef(req.getRfdTransRef());
+					// ref.setRfdPhoneNo(req.getRfdPhoneNo());
 					ref.setRfdStatus(BigInteger.valueOf(2));
-					ref.setRfdMdate(Calendar.getInstance().getTime());
+					ref.setRfdCdate(Calendar.getInstance().getTime());
 					ref.setRfdInputter(req.getRfdInputter());
+					ref.setRfdDate(Calendar.getInstance().getTime());
+
+					Refunds createdRefund = refundsRepository.save(ref);
+					resp.setMessage("Success");
+					resp.setPayload(createdRefund);
+					resp.setRequestStatus(true);
 					resp.setMessage("Refund Edit Successfull");
 					Refunds editedRefunds = refundsRepository.save(ref);
 					resp.setPayload(editedRefunds);
 					resp.setRequestStatus(true);
 
-				} else {
-					resp.setMessage("Refund is not set for Editting");
+				} catch (DataIntegrityViolationException er) {
+					resp.setMessage("Server Error. Please try again later.");
+					System.err.println(er.toString());
 					resp.setRequestStatus(true);
+
 				}
 
+			} else {
+				resp.setMessage("Refund is not set for Editting");
+				resp.setRequestStatus(true);
 			}
 
-		} catch (Exception e) {
-			resp.setMessage("Server Error. Please try again later.");
-			System.err.println(e.toString());
-			resp.setRequestStatus(true);
 		}
+
 		return resp;
 	}
 

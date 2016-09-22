@@ -52,7 +52,6 @@ public class Customers implements Serializable {
     @Id
     @SequenceGenerator(name = "CUSTOMER_CODE_SEQ", sequenceName = "CUSTOMER_CODE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMER_CODE_SEQ")
-    @Basic(optional = false)
     @Column(name = "CUS_PAL_CODE")
     private BigDecimal cusPalCode;
     @Basic(optional = false)
@@ -65,7 +64,7 @@ public class Customers implements Serializable {
     private String cusAddress;
     @Column(name = "CUS_TOWN")
     private String cusTown;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "CUS_CITIZENSHIP")
     private String cusCitizenship;
    
@@ -73,7 +72,7 @@ public class Customers implements Serializable {
     private String cusMobilePhone;
     @Column(name = "CUS_EMAIL")
     private String cusEmail;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "CUS_STATUS")
     private BigInteger cusStatus;
     @Basic(optional = false)
@@ -127,7 +126,7 @@ public class Customers implements Serializable {
     private String cusTelNo;
     @Column(name = "CUS_FAX_NO")
     private String cusFaxNo;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "CUS_APPLICANT_TYPE")
     private String cusApplicantType;
     
