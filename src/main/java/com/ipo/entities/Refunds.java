@@ -43,7 +43,8 @@ public class Refunds implements Serializable {
     private BigDecimal rfdCode;
     
     @Column(name = "RFD_AMOUNT")
-    private double rfdAmount;
+    private BigInteger rfdAmount;
+    @Basic(optional = true)
     @Column(name = "RFD_MODE")
     private String rfdMode;
     @Column(name = "RFD_CHEQUE_NO")
@@ -94,9 +95,9 @@ public class Refunds implements Serializable {
         this.rfdCode = rfdCode;
     }
 
-    public Refunds(BigDecimal rfdCode, double rfdAmount, BigInteger rfdStatus, Date rfdCdate, Date rfdDate) {
+    public Refunds(BigDecimal rfdCode, BigInteger rfdAmount,BigInteger rfdStatus, Date rfdCdate, Date rfdDate) {
         this.rfdCode = rfdCode;
-        this.rfdAmount = rfdAmount;
+       this.rfdAmount = rfdAmount;
         this.rfdStatus = rfdStatus;
         this.rfdCdate = rfdCdate;
         this.rfdDate = rfdDate;
@@ -110,11 +111,11 @@ public class Refunds implements Serializable {
         this.rfdCode = rfdCode;
     }
 
-    public double getRfdAmount() {
+    public BigInteger getRfdAmount() {
         return rfdAmount;
     }
 
-    public void setRfdAmount(double rfdAmount) {
+    public void setRfdAmount(BigInteger rfdAmount) {
         this.rfdAmount = rfdAmount;
     }
 

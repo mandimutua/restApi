@@ -99,7 +99,6 @@ public class Batch implements Serializable {
     
     @JoinColumn(name = "BAT_BRK_CODE", referencedColumnName = "BRK_CODE")
     @ManyToOne(optional = false)
-   
     private Brokers batBrkCode;
 
     public Batch() {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.entities.Batch;
 import com.ipo.entities.Recieving;
 import com.ipo.services.RecievingService;
 import com.ipo.services.UsersService;
@@ -55,6 +56,21 @@ final RestResponseObject authorizeStatus = userService.authorize(req.getToken(),
 RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
 if (authorizeStatus.isRequestStatus()) {
 	resp = new RestResponse(recievingService.create(req), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
+	
+	@RequestMapping(value = "/searchBrokerRecieving", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Fetch Application list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse search(@RequestBody RestRequestObject<Batch> req, HttpServletRequest request,
+	Pageable pageable, HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "list_application");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(recievingService.fetchall(req.getObject(), pageable), HttpStatus.OK);
 } else {
 	resp = ErrorUtl.getFailedMsg();
 }

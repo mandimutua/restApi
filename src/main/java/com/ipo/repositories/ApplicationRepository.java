@@ -20,7 +20,10 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 
 	Application findByAppCode(BigDecimal appcode);
 	
-	Page<Application> findByAppBatCode(Batch appBatCode, Pageable page);
+	//Select application.*, payments.pay_amount from application, PAYMENTS where application.APP_CUS_PAL_CODE in(select application.APP_CUS_PAL_CODE from application where application.APP_BAT_CODE=182);
+	//Select application.*, payments.pay_amount from APPLICATION, PAYMENTS where PAYMENTS.PAY_APP_CUS_PAL_CODE = application.APP_CUS_PAL_CODE and APPLICATION.APP_BAT_CODE=13;
+	@Query("select a, b from Application a, Payments b where b.payAppCusPalCode = a.appCusPalCode and a.appBatCode =:batCode)")
+	Page<Application> findByAppBatCode(@Param("batCode")Batch bat, Pageable page);
 	
 	@Query("select a from Application a where a.appStatus = 2 and a.appBatCode = :appBatCode")
 	List<Application> findBatchSize(@Param("appBatCode") Batch appBatCode);

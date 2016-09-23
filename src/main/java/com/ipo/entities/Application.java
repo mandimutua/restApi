@@ -83,7 +83,6 @@ public class Application implements Serializable {
     
     @JoinColumn(name = "APP_BAT_CODE", referencedColumnName = "BAT_CODE")
     @ManyToOne(optional = false)
-   // @JsonManagedReference(value="batch")
     private Batch appBatCode;
 
     public Application() {

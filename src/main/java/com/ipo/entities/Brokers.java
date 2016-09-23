@@ -71,6 +71,10 @@ public class Brokers implements Serializable {
     private BigInteger brkStatus;
     @Basic(optional = false)
     
+    @Column(name = "BRK_ID")
+    private String brkID;
+    @Basic(optional = true)
+    
     @Column(name = "BRK_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date brkCdate;
@@ -201,6 +205,15 @@ public class Brokers implements Serializable {
     public void setBrkDate(Date brkDate) {
         this.brkDate = brkDate;
     }
+    
+    public String getBrkID() {
+		return brkID;
+	}
+
+	public void setBrkID(String brkID) {
+		this.brkID = brkID;
+	}
+
 
     @XmlTransient
     public Collection<Batch> getBatchCollection() {

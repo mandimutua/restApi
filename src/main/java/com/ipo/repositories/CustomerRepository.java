@@ -1,7 +1,7 @@
 package com.ipo.repositories;
 
 import java.math.BigDecimal;
-
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -18,8 +18,8 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customers
 	Customers findByCusPalCode(BigDecimal cusPalCode);
 	
 	//@Query("select u from Customers u where u.cusName like %?1% and cusInputter=43")
-	@Query("select u from Customers u where u.cusSurname like %?1%")
-	Page<Customers> findByCusSurname(String customername, Pageable pageable);
+	@Query("select u from Customers u where u.cusFormSerialNo =:cusSerialNo")
+	Page<Customers> findByCusSerialNo(@Param("cusSerialNo")BigInteger cusSerialNo, Pageable pageable);
 	
 	@Query("select a from Customers a  where a.cusBrkCode =:batBrkCode)")
 	Page<Customers> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);

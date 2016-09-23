@@ -251,33 +251,33 @@ public class PaymentService {
 
 	public RestResponseObject search(Payments pay, Pageable pageable) {
 		RestResponseObject resp = new RestResponseObject();
-//		resp.setMessage("Not Found");
-//		resp.setPayload(null);
-//		resp.setRequestStatus(false);
-//		Page<Payments> pays = paymentRepository.findPayment(pay.getPayAppCusPalCode(),pageable);
-//
-//		System.out.println("Pay code being sent============="+pay.getPayAppCusPalCode());
-//		if (pays == null) {
-//			resp.setMessage("Payment not found");
-//			resp.setRequestStatus(true);
-//		} else {
-//			try {
-//				if(!pays.hasContent())
-//				{
-//					resp.setRequestStatus(true);
-//					resp.setMessage("No Payments Available ");
-//				}else{
-//					resp.setPayload(pays);
-//					resp.setRequestStatus(true);
-//					resp.setMessage("Success");
-//				}
-//
-//			} catch (Exception e) {
-//				resp.setMessage("Server Error. Please try again later.");
-//				resp.setRequestStatus(true);
-//				System.err.println(e.toString());
-//			}
-//		}
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Page<Payments> pays = paymentRepository.findPayment(pay.getPayAppCusPalCode(),pageable);
+
+		System.out.println("Pay code being sent============="+pay.getPayAppCusPalCode());
+		if (pays == null) {
+			resp.setMessage("Payment not found");
+			resp.setRequestStatus(true);
+		} else {
+			try {
+				if(!pays.hasContent())
+				{
+					resp.setRequestStatus(true);
+					resp.setMessage("No Payments Available ");
+				}else{
+					resp.setPayload(pays);
+					resp.setRequestStatus(true);
+					resp.setMessage("Success");
+				}
+
+			} catch (Exception e) {
+				resp.setMessage("Server Error. Please try again later.");
+				resp.setRequestStatus(true);
+				System.err.println(e.toString());
+			}
+		}
 
 		return resp;
 	}

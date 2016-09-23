@@ -102,6 +102,7 @@ public class BrokersService {
 			brk.setBrkPhone(req.getBrkPhone());
 			brk.setBrkEmail(req.getBrkEmail());
 			brk.setBrkStatus(BigInteger.valueOf(2));
+			brk.setBrkID(req.getBrkID());
 			brk.setBrkInputter(req.getBrkInputter());
 			brk.setBrkCdate(Calendar.getInstance().getTime());
 			brk.setBrkDate(Calendar.getInstance().getTime());

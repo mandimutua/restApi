@@ -32,7 +32,7 @@ public class ReportController {
 	@Autowired
 	UsersService userService;
 	
-	@RequestMapping(value = "/listall", method = RequestMethod.POST, consumes = { "application/json",
+	@RequestMapping(value = "/batchReport", method = RequestMethod.POST, consumes = { "application/json",
 	"application/xml" }, produces = { "application/json", "application/xml" })
 @ApiOperation(value = "Fetch Application list", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
 public RestResponse list(@RequestBody RestRequestObject<Batch> req, HttpServletRequest request,
