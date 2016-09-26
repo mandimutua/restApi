@@ -28,6 +28,9 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	@Query("select a from Application a where a.appStatus = 2 and a.appBatCode = :appBatCode")
 	List<Application> findBatchSize(@Param("appBatCode") Batch appBatCode);
 	
+	@Query("select a from Application a where a.appBatCode = :appBatCode")
+	List<Application> findBatchSizeForReports(@Param("appBatCode") Batch appBatCode);
+	
 	BigDecimal countByAppBatCode(Batch batcode);
 	
 	@Query("select app from Application app ")
@@ -40,6 +43,13 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	
 	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode and b.batNumber =:batNum)")
 	Page<Application> findSpecificForReports(@Param("batBrkCode")Brokers bat, @Param("batNum")BigInteger batNum,Pageable pageable);
+	
+	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode and b.batNumber =:batNum)")
+	Application findSpecificForReportsUnpaginated(@Param("batBrkCode")Brokers bat, @Param("batNum")BigInteger batNum);
+	
+//SELECT SUM (PAY_AMOUNT) FROM PAYMENTS WHERE (PAYMENTS.PAY_APP_CUS_PAL_CODE IN(SELECT APPLICATION.APP_CUS_PAL_CODE FROM APPLICATION WHERE APP_BAT_CODE ='13'));	
+	@Query("select a.payAmount from Payments a  where a.payAppCusPalCode in(select b.appCusPalCode from Application b where b.appBatCode =:batNum))")
+	Page<Application> findTotalAmountInBatch(@Param("batNum")BigInteger batNum,Pageable pageable);
 	
 	
 //	select * from APPLICATION where APPLICATION.APP_CUS_PAL_CODE in(select CUSTOMERS.CUS_PAL_CODE FROM CUSTOMERS where CUSTOMERS.CUS_NAME like '%S%');

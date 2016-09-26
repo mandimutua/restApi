@@ -240,5 +240,33 @@ public class BrokersService {
 		return resp;
 
 	}
+	
+	public RestResponseObject reportBrokers(Brokers brk, Pageable page) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setRequestStatus(false);
+		Page<Brokers> bat = (Page<Brokers>) brokersRepository.findForReports(brk.getBrkCode(),page);
+		try {
+
+			if (bat == null) {
+				resp.setRequestStatus(true);
+				resp.setPayload(bat);
+				resp.setMessage("Batch not found");
+			} else {
+
+				resp.setRequestStatus(true);
+				resp.setPayload(bat);
+				resp.setMessage("Success");
+
+			}
+
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+		}
+
+		return resp;
+	}
 
 }

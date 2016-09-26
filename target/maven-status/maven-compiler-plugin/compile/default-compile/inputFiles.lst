@@ -25,6 +25,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RefundsC
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\BrokersService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\RecievingController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RefundsRepository.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestResponseReportsObjects.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\services\RolesService.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\UserRoleRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\ResetPasswordObject.java
@@ -50,6 +51,7 @@ E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Bat
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Recieving.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\PaymentRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\entities\Users.java
+E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\elements\RestResponseReport.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\api\PermissionController.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\repositories\RecievingRepository.java
 E:\MyProjects\Right Issue Data\Rwanda\restApi\src\main\java\com\ipo\utils\APIFilter.java

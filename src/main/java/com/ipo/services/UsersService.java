@@ -30,6 +30,7 @@ import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
 import com.ipo.elements.ResetPasswordObject;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.elements.RestResponseReportsObjects;
 import com.ipo.entities.Batch;
 import com.ipo.entities.Users;
 import com.ipo.repositories.RolesRepository;
@@ -262,6 +263,55 @@ public class UsersService {
 		}
 		return obj;
 	}
+	
+	@SuppressWarnings("unused")
+	public RestResponseReportsObjects permit(String token, String action) {
+		RestResponseReportsObjects obj = new RestResponseReportsObjects();
+		obj.setRequestStatus(false);
+		try {
+			String[] tks = StringUtils.split(token, ".");
+			String username = this.decodeAndParse(tks[1]).get("username").asText().trim();
+			Users user = usersRepository.findByusrEmailIgnoreCase(username.trim());
+			Map<String, Object> decodedPayload = new JWTVerifier(user.getUsrAuthSalt()).verify(token);
+			// check session expiry time
+			if (Calendar.getInstance().after(user.getSessionExpiry())) {
+				obj.setMessage("Your session timed out");
+				Lg.storeLog("Session timed out for:" + username);
+
+			} else {
+				Calendar expTime = Calendar.getInstance();
+				expTime.add(Calendar.MINUTE, 30);
+				user.setSessionExpiry(expTime);
+				Users usr = usersRepository.save(user);
+				obj.setPayload(usr);
+				obj.setMessage("Ok");
+				obj.setRequestStatus(true);
+				Lg.storeLog("------------------" + user.getUsrName() + " is very ok------------------");
+			}
+
+		} catch (SignatureException signatureException) {
+			Lg.storeLog(signatureException.getLocalizedMessage());
+			obj.setMessage("Invalid signature");
+		} catch (IllegalStateException illegalStateException) {
+			obj.setMessage("Invalid Token!");
+			Lg.storeLog(illegalStateException.getLocalizedMessage());
+		} catch (IOException e) {
+			obj.setMessage("Invalid token");
+			Lg.storeLog(e.getLocalizedMessage());
+		} catch (InvalidKeyException e) {
+			obj.setMessage("Invalid token");
+			Lg.storeLog(e.getLocalizedMessage());
+		} catch (JWTVerifyException e) {
+			obj.setMessage("Invalid token");
+			Lg.storeLog(e.getLocalizedMessage());
+
+		} catch (NoSuchAlgorithmException e) {
+			obj.setMessage("Invalid token");
+			Lg.storeLog(e.getLocalizedMessage());
+		}
+		return obj;
+	}
+
 
 	public RestResponseObject create(Users req) {
 		Users user = new Users();

@@ -24,6 +24,9 @@ public interface BatchRepository extends PagingAndSortingRepository<Batch, Long>
 	@Query("select a from Batch a  where a.batBrkCode =:batBrkCode)")
 	Page<Batch> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);
 	
+	@Query("select a from Batch a  where a.batBrkCode =:batBrkCode)")
+	List<Batch> findSpecificUnpaginated(@Param("batBrkCode")Brokers bat);
+	
 	Batch findByBatCode(BigDecimal batcode);
 	
 	//select u from Customers u where u.cusName like %?1%"

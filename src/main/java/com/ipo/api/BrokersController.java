@@ -136,5 +136,21 @@ public class BrokersController {
 		}
 		return resp;
 	}
+	
+	@RequestMapping(value = "/Brokersreport", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Reject broker", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse report(@RequestBody RestRequestObject <Brokers>req, HttpServletRequest request,Pageable page,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveUsers");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(brokerService.reportBrokers(req.getObject(), page), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
+	
 
 }

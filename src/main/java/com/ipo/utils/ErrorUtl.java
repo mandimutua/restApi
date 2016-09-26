@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 
 import com.ipo.elements.RestResponse;
 import com.ipo.elements.RestResponseObject;
+import com.ipo.elements.RestResponseReport;
+import com.ipo.elements.RestResponseReportsObjects;
 
 
 
@@ -17,5 +19,16 @@ public class ErrorUtl {
 	        return resp;
 
 	    }
+	 
+	 public static RestResponseReport getFailedMsg1(){
+		 RestResponseReport resp = null;
+	        RestResponseReportsObjects r = new RestResponseReportsObjects();
+	        r.setRequestStatus(false);
+	        r.setMessage("Access denied");
+	         resp = new RestResponseReport(r, HttpStatus.OK);
+	        return resp;
+
+	    }
+
 
 }

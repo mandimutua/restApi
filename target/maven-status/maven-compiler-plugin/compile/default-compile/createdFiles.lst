@@ -1,5 +1,6 @@
 com\ipo\repositories\BankRepository.class
 com\ipo\services\PermissionService.class
+com\ipo\elements\RestResponseReport.class
 com\ipo\repositories\ApplicationRepository.class
 com\ipo\services\BatchService.class
 com\ipo\entities\Brokers.class
@@ -43,6 +44,7 @@ com\ipo\elements\RestRequestObject.class
 com\ipo\services\UsersService$1.class
 com\ipo\api\PaymentController.class
 com\ipo\entities\Payments_.class
+com\ipo\elements\RestResponseReportsObjects.class
 com\ipo\entities\Permissions_.class
 com\ipo\entities\Refunds_.class
 com\ipo\entities\SystemParameters.class
