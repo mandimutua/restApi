@@ -1,5 +1,7 @@
 package com.ipo.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,5 +37,24 @@ public class BankService {
 		return resp;
 	}
 
+	public RestResponseObject filterBanks(Banks bnk) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setRequestStatus(false);
+		List<Banks> bank = bankRepo.findByBankName(bnk.getBankName().trim());
+
+		if (bank == null) {
+			resp.setRequestStatus(true);
+			resp.setPayload(bank);
+			resp.setMessage("Bank not found");
+		} else {
+			resp.setRequestStatus(true);
+			resp.setPayload(bank);
+			resp.setMessage("Success");
+		}
+
+		return resp;
+	}
+	
 
 }

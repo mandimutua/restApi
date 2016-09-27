@@ -45,5 +45,20 @@ public class BanksController {
 		}
 		return resp;
 	}
+	
+	@RequestMapping(value = "/filterBanks", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Bank Filter", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse filter(@RequestBody RestRequestObject<Banks> req, HttpServletRequest request, Pageable pageable,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "list_banks");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(bankService.filterBanks(req.getObject()), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
 
 }

@@ -58,6 +58,7 @@ com\ipo\entities\Recieving_.class
 com\ipo\entities\MessageTemplates_.class
 com\ipo\entities\Roles.class
 com\ipo\entities\Banks.class
+com\ipo\elements\BrokerageRow.class
 com\ipo\entities\Customers.class
 com\ipo\entities\Messages.class
 com\ipo\services\RolesService.class

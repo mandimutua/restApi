@@ -136,5 +136,21 @@ public class BatchContoller {
 		}
 		return resp;
 	}
+	
+	@RequestMapping(value = "/searchApproved", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Search Approved Batch", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse searchApproved(@RequestBody RestRequestObject<Batch> req, HttpServletRequest request, Pageable pageable,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "search_batch");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(batchService.findApproved(req.getObject(), pageable), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
+
 
 }

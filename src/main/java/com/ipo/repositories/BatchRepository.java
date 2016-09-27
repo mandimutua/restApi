@@ -33,6 +33,9 @@ public interface BatchRepository extends PagingAndSortingRepository<Batch, Long>
 	@Query("select b from Batch b where b.batStatus =2 order by b.batCode DESC")
 	List<Batch> findAllByOrderByBatCodeDesc();
 	
+	@Query("select b from Batch b where b.batStatus =1")
+	Page<Batch> findAllApproved(Pageable pageable);
+	
 	@Query("select b from Batch b where b.batStatus =2 and b.batBrkCode =:batBrkCode order by b.batCode DESC)")
 	List<Batch> findSpecificBatch(@Param("batBrkCode")Brokers bat);
 	

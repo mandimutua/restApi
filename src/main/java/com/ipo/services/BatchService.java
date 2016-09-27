@@ -363,4 +363,30 @@ public class BatchService {
 		}
 		return resp;
 	}
+	
+	public RestResponseObject findApproved(Batch batch, Pageable pageable) {
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+		Page<Batch> brk = (batchRepository.findAllApproved(pageable));
+
+		try {
+			if (brk == null) {
+				resp.setMessage("Batch not found");
+				resp.setRequestStatus(true);
+			} else {
+
+				resp.setPayload(brk);
+				resp.setRequestStatus(true);
+				resp.setMessage("Success");
+			}
+		} catch (Exception e) {
+			resp.setMessage("Server Error. Please try again later.");
+			System.err.println(e.toString());
+			resp.setRequestStatus(true);
+		}
+		return resp;
+	}
+	
 }
