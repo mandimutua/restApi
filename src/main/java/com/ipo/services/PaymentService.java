@@ -106,7 +106,7 @@ public class PaymentService {
 	public RestResponseObject edit(Payments req) {
 
 		RestResponseObject resp = new RestResponseObject();
-		resp.setMessage("Error Editting Batch");
+		resp.setMessage("Error Editting Payment");
 		resp.setPayload(null);
 		resp.setRequestStatus(false);
 		Payments pay = paymentRepository.findByPayCode(req.getPayCode());
@@ -119,7 +119,7 @@ public class PaymentService {
 			// check payment status
 			if (pay.getPayStatus() == BigInteger.valueOf(2)) {
 
-				pay.setPayAppCusPalCode(req.getPayAppCusPalCode());
+				//pay.setPayAppCusPalCode(req.getPayAppCusPalCode());
 				//System.out.println("CusPalCode========="+req.getPayAppCusPalCode().getAppCusPalCode().getCusPalCode());
 				
 				pay.setPayAccountName(req.getPayAccountName());
@@ -146,6 +146,10 @@ public class PaymentService {
 				
 				pay.setPayTransRef(req.getPayTransRef());
 				
+				Payments createdpayments = paymentRepository.save(pay);
+				resp.setMessage("Success");
+				resp.setPayload(createdpayments);
+				resp.setRequestStatus(true);
 			
 
 			} else {
