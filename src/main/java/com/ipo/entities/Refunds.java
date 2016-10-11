@@ -65,6 +65,8 @@ public class Refunds implements Serializable {
     @Column(name = "RFD_STATUS")
     private BigInteger rfdStatus;
     @Basic(optional = false)
+    @Column(name = "RFD_SWIFT")
+    private String rfdSwiftCode;
     @Column(name = "RFD_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date rfdCdate;
@@ -87,7 +89,8 @@ public class Refunds implements Serializable {
     @JoinColumn(name = "RFD_APP_CODE", referencedColumnName = "APP_CODE")
     @ManyToOne(optional = false)
     private Application rfdAppCode;
-
+    
+    
     public Refunds() {
     }
 
@@ -246,6 +249,14 @@ public class Refunds implements Serializable {
   	public void setRfdBankName(String rfdBankName) {
   		this.rfdBankName = rfdBankName;
   	}
+
+  	public String getRfdSwiftCode() {
+		return rfdSwiftCode;
+	}
+
+	public void setRfdSwiftCode(String rfdSwiftCode) {
+		this.rfdSwiftCode = rfdSwiftCode;
+	}
 
 
     @Override

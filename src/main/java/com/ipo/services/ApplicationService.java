@@ -137,6 +137,7 @@ public class ApplicationService {
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());
+			e.printStackTrace();
 			resp.setRequestStatus(true);
 
 		}

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.entities.Application;
-
 import com.ipo.entities.Customers;
 import com.ipo.entities.Payments;
 import com.ipo.repositories.PaymentRepository;
@@ -80,16 +79,20 @@ public class PaymentService {
 				pay.setPayTerminalId(req.getPayTerminalId());
 			}
 			
-			
-			pay.setPayBankCode(req.getPayBankCode());
-			pay.setPayBranch(req.getPayBranch());
-			
+			else if (req.getPayFinanced()==true)
+			{
+				pay.setPayFinanced(true);
+				pay.setPayLoanAcNo(req.getPayLoanAcNo());
+				pay.setPayCsdSrNum(req.getPayCsdSrNum());
+				pay.setPayFinancingBank(req.getPayFinancingBank());
+				pay.setPayFinancingBankBranch(req.getPayFinancingBankBranch());
+			}
+			pay.setPayFinanced(false);
+			pay.setPayType(req.getPayType().trim());
+			//pay.setPayBankCode(req.getPayBankCode());
+			//pay.setPayBranch(req.getPayBranch());
 			pay.setPayTransRef(req.getPayTransRef());
 			
-		
-			
-			
-	
 			Payments createdpayments = paymentRepository.save(pay);
 			resp.setMessage("Success");
 			resp.setPayload(createdpayments);
@@ -98,7 +101,7 @@ public class PaymentService {
 			//resp.setMessage("Server Error. Please try again later.");
 			resp.setMessage(er.toString());
 			resp.setRequestStatus(true);
-			System.err.println(er.toString());
+			er.printStackTrace();
 		}
 		return resp;
 	}

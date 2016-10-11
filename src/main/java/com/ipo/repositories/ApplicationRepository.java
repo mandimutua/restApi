@@ -41,7 +41,7 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	Page<Application> findSpecific(@Param("batBrkCode")Brokers bat, Pageable pageable);
 	
 	
-	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode and b.batNumber =:batNum)")
+	@Query("select a, b from Application a, Payments b  where a.appCusPalCode=b.payAppCusPalCode and a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode and b.batNumber =:batNum)")
 	Page<Application> findSpecificForReports(@Param("batBrkCode")Brokers bat, @Param("batNum")BigInteger batNum,Pageable pageable);
 	
 	@Query("select a from Application a  where a.appBatCode in(select b.batCode from Batch b where b.batBrkCode =:batBrkCode and b.batNumber =:batNum)")

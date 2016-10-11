@@ -32,8 +32,10 @@ import com.ipo.elements.RestRequestObject;
 import com.ipo.elements.RestResponseObject;
 import com.ipo.elements.RestResponseReportsObjects;
 import com.ipo.entities.Batch;
+import com.ipo.entities.SystemParameters;
 import com.ipo.entities.Users;
 import com.ipo.repositories.RolesRepository;
+import com.ipo.repositories.SystemParamsRepository;
 import com.ipo.repositories.UsersRepository;
 import com.ipo.utils.Lg;
 import com.ipo.utils.LoginLdapUtl;
@@ -54,6 +56,9 @@ public class UsersService {
 	
 	@Autowired
 	private RolesRepository roleRepositoty;
+	
+	@Autowired
+	private SystemParamsRepository sysParamRepository;
 
 	public LoginResponse userLogin(UserLogin request) {
 		LoginResponse resp = new LoginResponse();
@@ -98,8 +103,11 @@ public class UsersService {
 							String [] rol = roleRepositoty.findRoles(user);
 							resp.setPermissions(rol);
 							
+							SystemParameters params = sysParamRepository.findByParamName("SharePrice".trim());
+							int share_price = Integer.parseInt(params.getParamValue1());
+							//System.out.println("SharePrice================="+params.getParamValue1());
 							
-							
+							resp.setSharePrice(share_price);
 							//resp.setPermissions(permissions);
 
 							Calendar now = Calendar.getInstance();

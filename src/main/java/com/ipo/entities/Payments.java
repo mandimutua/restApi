@@ -87,7 +87,25 @@ public class Payments implements Serializable {
     private BigInteger payStatus;
     @Basic(optional = false)
     
-    @Column(name = "PAY_CDATE")
+    
+    @Column(name = "PAY_LOAN_AC_NO")
+    private BigInteger payLoanAcNo;
+    
+    @Column(name = "PAY_CSD_SR_NUM")
+    private String payCsdSrNum;
+    
+    @Column(name = "PAY_FINANCING_BNK")
+    private String payFinancingBank;
+    
+    @Column(name = "PAY_FINANCING_BRANCH")
+    private String payFinancingBankBranch;
+    
+    @Column(name = "PAY_FINANCED")
+    private boolean payFinanced;
+    
+	
+
+	@Column(name = "PAY_CDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date payCdate;
     @Basic(optional = false)
@@ -282,6 +300,46 @@ public class Payments implements Serializable {
     public void setPayInputter(Users payInputter) {
         this.payInputter = payInputter;
     }
+    
+    public BigInteger getPayLoanAcNo() {
+		return payLoanAcNo;
+	}
+
+	public void setPayLoanAcNo(BigInteger payLoanAcNo) {
+		this.payLoanAcNo = payLoanAcNo;
+	}
+
+	public String getPayCsdSrNum() {
+		return payCsdSrNum;
+	}
+
+	public void setPayCsdSrNum(String payCsdSrNum) {
+		this.payCsdSrNum = payCsdSrNum;
+	}
+
+	public String getPayFinancingBank() {
+		return payFinancingBank;
+	}
+
+	public void setPayFinancingBank(String payFinancingBank) {
+		this.payFinancingBank = payFinancingBank;
+	}
+
+	public String getPayFinancingBankBranch() {
+		return payFinancingBankBranch;
+	}
+
+	public void setPayFinancingBankBranch(String payFinancingBankBranch) {
+		this.payFinancingBankBranch = payFinancingBankBranch;
+	}
+	
+	public boolean getPayFinanced() {
+		return payFinanced;
+	}
+
+	public void setPayFinanced(boolean payFinanced) {
+		this.payFinanced = payFinanced;
+	}
 
     @Override
     public int hashCode() {

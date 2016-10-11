@@ -91,6 +91,86 @@ public class RecievingService {
 		return resp;
 	}
 
+	public RestResponseObject approve(RestRequestObject<Recieving[]> req) {
+
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+
+		for (Recieving r : req.getObject()) {
+			System.out.println("Length of Object" + req.getObject().length);
+
+			Recieving rcv = recievingRepository.findByRcvCode(r.getRcvCode());
+			if (rcv == null) {
+				resp.setMessage("Recieving Batch not found");
+				resp.setRequestStatus(true);
+			} else {
+				if (rcv.getRcvStatus() == BigInteger.valueOf(2)) {
+					try {
+						rcv.setRcvStatus(BigInteger.valueOf(1));
+						rcv.setRcvAuthoriser(r.getRcvAuthoriser());
+						rcv.setRcvMdate(Calendar.getInstance().getTime());
+						rcv.setRcvDate(Calendar.getInstance().getTime());
+						resp.setMessage("Recieving Batch Approval Successfull");
+						resp.setRequestStatus(true);
+						recievingRepository.save(rcv);
+
+					} catch (Exception e) {
+
+						resp.setMessage("Server Error. Please try again later.");
+						System.err.println(e.toString());
+						resp.setRequestStatus(true);
+					}
+				} else {
+					resp.setMessage("Receiving Batch has not been marked for approval");
+				}
+			}
+		}
+
+		return resp;
+
+	}
 	
+	public RestResponseObject reject(RestRequestObject<Recieving[]> req) {
+
+		RestResponseObject resp = new RestResponseObject();
+		resp.setMessage("Not Found");
+		resp.setPayload(null);
+		resp.setRequestStatus(false);
+
+		for (Recieving r : req.getObject()) {
+			System.out.println("Length of Object" + req.getObject().length);
+
+			Recieving rcv = recievingRepository.findByRcvCode(r.getRcvCode());
+			if (rcv == null) {
+				resp.setMessage("Recieving Batch not found");
+				resp.setRequestStatus(true);
+			} else {
+				if (rcv.getRcvStatus() == BigInteger.valueOf(2)) {
+					try {
+						rcv.setRcvStatus(BigInteger.valueOf(3));
+						rcv.setRcvAuthoriser(r.getRcvAuthoriser());
+						rcv.setRcvMdate(Calendar.getInstance().getTime());
+						rcv.setRcvDate(Calendar.getInstance().getTime());
+						resp.setMessage("Recieving Batch Rejection Successfull");
+						resp.setRequestStatus(true);
+						recievingRepository.save(rcv);
+
+					} catch (Exception e) {
+
+						resp.setMessage("Server Error. Please try again later.");
+						System.err.println(e.toString());
+						resp.setRequestStatus(true);
+					}
+				} else {
+					resp.setMessage("Receiving Batch has not been marked for rejection");
+				}
+			}
+		}
+
+		return resp;
+
+	}
 
 }

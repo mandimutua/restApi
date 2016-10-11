@@ -67,6 +67,7 @@ public class RefundsService {
 				ref.setRfdBranch(req.getRfdBranch());
 				ref.setRfdBankName(req.getRfdBankName());
 				ref.setRfdAccountNo(req.getRfdAccountNo());
+				ref.setRfdSwiftCode(req.getRfdSwiftCode());
 			}
 			
 			//ref.setRfdChequeNo(req.getRfdChequeNo());
@@ -82,16 +83,11 @@ public class RefundsService {
 			resp.setMessage("Success");
 			resp.setPayload(createdRefund);
 			resp.setRequestStatus(true);
-		} catch (DataIntegrityViolationException er) {
-			resp.setMessage(er.toString());
-			System.err.println(er.toString());
-			resp.setRequestStatus(true);
-
-		}
-
+		} 
 		catch (Exception er) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(er.toString());
+			er.printStackTrace();
 			resp.setRequestStatus(true);
 
 		}

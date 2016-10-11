@@ -1,5 +1,6 @@
 package com.ipo.repositories;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.springframework.data.domain.Page;
@@ -18,4 +19,5 @@ public interface RecievingRepository extends PagingAndSortingRepository<Recievin
 	@Query("select a, b from Application a, Batch b  where b.batBrkCode =:batBrkCode and b.batNumber =:batNum and b.batCode=a.appBatCode)")
 	Page<Application> findSpecificForRecieving(@Param("batBrkCode")Brokers bat, @Param("batNum")BigInteger batNum,Pageable pageable);
 
+	Recieving findByRcvCode(BigDecimal rcvCode);
 }

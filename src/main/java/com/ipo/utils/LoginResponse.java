@@ -12,7 +12,10 @@ public class LoginResponse {
 	private BigDecimal userID;
 	Brokers batCode;
 	private String [] permissions;
+	private int sharePrice;
 	
+
+
 
 	public String[] getPermissions() {
 		return permissions;
@@ -87,5 +90,13 @@ public class LoginResponse {
 
 	public void setBatCode(Brokers brokers) {
 		this.batCode = brokers;
+	}
+	
+	public int getSharePrice() {
+		return sharePrice;
+	}
+
+	public void setSharePrice(int sharePrice) {
+		this.sharePrice = sharePrice;
 	}
 }

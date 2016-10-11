@@ -76,6 +76,35 @@ if (authorizeStatus.isRequestStatus()) {
 }
 return resp;
 }
+	
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Approve Recieving", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse approve(@RequestBody RestRequestObject<Recieving[]> req, HttpServletRequest request,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "ApproveRecieving");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(recievingService.approve(req), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
 
+	@RequestMapping(value = "/reject", method = RequestMethod.POST, consumes = { "application/json",
+	"application/xml" }, produces = { "application/json", "application/xml" })
+@ApiOperation(value = "Reject Receiving", notes = "The list is paginated. You can provide a page number (default 0) and a page size (default 100)")
+public RestResponse reject(@RequestBody RestRequestObject<Recieving[]> req, HttpServletRequest request,
+	HttpServletResponse response) {
+final RestResponseObject authorizeStatus = userService.authorize(req.getToken(), "Reject Recieving");
+RestResponse resp = new RestResponse(authorizeStatus, HttpStatus.ACCEPTED);
+if (authorizeStatus.isRequestStatus()) {
+	resp = new RestResponse(recievingService.reject(req), HttpStatus.OK);
+} else {
+	resp = ErrorUtl.getFailedMsg();
+}
+return resp;
+}
 
 }

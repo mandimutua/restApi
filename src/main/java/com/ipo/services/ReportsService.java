@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ipo.elements.RestResponseReportsObjects;
 import com.ipo.elements.BrokerageRow;
+import com.ipo.elements.RestResponseReportsObjects;
 import com.ipo.entities.Application;
 import com.ipo.entities.Batch;
 import com.ipo.entities.Brokers;
@@ -44,26 +43,27 @@ public class ReportsService {
 		resp.setRequestStatus(false);
 
 		try {
-			BigInteger batchTotalAmount = BigInteger.ZERO;
+//			BigInteger batchTotalAmount = BigInteger.ZERO;
+//
+//			SystemParameters params = sysParamRepository.findByParamName("SharePrice".trim());
+//			int share_price = Integer.parseInt(params.getParamValue1());
+//
+//			Page<Application> theList = appRepository.findSpecificForReports(bat.getBatBrkCode(), bat.getBatNumber(),
+//					pageable);
 
-			SystemParameters params = sysParamRepository.findByParamName("SharePrice".trim());
-			int share_price = Integer.parseInt(params.getParamValue1());
-
-			Page<Application> theList = appRepository.findSpecificForReports(bat.getBatBrkCode(), bat.getBatNumber(),
-					pageable);
-
-			for (Application app : theList) {
-				batchTotalAmount = app.getAppBatCode().getBatTotalShares();
-			}
+//			for (Application app : theList) {
+//				batchTotalAmount = app.getAppBatCode().getBatTotalShares();
+//			}
 			resp.setPayload(appRepository.findSpecificForReports(bat.getBatBrkCode(), bat.getBatNumber(), pageable));
 
-			resp.setTotalAmountBatch(batchTotalAmount.multiply(BigInteger.valueOf(share_price)));
+		//	resp.setTotalAmountBatch(batchTotalAmount.multiply(BigInteger.valueOf(share_price)));
 			resp.setRequestStatus(true);
 			resp.setMessage("Success");
 
 		} catch (Exception e) {
 			resp.setMessage("Server Error. Please try again later.");
 			System.err.println(e.toString());
+			e.printStackTrace();
 			resp.setRequestStatus(true);
 
 		}
