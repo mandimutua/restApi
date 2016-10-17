@@ -101,7 +101,7 @@ public class RecievingService {
 		for (Recieving r : req.getObject()) {
 			System.out.println("Length of Object" + req.getObject().length);
 
-			Recieving rcv = recievingRepository.findByRcvCode(r.getRcvCode());
+			Recieving rcv = recievingRepository.findByRcvBatCode(r.getRcvBatCode());
 			if (rcv == null) {
 				resp.setMessage("Recieving Batch not found");
 				resp.setRequestStatus(true);
@@ -142,7 +142,7 @@ public class RecievingService {
 		for (Recieving r : req.getObject()) {
 			System.out.println("Length of Object" + req.getObject().length);
 
-			Recieving rcv = recievingRepository.findByRcvCode(r.getRcvCode());
+			Recieving rcv = recievingRepository.findByRcvBatCode(r.getRcvBatCode());
 			if (rcv == null) {
 				resp.setMessage("Recieving Batch not found");
 				resp.setRequestStatus(true);
